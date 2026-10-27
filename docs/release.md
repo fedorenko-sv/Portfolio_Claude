@@ -19,7 +19,7 @@
 
 Использовать существующий Vercel project `fedorenkosv-portfolio` (`prj_V0ng6KWgoBOexdAmMD1dIqZDCGQD`), не создавать второй. Branch `codex/ecosystem-r1` — только preview. Не merge main и не promote без разрешения. Проект настроен на Node 24.x; локальная проверка выполнена на Node 22.23.2, remote build проверяется отдельно.
 
-Текущая попытка preview заблокирована API 403 на доступе к команде thuys-projects-df10afab. Пользователю выдана штатная ссылка authorize_team_access; после подтверждения повторить preview для текущего commit. Ссылка согласия не сохраняется в репозитории. Существующая production-привязка содержит прежнего GitHub-владельца, но исходный commit совпадает с baseline; привязку автоматически не менять.
+После подтверждения владельцем доступа к команде preview создан: dpl_FnR7qG9LiTTtPzquZtTqeB3VVwXQ, READY, commit 9d27f7f8adc82dac85e73de6a39162db6cb05e05. URL: https://fedorenkosv-portfolio-jf0llcg9s-thuys-projects-df10afab.vercel.app . Пройден удалённый браузерный smoke; детали в qa.md. Секреты временной share-ссылки и согласия не сохраняются в репозитории. Существующая production-привязка содержит прежнего GitHub-владельца, но исходный commit совпадает с baseline; привязку автоматически не менять.
 
 ## Rollback
 

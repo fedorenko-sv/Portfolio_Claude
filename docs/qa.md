@@ -42,4 +42,10 @@ Node 22 выводит предупреждения experimental SQLite/strip-ty
 
 Draft PR: https://github.com/fedorenko-sv/Portfolio_Claude/pull/1 . Ветка codex/ecosystem-r1; реализация — commit 50dad56bb8e673042289794c65646f4ad075ded4.
 
-Проверен существующий Vercel project fedorenkosv-portfolio. Попытка создать **preview** получила 403 forbidden: подключению не предоставлен grant команды thuys-projects-df10afab. Отдельный новый проект не создан, настройки команды не изменены, production не затронут. Владелец получил штатную одноразовую ссылку подтверждения доступа. Удалённая сборка Node 24 и проверка preview пока не выполнены; локальный build не выдаётся за удалённый.
+Первоначальный 403 доступа устранён после подтверждения владельцем штатного authorize_team_access. В существующем проекте создан preview **dpl_FnR7qG9LiTTtPzquZtTqeB3VVwXQ**, исходный commit **9d27f7f8adc82dac85e73de6a39162db6cb05e05**, `target=null` (preview), состояние **READY**. Логи подтверждают Next.js 16.4.3 и успешный Build Completed. Новый проект не создавался, production-привязка не менялась.
+
+Постоянный URL этого preview: https://fedorenkosv-portfolio-jf0llcg9s-thuys-projects-df10afab.vercel.app . Включена штатная Vercel Authentication; для браузерного ревью создана временная share-ссылка ветки на 24 часа. Секрет ссылки не хранится в репозитории, защита проекта не отключалась.
+
+Удалённый Chromium smoke (`scripts/check-preview.mjs`) прошёл: главная 200 и noindex; mobile 390 без переполнения; реальное заполнение практики до результата; общий материал Mini App; draft программы виден в preview; неизвестный slug 404; POST leads 503. Сохранены screenshots preview-desktop/mobile/practice-result и preview-check.json. Это дополнение к полному локальному E2E, а не тест реального Telegram.
+
+Production alias fedorenkosv-portfolio.vercel.app после preview повторно проверен: всё ещё указывает на исходный dpl_4qWnAtCWNek6GwEzghn2RYuKMH4D.
