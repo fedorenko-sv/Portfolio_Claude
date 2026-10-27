@@ -38,12 +38,12 @@ export function CaseCards({
     <div className="project-list">
       {catalogFor()
         .cases.slice(0, limit)
-        .map((item, index) => (
+        .map((item) => (
           <article className="project-row" key={item.id}>
             <div className="project-index">
-              <span>0{index + 1}</span>
               <p className="eyebrow">{item.audience}</p>
             </div>
+            <ProjectViewer id={item.id} title={item.title} preview />
             <div className="project-row-body">
               <h3>
                 <Link href={`${base}/${item.slug}`}>{item.title}</Link>
@@ -80,13 +80,12 @@ export function CaseCards({
 export function MaterialCards({ base = "/materials" }: { base?: string }) {
   return (
     <div className="editorial-list">
-      {catalogFor().materials.map((item, i) => (
+      {catalogFor().materials.map((item) => (
         <Link
           href={`${base}/${item.slug}`}
           className="editorial-row"
           key={item.id}
         >
-          <span className="row-number">0{i + 1}</span>
           <div>
             <p className="eyebrow">Материал / практика</p>
             <h3>{item.title}</h3>
@@ -105,7 +104,6 @@ export function ProgramCards({ base = "/training" }: { base?: string }) {
     <div className="program-list">
       {programs.map((p, i) => (
         <article className="program-row" key={p.id}>
-          <span className="row-number">0{i + 1}</span>
           <div className="program-name">
             <h3>
               <Link href={`${base}/${p.slug}`}>{p.title}</Link>
@@ -113,7 +111,7 @@ export function ProgramCards({ base = "/training" }: { base?: string }) {
             <p className="eyebrow">{p.audience.join(" · ")}</p>
           </div>
           <div className="program-result">
-                <p>{p.summary}</p>
+            <p>{p.summary}</p>
             {i === 0 && (
               <ul className="check-list">
                 {p.outcomes.map((x) => (
@@ -166,13 +164,11 @@ export function CaseDetail({ item }: { item: Case }) {
         <div className="wrap">
           <p className="eyebrow">Путь пользователя</p>
           <ol className="case-flow">
-            {item.journey.map((step, i) => (
-              <li key={step}>
-                <span>0{i + 1}</span>
-                {step}
-              </li>
+            {item.journey.map((step) => (
+              <li key={step}>{step}</li>
             ))}
           </ol>
+          <ProjectViewer id={item.id} title={item.title} preview />
           <div className="case-launch">
             <div>
               <h2>Посмотрите, как устроен сценарий</h2>

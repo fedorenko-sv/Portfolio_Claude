@@ -73,7 +73,7 @@ export default function PhoneScene({
       environment.dispose();
       pmrem.dispose();
       const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-      camera.position.set(0, 1.6, 12.9);
+      camera.position.set(0, 1.6, 14.4);
       camera.lookAt(0, 0.45, 0);
       scene.add(new THREE.HemisphereLight(0xffffff, 0x343038, 1.05));
       const key = new THREE.DirectionalLight(0xffffff, 2.4);
@@ -196,8 +196,8 @@ export default function PhoneScene({
       });
       const plinths: InstanceType<typeof THREE.Mesh>[] = [];
       for (const [w, h, x, y, z] of [
-        [9.5, 0.7, -0.4, -3.1, 0],
-        [3.5, 0.95, -2.4, -2.3, -0.5],
+        [9.5, 0.45, -0.4, -3.65, -0.8],
+        [2.5, 0.7, -3.5, -3.5, -2.8],
       ]) {
         const step = new THREE.Mesh(new THREE.BoxGeometry(w, h, 3.5), cherry);
         step.position.set(x, y, z);
@@ -281,24 +281,70 @@ export default function PhoneScene({
       const observer = new ResizeObserver(resize);
       observer.observe(element);
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let targetX = 0.04,
+        targetY = -0.17;
+      let hovering = false,
+        visible = true,
+        animation = 0;
+      function animate(time: number) {
+        animation = 0;
+        if (cancelled || !visible || reduced.matches) return;
+        if (!active.current) {
+          const idle = hovering ? 0 : Math.sin(time * 0.00065) * 0.22;
+          phone.rotation.y += (targetY + idle - phone.rotation.y) * 0.075;
+          phone.rotation.x += (targetX - phone.rotation.x) * 0.075;
+          phone.position.y = 0.55 + Math.sin(time * 0.001) * 0.08;
+          render();
+        }
+        animation = requestAnimationFrame(animate);
+      }
+      function start() {
+        if (!animation && visible && !reduced.matches)
+          animation = requestAnimationFrame(animate);
+      }
+      const visibility = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) start();
+        else {
+          cancelAnimationFrame(animation);
+          animation = 0;
+        }
+      });
+      visibility.observe(element);
       function move(event: PointerEvent) {
         if (active.current || reduced.matches || event.pointerType === "touch")
           return;
+        hovering = true;
         const rect = element!.getBoundingClientRect();
-        phone.rotation.y =
-          -0.17 + ((event.clientX - rect.left) / rect.width - 0.5) * 0.13;
-        render();
+        targetY =
+          -0.17 + ((event.clientX - rect.left) / rect.width - 0.5) * 1.65;
+        targetX = 0.04 + ((event.clientY - rect.top) / rect.height - 0.5) * 0.3;
+        start();
       }
       function reset() {
-        if (active.current) return;
-        phone.rotation.y = -0.17;
-        render();
+        hovering = false;
+        targetY = -0.17;
+        targetX = 0.04;
       }
+      function motionChanged() {
+        cancelAnimationFrame(animation);
+        animation = 0;
+        if (reduced.matches && !active.current) {
+          phone.rotation.set(0.04, -0.17, 0.14);
+          phone.position.y = 0.55;
+          render();
+        } else start();
+      }
+      reduced.addEventListener("change", motionChanged);
       element.addEventListener("pointermove", move);
       element.addEventListener("pointerleave", reset);
+      start();
       resize();
       dispose = () => {
         observer.disconnect();
+        visibility.disconnect();
+        cancelAnimationFrame(animation);
+        reduced.removeEventListener("change", motionChanged);
         if (active.current) document.body.style.overflow = previousOverflow;
         htmlRenderer.domElement.remove();
         window.removeEventListener("message", receive);

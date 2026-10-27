@@ -63,11 +63,10 @@ export default function Home() {
             </Link>
           </div>
           <div className="selection-grid">
-            {catalogFor().cases.map((p, i) => (
+            {catalogFor().cases.map((p) => (
               <article key={p.id}>
-                <p className="eyebrow">
-                  0{i + 1} / {p.audience.split("·")[0]}
-                </p>
+                <ProjectViewer id={p.id} title={p.title} preview />
+                <p className="eyebrow">{p.audience.split("·")[0]}</p>
                 <h2>
                   <Link href={"/cases/" + p.slug}>{p.title}</Link>
                 </h2>
@@ -94,7 +93,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="practice-feature theme-cherry">
+      <section className="practice-feature theme-dark">
         <div className="wrap practice-feature-inner">
           <div>
             <h2>

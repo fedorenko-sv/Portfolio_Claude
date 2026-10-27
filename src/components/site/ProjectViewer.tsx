@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 import { showcaseFor, canEmbed } from "@/content/project-showcases";
 import Icon from "./Icon";
@@ -8,9 +9,11 @@ import { acceptsShowcaseMessage } from "@/lib/showcase-protocol";
 export default function ProjectViewer({
   id,
   title,
+  preview = false,
   className = "button",
   label = "Открыть приложение",
 }: {
+  preview?: boolean;
   id: string;
   title: string;
   className?: string;
@@ -76,12 +79,38 @@ export default function ProjectViewer({
       <button
         ref={trigger}
         type="button"
-        className={className}
+        className={preview ? `project-preview preview-${id}` : className}
         onClick={launch}
         aria-haspopup="dialog"
+        aria-label={preview ? `Открыть приложение: ${title}` : undefined}
       >
-        {label}
-        <Icon />
+        {preview ? (
+          <>
+            <span className="preview-window">
+              <span className="preview-chrome">
+                <i />
+                <i />
+                <i />
+                <span>{title}</span>
+              </span>
+              <Image
+                src={`/images/projects/${id === "gastro" ? "gastro-mobile" : id}.webp`}
+                alt={`Интерфейс: ${title}`}
+                width={id === "gastro" ? 390 : 1280}
+                height={id === "gastro" ? 775 : 820}
+                sizes="(max-width: 700px) 90vw, 50vw"
+              />
+            </span>
+            <span className="preview-action">
+              Открыть приложение <Icon />
+            </span>
+          </>
+        ) : (
+          <>
+            {label}
+            <Icon />
+          </>
+        )}
       </button>
       <dialog
         ref={dialog}
