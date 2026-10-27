@@ -358,3 +358,7 @@
 .preview-gastro:hover .preview-window, .preview-gastro:focus-visible .preview-window { transform: rotate(2deg) translateY(-8px); }
 @media (max-width: 700px) { .practice-object { bottom: -3%; } }
 
+/* Fullscreen canvas dimensions must not become the grid item's minimum width. */
+.home-hero-bottom { grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr); }
+.hero-device { min-width: 0; }
+.phone-scene > canvas { max-width: 100%; }
