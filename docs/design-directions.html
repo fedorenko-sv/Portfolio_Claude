@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ru">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Три направления — Сергей Федоренко</title
+  ><style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: #dedbd5;
+      color: #20201e;
+      font:
+        17px Arial,
+        sans-serif;
+    }
+    main {
+      max-width: 1400px;
+      margin: auto;
+      padding: 32px;
+    }
+    h1 {
+      font-size: 32px;
+    }
+    h2 {
+      margin: 48px 0 12px;
+    }
+    p {
+      line-height: 1.55;
+    }
+    .pair {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 290px;
+      gap: 24px;
+    }
+    .frame {
+      padding: 32px;
+      min-height: 500px;
+      background: #f7f4ee;
+    }
+    .nav {
+      font-size: 13px;
+      border-bottom: 1px solid;
+      padding-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .tag {
+      font: 12px monospace;
+      letter-spacing: 0.08em;
+      margin-top: 40px;
+    }
+    .frame h3 {
+      font-size: clamp(28px, 4vw, 54px);
+      line-height: 1.08;
+      max-width: 740px;
+      letter-spacing: -0.045em;
+      margin: 24px 0;
+    }
+    .frame p {
+      max-width: 560px;
+    }
+    .cta {
+      display: inline-block;
+      padding: 14px 18px;
+      background: #c9441d;
+      color: white;
+      font-size: 14px;
+    }
+    .case {
+      border-top: 1px solid;
+      margin-top: 40px;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .case small {
+      display: block;
+      margin-top: 8px;
+    }
+    .mobile {
+      padding: 22px;
+    }
+    .mobile h3 {
+      font-size: 34px;
+    }
+    .mobile .nav {
+      font-size: 12px;
+    }
+    .mobile .tag {
+      font-size: 10px;
+    }
+    .mobile p {
+      font-size: 15px;
+    }
+    .mobile .case {
+      display: block;
+    }
+    .journal {
+      background: #fcfbf7;
+    }
+    .journal h3 {
+      font-family: Georgia, serif;
+      font-weight: normal;
+      letter-spacing: -0.045em;
+    }
+    .journal .cta {
+      background: #20201e;
+    }
+    .journal .tag {
+      color: #a4341a;
+    }
+    .lab {
+      background: #202624;
+      color: #f0f5eb;
+    }
+    .lab .cta {
+      background: #d9ee83;
+      color: #202624;
+    }
+    .lab .tag {
+      color: #d9ee83;
+    }
+    .note {
+      font-size: 14px;
+      color: #555;
+    }
+    @media (max-width: 800px) {
+      .pair {
+        grid-template-columns: 1fr;
+      }
+      .mobile {
+        max-width: 390px;
+      }
+      .frame {
+        min-height: 0;
+      }
+      main {
+        padding: 16px;
+      }
+    }
+  </style>
+  <main>
+    <h1>Сергей Федоренко · выбор направления</h1>
+    <p>
+      Композиции первого экрана и карточки кейса: desktop и mobile. Это эскизы
+      дизайна, без вымышленных фотографий и интерфейсов продуктов.
+    </p>
+    <h2>1. Авторская мастерская — рекомендуется</h2>
+    <p class="note">
+      Тёплая бумага, графит, терракота. Крупный авторский текст, спокойная
+      асимметрия. Основа токенов из спецификации.
+    </p>
+    <div class="pair">
+      <section class="frame">
+        <div class="nav">
+          <b>Сергей Федоренко</b><span>Обучение　Решения　Проекты</span>
+        </div>
+        <div class="tag">РАЗРАБОТКА · ИИ В РАБОТЕ · ОБУЧЕНИЕ КОМАНД</div>
+        <h3>
+          Создаю цифровые инструменты.<br /><span style="color: #c9441d"
+            >Обучаю команды применять ИИ.</span
+          >
+        </h3>
+        <p>
+          От рабочей задачи до проверенного решения. Сайты, CRM и платформы.
+          Практические занятия по нейросетям и агентам.
+        </p>
+        <span class="cta">Обучить команду ↗</span>
+        <div class="case">
+          <div>
+            01 / ОБРАЗОВАНИЕ
+            <h4>EdCRM: от заявки до группы и счёта</h4>
+            <small>Демо · статус и ограничения открыты</small>
+          </div>
+          <span>Смотреть кейс ↗</span>
+        </div>
+      </section>
+      <section class="frame mobile">
+        <div class="nav"><b>Сергей Федоренко</b><span>Меню ☰</span></div>
+        <div class="tag">РАЗРАБОТКА · ИИ · ОБУЧЕНИЕ</div>
+        <h3>
+          Создаю цифровые инструменты.<br /><span style="color: #c9441d"
+            >Обучаю команды применять ИИ.</span
+          >
+        </h3>
+        <p>От рабочей задачи до проверенного решения.</p>
+        <span class="cta">Обучить команду ↗</span>
+        <div class="case">
+          01 / ОБРАЗОВАНИЕ
+          <h4>EdCRM: от заявки до группы и счёта</h4>
+          <small>Демо · Смотреть кейс ↗</small>
+        </div>
+      </section>
+    </div>
+    <h2>2. Журнал о практике ИИ</h2>
+    <p class="note">
+      Редакционная типографика, тонкие линии, белое поле. Обучение и материалы
+      выходят на первый план.
+    </p>
+    <div class="pair">
+      <section class="frame journal">
+        <div class="nav">
+          <b>СЕРГЕЙ ФЕДОРЕНКО</b><span>Практика / Материалы / Проекты</span>
+        </div>
+        <div class="tag">РАБОЧИЕ ЗАМЕТКИ · ЛИПЕЦК / ОНЛАЙН</div>
+        <h3>Создаю цифровые инструменты. Обучаю команды применять ИИ.</h3>
+        <p>
+          Понятная задача, проверяемый результат. Практика применения ИИ в
+          работе и цифровые продукты под конкретный процесс.
+        </p>
+        <span class="cta">Выбрать первую задачу →</span>
+        <div class="case">
+          <div>
+            ПРОЕКТ / 01
+            <h4>От заявки родителя до группы и счёта</h4>
+            <small>EdCRM · Демо</small>
+          </div>
+          <span>Читать разбор →</span>
+        </div>
+      </section>
+      <section class="frame journal mobile">
+        <div class="nav"><b>С. ФЕДОРЕНКО</b><span>Меню</span></div>
+        <div class="tag">ЗАМЕТКИ О ПРАКТИКЕ</div>
+        <h3>Создаю цифровые инструменты. Обучаю команды применять ИИ.</h3>
+        <p>Понятная задача, проверяемый результат.</p>
+        <span class="cta">Выбрать первую задачу →</span>
+        <div class="case">
+          ПРОЕКТ / 01
+          <h4>От заявки родителя до группы и счёта</h4>
+          <small>EdCRM · Демо</small>
+        </div>
+      </section>
+    </div>
+    <h2>3. Продуктовая лаборатория</h2>
+    <p class="note">
+      Тёмный графит, лимонный акцент, системная сетка. Акцент на процессах и
+      разработке.
+    </p>
+    <div class="pair">
+      <section class="frame lab">
+        <div class="nav">
+          <b>Сергей Федоренко / лаборатория</b
+          ><span>Инструменты　Практика　Контакт</span>
+        </div>
+        <div class="tag">[ РАЗРАБОТКА + ОБУЧЕНИЕ ]</div>
+        <h3>Создаю цифровые инструменты.<br />Обучаю команды применять ИИ.</h3>
+        <p>
+          Разбираем процесс. Выбираем ограниченный участок. Проверяем решение на
+          пилоте.
+        </p>
+        <span class="cta">Обсудить задачу ↗</span>
+        <div class="case">
+          <div>
+            01 / EDCRM
+            <h4>Заявка → группа → счёт</h4>
+            <small>Статус: демо · Интеграции: ограничения в кейсе</small>
+          </div>
+          <span>Открыть проект ↗</span>
+        </div>
+      </section>
+      <section class="frame lab mobile">
+        <div class="nav"><b>С. Федоренко / lab</b><span>Меню</span></div>
+        <div class="tag">[ РАЗРАБОТКА + ОБУЧЕНИЕ ]</div>
+        <h3>Создаю цифровые инструменты. Обучаю команды применять ИИ.</h3>
+        <p>От процесса до проверяемого пилота.</p>
+        <span class="cta">Обсудить задачу ↗</span>
+        <div class="case">
+          01 / EDCRM
+          <h4>Заявка → группа → счёт</h4>
+          <small>Демо · Открыть проект ↗</small>
+        </div>
+      </section>
+    </div>
+  </main>
+</html>

@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/test-results/
+/playwright-report/
+/work/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+!.env.example

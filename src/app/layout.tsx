@@ -1,14 +1,23 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
-  title: "Full-Stack Инженер — PWA, HoReCa, Доставка | Цифровые решения для бизнеса",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Сергей Федоренко — разработка и практика ИИ",
+    template: "%s · Сергей Федоренко",
+  },
   description:
-    "Разрабатываю PWA-приложения, системы доставки и интеграции с iiko, r_keeper для ресторанов, кальянных и e-commerce. Живое демо продуктов на сайте.",
-  keywords: "PWA, разработка приложений, HoReCa, доставка, iiko, ресторан, кальянная, e-commerce, full-stack разработчик",
+    "Создаю цифровые инструменты. Обучаю команды применять ИИ. Сайты, CRM, платформы и практические занятия. Липецк · очно и онлайн.",
+  robots:
+    process.env.VERCEL_ENV === "production"
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
   openGraph: {
-    title: "Full-Stack Инженер | Цифровые решения для HoReCa и доставки",
-    description: "Премиальные цифровые продукты для ресторанов, кальянных и сервисов доставки. Попробуйте демо прямо сейчас.",
+    title: "Сергей Федоренко — разработка и практика ИИ",
+    description:
+      "Цифровые инструменты для конкретных процессов. Практическое применение ИИ в работе.",
     type: "website",
   },
 };
@@ -19,18 +28,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className="scroll-smooth">
+    <html lang="ru">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
+          rel="preload"
+          href="/fonts/literata-cyrillic-wght-normal-v5.3.0.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/manrope-cyrillic-wght-normal-v5.3.0.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
       </head>
-      <body className="antialiased">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

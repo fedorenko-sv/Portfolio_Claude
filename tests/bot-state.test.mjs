@@ -1,0 +1,22 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { mkdirSync, mkdtempSync } from "node:fs";
+import { resolve, join } from "node:path";
+import * as stateModule from "../src/lib/bot-state.mjs";
+test("bot update claim is durable and cannot execute the same update twice", () => {
+  assert.equal(typeof stateModule.openBotState, "function");
+  const scratch = resolve("work");
+  mkdirSync(scratch, { recursive: true });
+  const dir = mkdtempSync(join(scratch, "bot-test-"));
+  const path = join(dir, "state.sqlite");
+  let state = stateModule.openBotState(path);
+  assert.equal(state.claim(100), true);
+  assert.equal(state.claim(100), false);
+  state.finish(100, "sent");
+  state.close();
+  state = stateModule.openBotState(path);
+  assert.equal(state.nextOffset(), 101);
+  assert.equal(state.claim(100), false);
+  assert.equal(state.claim(101), true);
+  state.close();
+});

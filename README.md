@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Сергей Федоренко · сайт и практика ИИ
 
-## Getting Started
+R1-static на Next.js 16 / React 19 / TypeScript. Сайт и браузерная оболочка Telegram Mini App используют общий контент. Бесплатная практика работает без регистрации и AI API.
 
-First, run the development server:
-
-```bash
+```sh
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Открыть http://localhost:3000, приложение — `/app`, практика — `/practice/first-ai-task`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npx playwright install chromium
+npm run test:e2e
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+При свежем checkout до typecheck выполнить `npm run build` для генерации типов маршрутов. `npm run test:e2e` запускает dev-сервер на 3100. Для проверки существующего production-сервера указать `PLAYWRIGHT_BASE_URL=http://127.0.0.1:3200`. Для production build: `npm run build`, затем `npm run start -- --port 3200`.
 
-## Learn More
+Контент: `src/content/catalog.ts`. Программы обучения — draft и отсутствуют в production. Для публикации нужны `approvalStatus: approved` и `published: true`. Локальная разработка и Vercel preview показывают проекты программ с явной подписью.
 
-To learn more about Next.js, take a look at the following resources:
+Конфигурация: `.env.example`. `SITE_URL` задаёт canonical origin. Ключи OpenAI, БД и аналитики не нужны. Серверный приём заявок выключен; `/api/leads` отвечает 503. Контакт ведёт в личный Telegram, без имитации отправки.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Отдельный бот: `npm run bot` после безопасной конфигурации `TELEGRAM_BOT_TOKEN`, `SITE_URL`, `BOT_STATE_PATH`. Нужен отдельный Node-процесс и постоянный диск, не serverless Function. `/start`, `/help`, без рассылок. Реальный запуск не проверен: токен не предоставлен. На локальном Node 22 встроенная SQLite помечена experimental.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Шрифты Literata и Manrope поставляются локально через Fontsource (SIL OFL); лицензии в `public/licenses`. Внешние шрифтовые CDN не используются.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Документы: [аудит](docs/audit.md), [возможности](capabilities.md), [архитектура](docs/architecture.md), [реестр контента](docs/content-inventory.md), [визуальное решение](docs/design-decision.md), [медиа](docs/asset-manifest.md), [релиз и rollback](docs/release.md). Полный R1 требует согласованной формы, реального запуска Telegram и разрешённых медиа. Production не изменять без отдельного разрешения.
