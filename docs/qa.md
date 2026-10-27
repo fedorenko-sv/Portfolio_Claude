@@ -37,3 +37,9 @@
 - Полевые LCP/CLS/INP и конверсия пока не измерялись. Лабораторные данные не выдавать за реальные показатели пользователей.
 
 Node 22 выводит предупреждения experimental SQLite/strip-types и о модульном определении TS; это не ошибки тестов. Тестовые SQLite-файлы находятся в ignored `work/`, не являются хранилищем заявок сайта.
+
+## Remote preview
+
+Draft PR: https://github.com/fedorenko-sv/Portfolio_Claude/pull/1 . Ветка codex/ecosystem-r1; реализация — commit 50dad56bb8e673042289794c65646f4ad075ded4.
+
+Проверен существующий Vercel project fedorenkosv-portfolio. Попытка создать **preview** получила 403 forbidden: подключению не предоставлен grant команды thuys-projects-df10afab. Отдельный новый проект не создан, настройки команды не изменены, production не затронут. Владелец получил штатную одноразовую ссылку подтверждения доступа. Удалённая сборка Node 24 и проверка preview пока не выполнены; локальный build не выдаётся за удалённый.
