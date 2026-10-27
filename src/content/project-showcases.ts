@@ -1,55 +1,51 @@
 export type Showcase = {
   id: string;
   url: string;
-  mode: "embedded" | "external";
+  mode: "embedded";
   format: "phone" | "wide";
   context: string;
-  accessNote?: string;
+  sourceCommit: string;
 };
-
-// Curated destinations only. Never accept iframe URLs from query parameters.
 export const showcases: Showcase[] = [
   {
     id: "edcrm",
-    url: "https://robotics-crm.vercel.app/",
-    mode: "external",
-    format: "wide",
-    context: "Образовательный центр: от заявки до занятия и счёта.",
-    accessNote:
-      "По этой ссылке открыт сайт центра. Рабочее место сотрудника требует отдельного входа.",
-  },
-  {
-    id: "rehab",
-    url: "https://rehab-inpatient-demo.vercel.app/bookings",
+    url: "/showcase/crm/index.html#/crm/leads",
     mode: "embedded",
     format: "wide",
     context:
-      "Открытая версия с тестовым сценарием бронирования. Её состав отличается от описанной актуальной версии проекта.",
+      "Рабочее место администратора образовательного центра. Пример с учебными данными.",
+    sourceCommit: "7702fd48e07a6db2d1fd6fbdc0475ef450abafb6",
+  },
+  {
+    id: "rehab",
+    url: "/showcase/rehab/index.html#/bookings",
+    mode: "embedded",
+    format: "wide",
+    context:
+      "Бронирование, размещение и сопровождение гостей. Учебный сценарий в пределах этого просмотра.",
+    sourceCommit: "e553e9d47b982a07ee99e5f750f6ceb6e559f591",
   },
   {
     id: "english-lab",
-    url: "https://english-lab-peach.vercel.app/admin",
-    mode: "external",
+    url: "/showcase/lessons/index.html",
+    mode: "embedded",
     format: "wide",
-    context: "Интерактивные уроки, ответы учеников и личная библиотека лекций.",
-    accessNote:
-      "Кабинет преподавателя открывается отдельно и требует входа. Личные материалы доступны только владельцу.",
+    context:
+      "Проведите учебное занятие, ответьте на вопросы и посмотрите результат со стороны преподавателя.",
+    sourceCommit: "e76d4b0a5abaaf908f0a45911a4cf71241f7f316",
   },
   {
     id: "gastro",
-    url: "https://gastro-vibe-2wvv-git-margarita-pilot-thuys-projects-df10afab.vercel.app/",
-    mode: "external",
+    url: "/showcase/menu/index.html",
+    mode: "embedded",
     format: "phone",
-    context: "Меню, визуальные подборки и свой список выбранных блюд.",
-    accessNote:
-      "Ресторанное меню открывается по ссылке проекта. Для этой версии может потребоваться доступ Vercel.",
+    context: "Настоящее меню: разделы, блюда и свой список выбранных позиций.",
+    sourceCommit: "a10f09be551c8b892cecd2df28a60f606a424442",
   },
 ];
-
-export function showcaseFor(id: string): Showcase | undefined {
-  return showcases.find((item) => item.id === id);
+export function showcaseFor(id: string) {
+  return showcases.find((s) => s.id === id);
 }
-
-export function canEmbed(item: Showcase | undefined): boolean {
+export function canEmbed(item: Showcase | undefined) {
   return item?.mode === "embedded";
 }

@@ -46,3 +46,7 @@ next-env.d.ts
 *.sqlite-shm
 *.sqlite-wal
 !.env.example
+
+# Private-source client artifacts are supplied only to the Vercel build.
+/public/showcase/rehab/
+/public/showcase/lessons/

@@ -6,10 +6,10 @@ import {
   showcaseFor,
 } from "../src/content/project-showcases.ts";
 
-test("a login or protected deployment is never offered as an embedded application", () => {
-  assert.equal(canEmbed(showcaseFor("english-lab")), false);
-  assert.equal(canEmbed(showcaseFor("gastro")), false);
-  assert.equal(canEmbed(showcaseFor("edcrm")), false);
+test("all prepared guest scenarios are embedded without owner authentication", () => {
+  assert.equal(canEmbed(showcaseFor("english-lab")), true);
+  assert.equal(canEmbed(showcaseFor("gastro")), true);
+  assert.equal(canEmbed(showcaseFor("edcrm")), true);
   assert.equal(canEmbed(showcaseFor("rehab")), true);
 });
 
@@ -17,7 +17,9 @@ test("viewers resolve only the fixed catalog and HTTPS destinations", () => {
   assert.equal(showcaseFor("https://evil.invalid"), undefined);
   assert.equal(showcaseFor("unknown"), undefined);
   for (const item of showcases) {
-    const url = new URL(item.url);
+    const url = new URL(item.url, "https://portfolio.example");
+    assert.equal(url.origin, "https://portfolio.example");
+    assert.ok(url.pathname.startsWith("/showcase/"));
     assert.equal(url.protocol, "https:");
     assert.equal(url.username, "");
     assert.equal(url.password, "");

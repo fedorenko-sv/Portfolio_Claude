@@ -1,26 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  CaseCards,
-  ContactBand,
-  MaterialCards,
-} from "@/components/site/Content";
+import { catalogFor } from "@/content/catalog";
 import PhoneScene from "@/components/site/PhoneScene";
 import ProjectViewer from "@/components/site/ProjectViewer";
 import Icon from "@/components/site/Icon";
-
 export const metadata = { alternates: { canonical: "/" } };
 export default function Home() {
   return (
     <>
       <section className="home-hero theme-dark">
         <div className="wrap">
-          <div className="hero-meta">
-            <p className="eyebrow">
-              Разработка · ИИ в работе · Обучение команд
-            </p>
-            <span>Липецк · очно и онлайн</span>
-          </div>
           <h1>
             Создаю цифровые
             <br className="desktop-break" /> инструменты.
@@ -28,25 +17,24 @@ export default function Home() {
           </h1>
           <div className="home-hero-bottom">
             <div className="hero-device">
-              <PhoneScene />
+              <PhoneScene interactive />
               <div className="device-caption">
                 <p>Меню для ресторана</p>
                 <ProjectViewer
                   id="gastro"
                   title="Интерактивное меню для ресторана"
                   className="text-link"
+                  label="Открыть меню"
                 />
               </div>
             </div>
-            <div className="hero-author">
+            <div className="hero-author" id="about">
               <h2>
-                Я Сергей.
-                <br />
-                Разработчик
-                <br className="author-break" /> и преподаватель.
+                Я Сергей. Разработчик
+                <br className="desktop-break" /> и преподаватель.
               </h2>
               <p>
-                Обучаю команды работать с ИИ
+                Обучаю команды применять ИИ
                 <br className="desktop-break" /> и создаю продукты под рабочую
                 задачу.
               </p>
@@ -55,8 +43,8 @@ export default function Home() {
                   Обсудить задачу
                   <Icon />
                 </Link>
-                <Link href="/training" className="text-link">
-                  Выбрать обучение
+                <Link href="/cases" className="text-link">
+                  Смотреть проекты
                   <Icon />
                 </Link>
               </div>
@@ -64,101 +52,86 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="home-projects section-light">
+      <section className="home-selection">
         <div className="wrap">
           <div className="section-rule">
             <p className="eyebrow">От задачи к решению</p>
             <span />
-          </div>
-          <div className="section-title-row">
-            <h2>
-              Инструменты
-              <br />
-              для рабочей жизни.
-            </h2>
-            <Link href="/cases" className="text-link">
+            <Link href="/cases" className="subtle-link">
               Все проекты
               <Icon />
             </Link>
           </div>
-          <CaseCards />
-        </div>
-      </section>
-      <section className="approach-section theme-dark" id="about">
-        <div className="wrap approach-layout">
-          <div>
-            <p className="eyebrow">О моей практике</p>
-            <h2>
-              Начинаем с того,
-              <br />
-              как устроена работа.
-            </h2>
-            <p>
-              Я совмещаю разработку цифровых продуктов и преподавание
-              практического применения ИИ. Сначала разбираемся в задаче, затем
-              собираем понятный сценарий и проверяем его на практике.
-            </p>
-            <Link href="/speaking" className="text-link">
-              Обучение и выступления
-              <Icon />
-            </Link>
-          </div>
-          <ol className="approach-steps">
-            {[
-              [
-                "Задача",
-                "Что должно измениться для человека, который делает эту работу.",
-              ],
-              ["Сценарий", "Какие действия и данные нужно связать."],
-              ["Проверка", "По каким признакам понятно, что решение помогает."],
-            ].map(([title, text], i) => (
-              <li key={title}>
-                <span>0{i + 1}</span>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
+          <div className="selection-grid">
+            {catalogFor().cases.map((p, i) => (
+              <article key={p.id}>
+                <p className="eyebrow">
+                  0{i + 1} / {p.audience.split("·")[0]}
+                </p>
+                <h2>
+                  <Link href={"/cases/" + p.slug}>{p.title}</Link>
+                </h2>
+                <div className="selection-journey">
+                  {p.journey.slice(0, 3).map((s, j) => (
+                    <span key={s}>
+                      {j > 0 && <Icon name="right" size={20} />} {s}
+                    </span>
+                  ))}
                 </div>
-              </li>
+                <div className="actions">
+                  <ProjectViewer
+                    id={p.id}
+                    title={p.title}
+                    className="text-link"
+                  />
+                  <Link href={"/cases/" + p.slug} className="subtle-link">
+                    О проекте
+                    <Icon />
+                  </Link>
+                </div>
+              </article>
             ))}
-          </ol>
+          </div>
         </div>
       </section>
       <section className="practice-feature theme-cherry">
         <div className="wrap practice-feature-inner">
           <div>
-            <p className="eyebrow">Бесплатная практика</p>
             <h2>
               Попробуем
               <br />
               на вашей задаче.
             </h2>
             <p>
-              Короткое упражнение: от исходных данных
-              <br className="desktop-break" /> до результата и способа проверки.
+              Практическое упражнение: от исходных
+              <br className="desktop-break" /> данных до проверки результата.
             </p>
-            <Link href="/practice/first-ai-task" className="button">
-              Начать практику
+            <Link className="button" href="/practice/first-ai-task">
+              Пройти практику
               <Icon />
             </Link>
           </div>
           <Image
-            src="/images/practice-folder.png"
+            src="/images/practice-folder-v2.png"
             alt=""
-            width={1536}
-            height={1024}
+            width={1280}
+            height={1280}
             className="practice-object"
           />
         </div>
       </section>
-      <section className="home-materials wrap">
-        <div className="section-rule">
-          <p className="eyebrow">Открытая библиотека</p>
-          <span />
+      <section className="home-closing theme-dark">
+        <div className="wrap">
+          <Link href="/contact">
+            Есть задача? Давайте обсудим.
+            <Icon size={62} />
+          </Link>
+          <Link href="/materials" className="subtle-link">
+            Материалы для первого шага
+            <Icon />
+          </Link>
         </div>
-        <h2>Перед первым шагом.</h2>
-        <MaterialCards />
       </section>
-      <ContactBand />
     </>
   );
 }

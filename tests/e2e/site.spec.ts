@@ -57,7 +57,7 @@ test("key pages have no serious or critical automated accessibility findings", a
 test("mobile menu closes with Escape and returns focus", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  const menu = page.getByRole("button", { name: "Открыть меню" });
+  const menu = page.getByRole("button", { name: "Открыть навигацию" });
   await menu.click();
   await page.keyboard.press("Escape");
   await expect(menu).toBeFocused();

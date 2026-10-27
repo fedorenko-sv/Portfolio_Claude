@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { ContactBand } from "@/components/site/Content";
-import ProjectViewer from "@/components/site/ProjectViewer";
 import PhoneScene from "@/components/site/PhoneScene";
+import ProjectViewer from "@/components/site/ProjectViewer";
 import Icon from "@/components/site/Icon";
 export const metadata = {
   title: "Для бизнеса",
@@ -9,140 +8,169 @@ export const metadata = {
 };
 const directions = [
   [
-    "Заявки и работа с клиентами",
-    "Связать обращение, историю общения, ответственного и следующий шаг. Добавить расписание и расчёты там, где этого требует процесс.",
+    "Заявки и клиенты",
+    "CRM, ответственные и следующий шаг по каждой заявке.",
     "edcrm",
     "CRM для образовательных центров",
   ],
   [
     "Размещение и расписание",
-    "Согласовать бронирование, номерной фонд, заселение и план пребывания. Учитывать переносы и изменения в общей истории.",
+    "Бронирование, ресурсы и согласованные изменения.",
     "rehab",
     "Система размещения и сопровождения гостей",
   ],
   [
-    "Уроки и учебные материалы",
-    "Организовать публикацию материалов, доступ участников и просмотр результатов. Дать преподавателю удобное место для подготовки занятий.",
-    "english-lab",
-    "Платформа интерактивных уроков и лекций",
-  ],
-  [
     "Меню и гостевой сервис",
-    "Представить блюда через понятное меню и визуальный просмотр. Помочь гостю собрать свой выбор.",
+    "Выбор блюда, просмотр меню и понятный путь гостя.",
     "gastro",
     "Интерактивное меню для ресторана",
   ],
+  [
+    "Уроки и учебные материалы",
+    "Материалы, учебные группы и результаты участников.",
+    "english-lab",
+    "Платформа интерактивных уроков и лекций",
+  ],
 ];
-export default function Page() {
+export default function Business() {
   return (
     <>
-      <section className="page-hero business-hero theme-dark">
-        <div className="wrap page-hero-inner">
-          <div className="page-hero-copy">
-            <p className="eyebrow">Разработка / под рабочий процесс</p>
-            <h1>
-              Собрать работу
-              <br />в понятную
-              <br />
-              систему.
-            </h1>
-            <p className="lead">
-              Разрабатываю инструменты, которые связывают нужные действия и
-              данные.
-            </p>
-            <div className="actions">
-              <Link href="/contact" className="button">
-                Обсудить задачу
-                <Icon />
-              </Link>
-              <a href="#directions" className="text-link">
-                Посмотреть решения
-                <Icon name="down" />
-              </a>
+      <section className="business-editorial theme-dark">
+        <div className="wrap">
+          <h1>
+            Технологии под
+            <br />
+            вашу рабочую задачу.
+          </h1>
+          <div className="business-intro-row">
+            <div>
+              <p className="eyebrow">Разработка / автоматизация</p>
+              <p className="process-line">
+                Процесс
+                <Icon name="right" size={45} />
+                Прототип
+                <Icon name="right" size={45} />
+                Пилот
+              </p>
             </div>
-          </div>
-          <div className="hero-device">
-            <PhoneScene />
+            <div>
+              <p>
+                Разберём процесс, найдём узкое место
+                <br className="desktop-break" /> и соберём понятный рабочий
+                сценарий.
+              </p>
+              <div className="actions">
+                <Link href="/contact" className="button">
+                  Разобрать задачу
+                  <Icon />
+                </Link>
+                <Link href="/cases" className="text-link">
+                  Посмотреть проекты
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-      <section id="directions" className="business-directions wrap">
+      <section className="business-grid-section wrap">
         <div className="section-rule">
-          <p className="eyebrow">От задачи к инструменту</p>
+          <p className="eyebrow">Что можно собрать</p>
           <span />
         </div>
-        <div className="solution-list">
-          {directions.map(([title, text, slug, project], i) => (
-            <section key={slug}>
-              <span className="row-number">0{i + 1}</span>
-              <div>
-                <h2>{title}</h2>
-              </div>
-              <div className="solution-description">
-                <p>{text}</p>
-                <p className="solution-project">{project}</p>
-                <Link href={`/cases/${slug}`} className="text-link">
-                  Посмотреть проект
-                  <Icon />
-                </Link>
-              </div>
-            </section>
+        <div className="business-grid">
+          {directions.map(([title, text, id, project]) => (
+            <article key={id}>
+              <h2>{title}</h2>
+              <p>{text}</p>
+              <ProjectViewer
+                id={id}
+                title={project}
+                className="text-link"
+                label="Открыть приложение"
+              />
+            </article>
           ))}
         </div>
       </section>
-      <section className="business-steps theme-dark">
-        <div className="wrap">
-          <p className="eyebrow">Как начнём</p>
-          <h2>
-            Одна задача.
-            <br />
-            Понятный первый шаг.
-          </h2>
-          <div className="business-steps-list">
-            {[
-              [
-                "Разберём процесс",
-                "Кто участвует, какие данные нужны, где возникают задержки и что происходит в исключительных случаях.",
-              ],
-              [
-                "Выберем первый сценарий",
-                "Определим ограниченный участок, который имеет смысл собрать и проверить первым.",
-              ],
-              [
-                "Проверим и наметим развитие",
-                "Пройдём рабочий маршрут, соберём обратную связь и решим, что доработать дальше.",
-              ],
-            ].map(([title, text], i) => (
-              <div className="business-step" key={title}>
-                <span>0{i + 1}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
-            ))}
+      <section className="business-live theme-dark">
+        <div className="wrap business-live-inner">
+          <div className="hero-device">
+            <PhoneScene interactive />
+          </div>
+          <div>
+            <p className="eyebrow">Проект в действии</p>
+            <h2>
+              Меню
+              <br />
+              для ресторана.
+            </h2>
+            <p className="editorial-lead">
+              Можно попробовать
+              <br />
+              прямо здесь.
+            </p>
+            <p>
+              Откройте раздел, посмотрите блюдо,
+              <br className="desktop-break" /> соберите свой список.
+            </p>
+            <ProjectViewer
+              id="gastro"
+              title="Интерактивное меню для ресторана"
+              className="button secondary"
+              label="Открыть меню"
+            />
           </div>
         </div>
       </section>
-      <section className="business-example wrap">
-        <p className="eyebrow">Из проекта</p>
-        <div className="business-example-layout">
+      <section className="business-method wrap">
+        <div className="section-rule">
+          <p className="eyebrow">Как мы работаем</p>
+          <span />
+        </div>
+        <h2>Начнём с понятного шага.</h2>
+        <div>
+          {[
+            ["Разберём задачу", "Процесс, роли, ограничения."],
+            ["Проверим сценарий", "Прототип и критерии результата."],
+            ["Спланируем пилот", "Объём работы и следующий шаг."],
+          ].map(([h, p], i) => (
+            <article key={h}>
+              <span className="row-number">0{i + 1}</span>
+              <div>
+                <h3>{h}</h3>
+                <p>{p}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="business-cta theme-cherry">
+        <div className="wrap">
           <h2>
-            Один маршрут
+            Где работа
             <br />
-            вместо разрозненных действий.
+            теряет время?
           </h2>
           <div>
             <p>
-              В образовательном центре заявка связана с учеником и родителем,
-              группа — с расписанием, а счёт — с нужной семьёй.
+              Опишите процесс и желаемый результат.
+              <br />
+              Выберем, с чего начать.
             </p>
-            <p className="example-quote">
-              Каждый видит свою часть общего процесса.
+            <Link href="/contact" className="button">
+              Обсудить задачу
+              <Icon />
+            </Link>
+            <p className="business-training">
+              Нужно обучение команды?{" "}
+              <Link href="/training">
+                Курсы
+                <Icon />
+              </Link>
             </p>
-            <ProjectViewer id="edcrm" title="CRM для образовательных центров" />
           </div>
         </div>
       </section>
-      <ContactBand title="Расскажите, как устроена ваша работа" />
     </>
   );
 }

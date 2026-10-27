@@ -35,3 +35,6 @@ npm run test:e2e
 Шрифты Literata и Manrope поставляются локально через Fontsource (SIL OFL); лицензии в `public/licenses`. Внешние шрифтовые CDN не используются.
 
 Документы: [аудит](docs/audit.md), [возможности](capabilities.md), [архитектура](docs/architecture.md), [реестр контента](docs/content-inventory.md), [визуальное решение](docs/design-decision.md), [медиа](docs/asset-manifest.md), [релиз и rollback](docs/release.md). Полный R1 требует согласованной формы, реального запуска Telegram и разрешённых медиа. Production не изменять без отдельного разрешения.
+
+## Итерация аудита
+Все четыре приложения размещаются под /showcase/ на origin портфолио. Перед build нужны закрытые клиентские пакеты rehab и lessons, передаваемые непосредственно в Vercel; см. docs/design/implementation.md. Обычный публичный checkout намеренно не проходит prebuild без этих пакетов. Локальная полная рабочая копия содержит их. Главный runtime не зависит от авторизации исходных приложений.

@@ -35,10 +35,10 @@ export default function Page() {
             <p className="hero-small">Очно и онлайн · формат по запросу</p>
           </div>
           <Image
-            src="/images/practice-folder.png"
+            src="/images/practice-folder-v2.png"
             alt="Вишнёвая папка «Практика ИИ» и рабочий лист: задача, данные, результат, проверка"
-            width={1536}
-            height={1024}
+            width={1280}
+            height={1280}
             className="training-object"
             priority
           />

@@ -1,0 +1,25 @@
+{
+  "built": "2026-10-27",
+  "applications": [
+    {
+      "id": "crm",
+      "base": "7702fd48e07a6db2d1fd6fbdc0475ef450abafb6",
+      "scope": "Original client pages; session-only fixture adapter"
+    },
+    {
+      "id": "rehab",
+      "base": "e553e9d47b982a07ee99e5f750f6ceb6e559f591",
+      "scope": "Original application; hash routing; client state"
+    },
+    {
+      "id": "menu",
+      "base": "a10f09be551c8b892cecd2df28a60f606a424442",
+      "scope": "Original guest application; public menu snapshot; no backend connection"
+    },
+    {
+      "id": "lessons",
+      "base": "e76d4b0a5abaaf908f0a45911a4cf71241f7f316",
+      "scope": "Original Player, LectureViewer, runtime and queue; new public teaching scenario"
+    }
+  ]
+}

@@ -2,12 +2,31 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { acceptsShowcaseMessage } from "@/lib/showcase-protocol";
 
 // A geometric model, rendered on demand. The image is the actual menu capture;
 // interaction launches the independently controlled live application viewer.
-export default function PhoneScene() {
+export default function PhoneScene({
+  interactive = false,
+}: {
+  interactive?: boolean;
+}) {
+  const active = useRef(false);
+  const [expanded, setExpanded] = useState(false);
+  const [liveReady, setLiveReady] = useState(false);
+  const activate = useRef<(on: boolean) => void>(() => {});
+  const button = useRef<HTMLButtonElement>(null);
   const host = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
+  useEffect(() => {
+    if (!expanded) return;
+    function keepFocus(event: FocusEvent) {
+      if (!host.current?.parentElement?.contains(event.target as Node))
+        button.current?.focus();
+    }
+    document.addEventListener("focusin", keepFocus);
+    return () => document.removeEventListener("focusin", keepFocus);
+  }, [expanded]);
   useEffect(() => {
     const element = host.current;
     if (!element) return;
@@ -15,6 +34,8 @@ export default function PhoneScene() {
     let dispose = () => {};
     async function setup() {
       const THREE = await import("three");
+      const { CSS3DRenderer, CSS3DObject } =
+        await import("three/addons/renderers/CSS3DRenderer.js");
       if (cancelled || !element) return;
       let renderer: InstanceType<typeof THREE.WebGLRenderer>;
       try {
@@ -31,7 +52,7 @@ export default function PhoneScene() {
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.05;
       renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.shadowMap.type = THREE.PCFShadowMap;
       renderer.domElement.setAttribute("aria-hidden", "true");
       element.appendChild(renderer.domElement);
       const scene = new THREE.Scene();
@@ -44,7 +65,9 @@ export default function PhoneScene() {
       }
       const environment = new RoomEnvironment();
       const pmrem = new THREE.PMREMGenerator(renderer);
-      const environmentMap = pmrem.fromScene(environment, 0.04);
+      const environmentMap = pmrem.fromScene(environment, 0.04, 0.1, 100, {
+        size: 64,
+      });
       scene.environment = environmentMap.texture;
       scene.environmentIntensity = 0.6;
       environment.dispose();
@@ -52,11 +75,11 @@ export default function PhoneScene() {
       const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
       camera.position.set(0, 1.6, 12.9);
       camera.lookAt(0, 0.45, 0);
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x343038, 1.8));
-      const key = new THREE.DirectionalLight(0xffffff, 5);
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x343038, 1.05));
+      const key = new THREE.DirectionalLight(0xffffff, 2.4);
       key.position.set(-4, 7, 8);
       key.castShadow = true;
-      key.shadow.mapSize.set(1024, 1024);
+      key.shadow.mapSize.set(512, 512);
       key.shadow.camera.left = -6;
       key.shadow.camera.right = 6;
       key.shadow.camera.top = 6;
@@ -70,8 +93,8 @@ export default function PhoneScene() {
       const group = new THREE.Group();
       scene.add(group);
       const phone = new THREE.Group();
-      phone.rotation.set(-0.04, -0.28, 0.14);
-      phone.position.set(0.25, 0.55, 0.7);
+      phone.rotation.set(0.04, -0.17, 0.14);
+      phone.position.set(0.35, 0.55, 0.7);
       phone.scale.setScalar(1.23);
       group.add(phone);
       function shape(w: number, h: number, r: number) {
@@ -118,7 +141,7 @@ export default function PhoneScene() {
       glass.position.z = 0.258;
       phone.add(glass);
       const texture = new THREE.TextureLoader().load(
-        "/images/restaurant-menu.jpg",
+        "/images/restaurant-menu-v2.png",
         () => {
           if (!cancelled) {
             render();
@@ -168,9 +191,10 @@ export default function PhoneScene() {
         phone.add(button);
       }
       const cherry = new THREE.MeshStandardMaterial({
-        color: 0x651426,
+        color: 0x420b1b,
         roughness: 0.75,
       });
+      const plinths: InstanceType<typeof THREE.Mesh>[] = [];
       for (const [w, h, x, y, z] of [
         [9.5, 0.7, -0.4, -3.1, 0],
         [3.5, 0.95, -2.4, -2.3, -0.5],
@@ -180,15 +204,76 @@ export default function PhoneScene() {
         step.castShadow = true;
         step.receiveShadow = true;
         group.add(step);
+        plinths.push(step);
       }
+      const htmlRenderer = new CSS3DRenderer();
+      htmlRenderer.domElement.className = "phone-screen-layer";
+      element.appendChild(htmlRenderer.domElement);
+      const htmlScene = new THREE.Scene();
+      const surface = document.createElement("div");
+      surface.style.width = "390px";
+      surface.style.height = "775px";
+      surface.style.borderRadius = "46px";
+      surface.style.overflow = "hidden";
+      const iframe = document.createElement("iframe");
+      function receive(event: MessageEvent) {
+        if (
+          acceptsShowcaseMessage(
+            event,
+            iframe.contentWindow,
+            window.location.origin,
+          )
+        )
+          setLiveReady(true);
+      }
+      window.addEventListener("message", receive);
+      iframe.title = "Интерактивное меню для ресторана";
+      iframe.setAttribute("allow", "fullscreen");
+      const screenObject = new CSS3DObject(surface);
+      const htmlPhone = new THREE.Group();
+      htmlPhone.add(screenObject);
+      htmlScene.add(htmlPhone);
+      screenObject.position.z = 0.27;
+      screenObject.scale.setScalar(2.48 / 390);
+      screenObject.visible = false;
+      let previousOverflow = "";
+      activate.current = (on) => {
+        active.current = on;
+        plinths.forEach((step) => {
+          step.visible = !on;
+        });
+        if (on) {
+          previousOverflow = document.body.style.overflow;
+          document.body.style.overflow = "hidden";
+          if (!iframe.src) {
+            iframe.src = "/showcase/menu/index.html";
+            surface.appendChild(iframe);
+          }
+          phone.rotation.set(0, 0, 0);
+          phone.position.set(0, 0.55, 0.7);
+        } else {
+          document.body.style.overflow = previousOverflow;
+          phone.rotation.set(0.04, -0.17, 0.14);
+          phone.position.set(0.35, 0.55, 0.7);
+        }
+        screen.visible = !on;
+        screenObject.visible = on;
+        htmlRenderer.domElement.style.visibility = on ? "visible" : "hidden";
+        resize();
+      };
       function render() {
         renderer.render(scene, camera);
+        htmlPhone.position.copy(phone.position);
+        htmlPhone.quaternion.copy(phone.quaternion);
+        htmlPhone.scale.copy(phone.scale);
+        htmlRenderer.render(htmlScene, camera);
       }
       function resize() {
         if (!element) return;
         const { width, height } = element.getBoundingClientRect();
         if (!width || !height) return;
         renderer.setSize(width, height);
+        htmlRenderer.setSize(width, height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         render();
@@ -197,14 +282,16 @@ export default function PhoneScene() {
       observer.observe(element);
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
       function move(event: PointerEvent) {
-        if (reduced.matches || event.pointerType === "touch") return;
+        if (active.current || reduced.matches || event.pointerType === "touch")
+          return;
         const rect = element!.getBoundingClientRect();
         phone.rotation.y =
-          -0.28 + ((event.clientX - rect.left) / rect.width - 0.5) * 0.13;
+          -0.17 + ((event.clientX - rect.left) / rect.width - 0.5) * 0.13;
         render();
       }
       function reset() {
-        phone.rotation.y = -0.28;
+        if (active.current) return;
+        phone.rotation.y = -0.17;
         render();
       }
       element.addEventListener("pointermove", move);
@@ -212,6 +299,9 @@ export default function PhoneScene() {
       resize();
       dispose = () => {
         observer.disconnect();
+        if (active.current) document.body.style.overflow = previousOverflow;
+        htmlRenderer.domElement.remove();
+        window.removeEventListener("message", receive);
         element.removeEventListener("pointermove", move);
         element.removeEventListener("pointerleave", reset);
         scene.traverse((object) => {
@@ -237,20 +327,56 @@ export default function PhoneScene() {
   }, []);
   return (
     <div
-      ref={host}
-      className={`phone-scene ${ready ? "scene-ready" : ""}`}
-      role="img"
-      aria-label="Объёмный телефон с настоящим экраном ресторанного меню"
+      className={`phone-stage ${expanded ? "is-active" : ""}`}
+      role={expanded ? "dialog" : undefined}
+      aria-modal={expanded || undefined}
+      aria-label={expanded ? "Ресторанное меню" : undefined}
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && expanded) {
+          setExpanded(false);
+          activate.current(false);
+          button.current?.focus();
+        }
+      }}
     >
-      {!ready && (
-        <Image
-          className="phone-fallback"
-          src="/images/restaurant-menu.jpg"
-          width={448}
-          height={720}
-          alt="Экран интерактивного меню ресторана"
-          priority
-        />
+      <div
+        ref={host}
+        className={`phone-scene ${ready ? "scene-ready" : ""}`}
+        role={expanded ? "group" : "img"}
+        aria-label="Объёмный телефон с ресторанным меню"
+      >
+        {!ready && (
+          <Image
+            className="phone-fallback"
+            src="/images/restaurant-menu-v2.png"
+            width={390}
+            height={775}
+            alt="Экран интерактивного меню ресторана"
+            priority
+          />
+        )}
+      </div>
+      {interactive && (
+        <button
+          ref={button}
+          type="button"
+          className="phone-control"
+          disabled={!ready}
+          aria-expanded={expanded}
+          onClick={() => {
+            const on = !expanded;
+            setExpanded(on);
+            activate.current(on);
+            if (!on) button.current?.focus();
+          }}
+        >
+          {expanded ? "Закрыть меню" : "Управлять меню"}
+        </button>
+      )}
+      {expanded && !liveReady && (
+        <p className="phone-loading" role="status">
+          Открываем меню…
+        </p>
       )}
     </div>
   );

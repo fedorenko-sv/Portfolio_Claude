@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { showcaseFor, canEmbed } from "@/content/project-showcases";
 import Icon from "./Icon";
+import { acceptsShowcaseMessage } from "@/lib/showcase-protocol";
 
 export default function ProjectViewer({
   id,
@@ -17,6 +18,7 @@ export default function ProjectViewer({
 }) {
   const item = showcaseFor(id);
   const dialog = useRef<HTMLDialogElement>(null);
+  const frame = useRef<HTMLIFrameElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const [open, setOpen] = useState(false);
@@ -29,12 +31,32 @@ export default function ProjectViewer({
     if (!open) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const timeout = window.setTimeout(() => setSlow(true), 10000);
+    let timeout: number | undefined = window.setTimeout(
+      () => setSlow(true),
+      12000,
+    );
+    function receive(event: MessageEvent) {
+      if (
+        !item ||
+        !acceptsShowcaseMessage(
+          event,
+          frame.current?.contentWindow,
+          new URL(item.url, window.location.href).origin,
+        )
+      )
+        return;
+      setLoading(false);
+      setSlow(false);
+      window.clearTimeout(timeout);
+      timeout = undefined;
+    }
+    window.addEventListener("message", receive);
     return () => {
       document.body.style.overflow = previous;
       window.clearTimeout(timeout);
+      window.removeEventListener("message", receive);
     };
-  }, [open, attempt]);
+  }, [open, attempt, item]);
   if (!item) return null;
   function close() {
     dialog.current?.close();
@@ -127,11 +149,14 @@ export default function ProjectViewer({
                 ) : (
                   <iframe
                     key={attempt}
+                    ref={frame}
                     src={item.url}
                     title={title}
-                    referrerPolicy="no-referrer"
+                    referrerPolicy="same-origin"
                     allow="fullscreen"
-                    onLoad={() => setLoading(false)}
+                    onLoad={() => {
+                      /* Readiness is acknowledged by the application, not the document load. */
+                    }}
                     onError={() => setFailed(true)}
                   />
                 )}
@@ -144,23 +169,7 @@ export default function ProjectViewer({
                     : "Можно нажимать и прокручивать. Внешнее открытие всегда доступно."}
               </div>
             </>
-          ) : (
-            <div className="viewer-access">
-              <p className="eyebrow">Просмотр проекта</p>
-              <h3>Откроем приложение отдельно</h3>
-              <p>{item.accessNote}</p>
-              <a
-                className="button"
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Перейти к приложению
-                <Icon />
-              </a>
-              <p className="small">{item.context}</p>
-            </div>
-          ))}
+          ) : null)}
       </dialog>
     </>
   );

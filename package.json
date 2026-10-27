@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "test:e2e": "playwright test",
-    "bot": "node --experimental-strip-types scripts/bot.mjs"
+    "bot": "node --experimental-strip-types scripts/bot.mjs",
+    "prebuild": "node scripts/verify-showcases.mjs"
   },
   "dependencies": {
     "@fontsource-variable/literata": "^5.3.0",
