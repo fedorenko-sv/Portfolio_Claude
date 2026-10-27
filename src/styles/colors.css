@@ -1,0 +1,39 @@
+:root {
+  --graphite: #242525;
+  --chalk: #f4f5ee;
+  --cherry: #8d2034;
+  --cherry-hover: #a72d44;
+  --cherry-pressed: #71182a;
+  --rose: #e9a5b2;
+  --muted-dark: #b8bbb5;
+  --muted-light: #62675f;
+  --line-dark: #626861;
+  --line-light: #858a80;
+  --paper: var(--chalk);
+  --ink: var(--graphite);
+  --muted: var(--muted-light);
+  --accent: var(--cherry);
+  --surface: #e9eae3;
+  --line: #b4b8ad;
+}
+
+.theme-dark {
+  --paper: var(--graphite);
+  --ink: var(--chalk);
+  --muted: var(--muted-dark);
+  --accent: var(--rose);
+  --line: var(--line-dark);
+  --surface: #303232;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.theme-cherry {
+  --paper: var(--cherry);
+  --ink: var(--chalk);
+  --muted: var(--chalk);
+  --accent: var(--chalk);
+  --line: #d48a99;
+  background: var(--paper);
+  color: var(--ink);
+}

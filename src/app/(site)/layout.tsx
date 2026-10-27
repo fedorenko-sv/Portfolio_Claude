@@ -11,23 +11,29 @@ export default function SiteLayout({
         Перейти к содержанию
       </a>
       <Header />
-      <main id="main" className="wrap">
+      <main id="main" className="site-main">
         {children}
       </main>
-      <footer className="site-footer wrap">
-        <div>
-          <Link className="footer-name" href="/">
-            Сергей Федоренко
-          </Link>
-          <p>Разработка · ИИ в работе · обучение команд</p>
-        </div>
-        <nav aria-label="Ссылки в подвале">
-          <Link href="/contact">Контакт</Link>
-          <Link href="/privacy">Конфиденциальность</Link>
-          <Link href="/terms">Условия</Link>
-        </nav>
-        <p>© {new Date().getFullYear()} · Липецк</p>
-      </footer>
+      <div className="footer-surface theme-dark">
+        <footer className="site-footer wrap">
+          <div>
+            <Link className="footer-name" href="/">
+              Сергей
+              <br />
+              Федоренко
+            </Link>
+            <p>Начните с одной задачи.</p>
+          </div>
+          <nav aria-label="Ссылки в подвале">
+            <Link href="/materials">Материалы</Link>
+            <Link href="/speaking">Выступления</Link>
+            <Link href="/contact">Контакт</Link>
+            <Link href="/privacy">Конфиденциальность</Link>
+            <Link href="/terms">Условия</Link>
+          </nav>
+          <p>© {new Date().getFullYear()} · Липецк</p>
+        </footer>
+      </div>
     </>
   );
 }

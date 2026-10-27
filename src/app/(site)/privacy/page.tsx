@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <>
       <Intro
-        label="Данные · R1-static"
+        label="Данные и конфиденциальность"
         title="Как эта версия работает с данными"
       />
       <article className="prose reading">

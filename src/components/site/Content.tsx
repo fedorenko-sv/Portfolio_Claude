@@ -6,12 +6,9 @@ import {
   type Program,
 } from "@/content/catalog";
 import ViewEvent from "@/components/shared/ViewEvent";
-export const statusLabels = {
-  prototype: "Прототип",
-  demo: "Демо",
-  pilot: "Пилот",
-  production: "Внедрение",
-};
+import ProjectViewer from "./ProjectViewer";
+import Icon from "./Icon";
+
 export function Intro({
   label,
   title,
@@ -29,6 +26,7 @@ export function Intro({
     </div>
   );
 }
+
 export function CaseCards({
   base = "/cases",
   limit,
@@ -37,49 +35,48 @@ export function CaseCards({
   limit?: number;
 }) {
   return (
-    <div className="case-grid">
+    <div className="project-list">
       {catalogFor()
         .cases.slice(0, limit)
-        .map((item) => (
-          <Link
-            href={`${base}/${item.slug}`}
-            className={`case-card case-${item.id}`}
-            key={item.id}
-          >
-            <div className="case-top">
-              <span>{item.audience}</span>
-              <span className="badge">{statusLabels[item.status]}</span>
+        .map((item, index) => (
+          <article className="project-row" key={item.id}>
+            <div className="project-index">
+              <span>0{index + 1}</span>
+              <p className="eyebrow">{item.audience}</p>
             </div>
-            <div
-              className="case-route"
-              aria-label={`Маршрут: ${item.journey.join(", ")}`}
-            >
-              <span className="route-caption">Рабочий маршрут</span>
-              {item.journey.slice(0, 4).map((step) => (
-                <span key={step}>{step}</span>
+            <div className="project-row-body">
+              <h3>
+                <Link href={`${base}/${item.slug}`}>{item.title}</Link>
+              </h3>
+              <div className="project-description">
+                <p>{item.summary}</p>
+                <div className="actions">
+                  <ProjectViewer
+                    id={item.id}
+                    title={item.title}
+                    className="text-link"
+                  />
+                  <Link href={`${base}/${item.slug}`} className="subtle-link">
+                    Подробнее о проекте
+                    <Icon />
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div className="project-journey" aria-label="Путь пользователя">
+              {item.journey.slice(0, 4).map((step, i) => (
+                <span key={step}>
+                  {i > 0 && <Icon name="right" size={17} />}
+                  {step}
+                </span>
               ))}
             </div>
-            <div className="case-bottom">
-              <span className="project-name">
-                {item.id === "edcrm"
-                  ? "EdCRM"
-                  : item.id === "english-lab"
-                    ? "English Lab"
-                    : item.id === "rehab"
-                      ? "Rehab"
-                      : "Gastro"}
-              </span>
-              <h3>{item.title}</h3>
-              <p>{item.limitations[0]}</p>
-              <span className="text-link">
-                Подробнее о проекте <span aria-hidden="true">↗</span>
-              </span>
-            </div>
-          </Link>
+          </article>
         ))}
     </div>
   );
 }
+
 export function MaterialCards({ base = "/materials" }: { base?: string }) {
   return (
     <div className="editorial-list">
@@ -91,108 +88,131 @@ export function MaterialCards({ base = "/materials" }: { base?: string }) {
         >
           <span className="row-number">0{i + 1}</span>
           <div>
-            <p className="eyebrow">ПАМЯТКА · ПРАКТИКА</p>
+            <p className="eyebrow">Материал / практика</p>
             <h3>{item.title}</h3>
             <p>{item.summary}</p>
           </div>
-          <span aria-hidden="true" className="row-arrow">
-            ↗
-          </span>
+          <Icon size={32} />
         </Link>
       ))}
     </div>
   );
 }
+
 export function ProgramCards({ base = "/training" }: { base?: string }) {
   const { programs } = catalogFor();
   return programs.length ? (
-    <div className="program-grid">
-      {programs.map((p) => (
-        <Link className="program-card" key={p.id} href={`${base}/${p.slug}`}>
-          <p className="eyebrow">
-            {p.approvalStatus === "draft"
-              ? "ПРОЕКТ ПРОГРАММЫ · НА СОГЛАСОВАНИИ"
-              : p.format}
-          </p>
-          <h3>{p.title}</h3>
-          <p>{p.audience.join(" · ")}</p>
-          <ul>
-            {p.outcomes.map((x) => (
-              <li key={x}>{x}</li>
-            ))}
-          </ul>
-          <span className="text-link">Открыть программу ↗</span>
-        </Link>
+    <div className="program-list">
+      {programs.map((p, i) => (
+        <article className="program-row" key={p.id}>
+          <span className="row-number">0{i + 1}</span>
+          <div className="program-name">
+            <h3>
+              <Link href={`${base}/${p.slug}`}>{p.title}</Link>
+            </h3>
+            <p className="eyebrow">{p.audience.join(" · ")}</p>
+          </div>
+          <div className="program-result">
+                <p>{p.summary}</p>
+            {i === 0 && (
+              <ul className="check-list">
+                {p.outcomes.map((x) => (
+                  <li key={x}>
+                    <Icon name="check" size={19} />
+                    {x}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <p className="small">{p.format}</p>
+            <Link className="text-link" href={`${base}/${p.slug}`}>
+              Посмотреть программу
+              <Icon />
+            </Link>
+          </div>
+        </article>
       ))}
+      <p className="catalog-note">
+        Содержание, даты и формат согласуем перед стартом.
+      </p>
     </div>
   ) : (
     <div className="note-panel">
       <h3>Подберём формат под вашу задачу</h3>
       <p>
-        Индивидуальная программа обсуждается до занятия: аудитория, учебные
-        задачи, инструменты и способ проверки результата.
+        Обсудим аудиторию, учебные задачи, инструменты и способ проверки
+        результата.
       </p>
       <Link className="text-link" href="/contact?type=training">
-        Обсудить обучение ↗
+        Обсудить обучение
+        <Icon />
       </Link>
     </div>
   );
 }
+
 export function CaseDetail({ item }: { item: Case }) {
   return (
     <>
       <ViewEvent event="case_view" id={item.id} />
-      <Intro
-        label={`${item.audience} / ${statusLabels[item.status]}`}
-        title={item.title}
-      >
-        <p>{item.problem}</p>
+      <Intro label={item.audience} title={item.title}>
+        <p>{item.summary}</p>
       </Intro>
-      <div className="detail-grid">
-        <article className="prose">
-          <h2>Что входит в сценарий</h2>
-          <ul>
-            {item.implemented.map((x) => (
-              <li key={x}>{x}</li>
-            ))}
-          </ul>
-          <h2>Путь пользователя</h2>
-          <ol className="journey-list">
-            {item.journey.map((x) => (
-              <li key={x}>{x}</li>
+      <section className="case-introduction wrap">
+        <p className="eyebrow">Задача проекта</p>
+        <h2>{item.problem}</h2>
+      </section>
+      <section className="case-workspace theme-dark">
+        <div className="wrap">
+          <p className="eyebrow">Путь пользователя</p>
+          <ol className="case-flow">
+            {item.journey.map((step, i) => (
+              <li key={step}>
+                <span>0{i + 1}</span>
+                {step}
+              </li>
             ))}
           </ol>
-          <h2>Основания описания</h2>
-          {item.allowedClaims.map((x) => (
-            <p key={x}>{x}</p>
-          ))}
-          {item.evidence.map((url, i) => (
-            <p key={url}>
-              <a href={url} rel="noreferrer">
-                Публичный источник проекта {i + 1} ↗
-              </a>
-            </p>
-          ))}
-          <h2>Моя роль</h2>
-          <p>
-            Разработка интерфейса и сценария цифрового продукта. Объём
-            подтверждённых возможностей указан выше; результаты внедрения
-            отдельно не измерялись.
-          </p>
-        </article>
-        <aside className="note-panel">
-          <p className="eyebrow">СТАТУС И ГРАНИЦЫ</p>
-          <h2>{statusLabels[item.status]}</h2>
-          {item.limitations.map((x) => (
-            <p key={x}>{x}</p>
-          ))}
-          <p>Публичные медиа этого сценария пока не подготовлены.</p>
-        </aside>
-      </div>
-      <ContactBand title="Обсудим похожий процесс?" />
+          <div className="case-launch">
+            <div>
+              <h2>Посмотрите, как устроен сценарий</h2>
+              <p>
+                Откройте приложение или перейдите к доступной версии проекта.
+              </p>
+            </div>
+            <ProjectViewer id={item.id} title={item.title} />
+          </div>
+        </div>
+      </section>
+      <section className="case-details wrap detail-grid">
+        <div>
+          <p className="eyebrow">Возможности</p>
+          <h2>Что связано в одной системе</h2>
+          <ul className="feature-list">
+            {item.implemented.map((x) => (
+              <li key={x}>
+                <Icon name="check" />
+                {x}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="eyebrow">Деталь решения</p>
+          <p className="case-insight">{item.insight}</p>
+          <details className="case-limits">
+            <summary>Что учесть при просмотре</summary>
+            {item.limitations.map((x) => (
+              <p key={x}>{x}</p>
+            ))}
+          </details>
+        </div>
+      </section>
+      <ContactBand title="Есть похожая задача?" />
     </>
   );
 }
+
 export function MaterialDetail({
   item,
   app = false,
@@ -202,10 +222,7 @@ export function MaterialDetail({
 }) {
   return (
     <>
-      <Intro
-        label={`Практический материал · проверено ${item.verifiedAt}`}
-        title={item.title}
-      >
+      <Intro label="Практический материал" title={item.title}>
         <p>{item.summary}</p>
       </Intro>
       <article className="prose reading">
@@ -241,44 +258,33 @@ export function MaterialDetail({
           className="button"
           href={`${app ? "/app" : ""}/practice/first-ai-task`}
         >
-          Составить свою карточку задачи ↗
+          Составить карточку задачи
+          <Icon />
         </Link>
-        <p>
-          <Link href={app ? "/app/training" : "/training"}>
-            Посмотреть форматы обучения
-          </Link>
-        </p>
+        <p className="small material-date">Проверено {item.verifiedAt}</p>
       </article>
     </>
   );
 }
+
 export function ProgramDetail({ item }: { item: Program }) {
   return (
     <>
       <ViewEvent event="program_view" id={item.id} />
-      <Intro
-        label={
-          item.approvalStatus === "draft"
-            ? "Проект программы · только preview"
-            : "Обучение"
-        }
-        title={item.title}
-      >
+      <Intro label="Практика ИИ / программа занятия" title={item.title}>
         <p>
           {item.format} · {item.delivery_mode}
         </p>
       </Intro>
       <article className="prose reading">
         {item.approvalStatus === "draft" && (
-          <aside className="note-panel">
-            Содержание и возможность проведения ещё согласуются. Это проект
-            программы, без открытой записи, цены и назначенной даты.
-          </aside>
+          <p className="program-draft">
+            Содержание и формат согласуем перед стартом. Дата занятия пока не
+            назначена.
+          </p>
         )}
         <h2>Для кого</h2>
         <p>{item.audience.join(", ")}.</p>
-        <h2>До занятия</h2>
-        <p>{item.prerequisites}</p>
         <h2>Что попробуем</h2>
         <ul>
           {item.outcomes.map((x) => (
@@ -291,34 +297,42 @@ export function ProgramDetail({ item }: { item: Program }) {
             <li key={x}>{x}</li>
           ))}
         </ol>
-        <h2>Формат</h2>
-        <p>{item.duration || "Длительность согласуем при подготовке."}</p>
+        <h2>Подготовка</h2>
+        <p>{item.prerequisites}</p>
         <p>{item.equipment}</p>
+        <p>{item.duration || "Длительность согласуем при подготовке."}</p>
         <Link className="button" href="/contact?type=training">
-          Обсудить программу ↗
+          Запросить программу
+          <Icon />
         </Link>
       </article>
     </>
   );
 }
+
 export function ContactBand({
-  title = "Есть задача, которую хочется упростить?",
+  title = "С какой задачи начнём?",
 }: {
   title?: string;
 }) {
   return (
-    <section className="contact-band">
-      <div>
-        <p className="eyebrow">НАЧНЁМ С РАЗГОВОРА</p>
-        <h2>{title}</h2>
-        <p>
-          Опишите процесс, команду и желаемый результат. Выберем понятный
-          следующий шаг.
-        </p>
+    <section className="contact-band theme-cherry">
+      <div className="wrap contact-band-inner">
+        <div>
+          <p className="eyebrow">Начнём с разговора</p>
+          <h2>{title}</h2>
+        </div>
+        <div>
+          <p>
+            Расскажите, что хотите изменить в работе или чему научить команду.
+            Обсудим подходящий следующий шаг.
+          </p>
+          <Link className="button" href="/contact">
+            Обсудить задачу
+            <Icon />
+          </Link>
+        </div>
       </div>
-      <Link className="button" href="/contact">
-        Обсудить задачу ↗
-      </Link>
     </section>
   );
 }

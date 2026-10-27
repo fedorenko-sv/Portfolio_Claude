@@ -1,0 +1,11 @@
+:root {
+  --font-sans: "Manrope Variable", Arial, sans-serif;
+  --font-editorial: "Literata Variable", Georgia, serif;
+  --text-display: clamp(3rem, 7.8vw, 7rem);
+  --text-page: clamp(2.75rem, 6.2vw, 5.5rem);
+  --text-section: clamp(2.25rem, 4.6vw, 4rem);
+  --text-project: clamp(1.75rem, 3vw, 2.5rem);
+  --text-lead: clamp(1.25rem, 1.8vw, 1.5rem);
+  --tracking-display: -0.045em;
+  --leading-display: 0.99;
+}

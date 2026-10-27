@@ -2,6 +2,12 @@
 
 R1-static на Next.js 16 / React 19 / TypeScript. Сайт и браузерная оболочка Telegram Mini App используют общий контент. Бесплатная практика работает без регистрации и AI API.
 
+## Актуальный дизайн
+
+Графит `#242525`, молочный `#F4F5EE`, вишнёвый `#8D2034`; Manrope и редкие акценты Literata. Цвета, типографика и локальные подключения шрифтов разделены в `src/styles/`. Правила и переносимые токены — в [docs/design](docs/design/identity.md), тексты — в [docs/content](docs/content/home.md), устройство реализации — в [implementation.md](docs/design/implementation.md).
+
+На главной — геометрический 3D-телефон Three.js с настоящим снимком меню. Кнопки просмотра используют фиксированный реестр `src/content/project-showcases.ts`: доступное приложение размещения открывается внутри сайта, закрытые источники — отдельно с пояснением. Защита сторонних приложений не отключается. Проверка реализации — [implementation-qa.md](docs/implementation-qa.md).
+
 ```sh
 npm ci
 npm run dev
