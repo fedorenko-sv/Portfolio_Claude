@@ -67,6 +67,16 @@ test("Telegram navigation cleans up listeners and respects safe areas without tr
     (window as unknown as { __testBack: () => void }).__testBack(),
   );
   await expect(page).toHaveURL(/\/app$/);
+  await page.getByRole("link", { name: /Карта одного процесса/ }).click();
+  await expect(page).toHaveURL(/\/app\/guides\/process-map$/);
+  await page.evaluate(() =>
+    (window as unknown as { __testBack: () => void }).__testBack(),
+  );
+  await expect(page).toHaveURL(/\/app\/library$/);
+  await page.evaluate(() =>
+    (window as unknown as { __testBack: () => void }).__testBack(),
+  );
+  await expect(page).toHaveURL(/\/app$/);
   const result = await new AxeBuilder({ page }).analyze();
   expect(result.violations).toEqual([]);
 });
@@ -112,7 +122,7 @@ test("workroom keeps all three offers usable and launches the real Mini App on i
     .click();
   await expect(page).toHaveURL(/\/app$/);
   await expect(
-    page.getByRole("heading", { name: "От интереса — к своей задаче." }),
+    page.getByRole("heading", { name: "Что разберём сегодня?" }),
   ).toBeVisible();
 });
 

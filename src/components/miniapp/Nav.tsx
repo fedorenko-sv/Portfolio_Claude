@@ -26,12 +26,17 @@ export default function Nav() {
           aria-current={
             (
               href === "/app"
-                ? path === "/app" || path.startsWith("/app/practice")
+                ? path === "/app"
                 : href === "/app/library"
-                  ? path.startsWith(href) || path.startsWith("/app/materials")
+                  ? path.startsWith(href) ||
+                    path.startsWith("/app/materials") ||
+                    path.startsWith("/app/guides")
                   : href === "/app/contact"
                     ? path.startsWith(href) || path.startsWith("/app/speaking")
-                    : path.startsWith(href)
+                    : href === "/app/training"
+                      ? path.startsWith(href) ||
+                        path.startsWith("/app/practice")
+                      : path.startsWith(href)
             )
               ? "page"
               : undefined

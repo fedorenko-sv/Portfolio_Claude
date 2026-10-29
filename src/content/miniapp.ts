@@ -1,9 +1,18 @@
 import { catalogFor } from "./catalog";
 import { projectFilms } from "./media";
+import { pocketGuides } from "./pocket-guides";
 import type { LibraryEntry } from "@/lib/library";
 export function miniappLibrary(): LibraryEntry[] {
   const catalog = catalogFor();
   return [
+    {
+      id: "practice:check-answer",
+      title: "Найдите догадку в ответе ИИ",
+      summary:
+        "Три учебных примера: выдуманная конкретика, неподтверждённое условие и слишком широкий вывод.",
+      kind: "practice",
+      href: "/app/practice/check-answer",
+    },
     {
       id: "practice:first-ai-task",
       title: "Первая рабочая задача для ИИ",
@@ -12,6 +21,13 @@ export function miniappLibrary(): LibraryEntry[] {
       kind: "practice",
       href: "/app/practice/first-ai-task",
     },
+    ...pocketGuides.map((g) => ({
+      id: `guide:${g.slug}`,
+      title: g.title,
+      summary: g.subtitle,
+      kind: "material" as const,
+      href: `/app/guides/${g.slug}`,
+    })),
     ...catalog.materials.map((m) => ({
       id: `material:${m.id}`,
       title: m.title,

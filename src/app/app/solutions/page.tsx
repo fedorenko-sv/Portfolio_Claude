@@ -1,12 +1,6 @@
-import { Intro, CaseCards } from "@/components/site/Content";
+import { catalogFor } from "@/content/catalog";
+import MiniProjects from "@/components/miniapp/MiniProjects";
+export const metadata = { title: "Проекты в работе" };
 export default function Page() {
-  return (
-    <>
-      <Intro
-        label="Проекты и сценарии"
-        title="Цифровые инструменты под задачу"
-      />
-      <CaseCards base="/app/solutions" />
-    </>
-  );
+  return <MiniProjects items={catalogFor().cases} />;
 }

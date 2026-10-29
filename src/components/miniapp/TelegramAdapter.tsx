@@ -54,11 +54,12 @@ export default function TelegramAdapter() {
       sync();
       const back = () => {
         router.push(
-          path.startsWith("/app/materials/")
-            ? "/app/materials"
+          path.startsWith("/app/materials/") || path.startsWith("/app/guides/")
+            ? "/app/library"
             : path.startsWith("/app/solutions/")
               ? "/app/solutions"
-              : path.startsWith("/app/training/")
+              : path.startsWith("/app/training/") ||
+                  path.startsWith("/app/practice/")
                 ? "/app/training"
                 : "/app",
         );
