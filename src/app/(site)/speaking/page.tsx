@@ -1,5 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
+import TalkDeck from "@/components/site/TalkDeck";
+import PhotoGallery from "@/components/site/PhotoGallery";
 import { author } from "@/content/author";
 import Icon from "@/components/site/Icon";
 import styles from "@/components/site/Editorial.module.css";
@@ -31,19 +32,7 @@ export default function Speaking() {
               <Icon />
             </Link>
           </div>
-          <figure>
-            <Image
-              src={author.speaking.image}
-              width={1600}
-              height={1067}
-              alt="Сергей Федоренко на сцене с микрофоном"
-              sizes="(max-width:700px) 90vw,50vw"
-              priority
-            />
-            <figcaption>
-              Инструменты и сценарии, которые можно показать вживую.
-            </figcaption>
-          </figure>
+          <TalkDeck />
         </div>
       </section>
       <section className={styles.event}>
@@ -66,16 +55,7 @@ export default function Speaking() {
               <Icon />
             </Link>
           </div>
-          <figure>
-            <Image
-              src="/images/author/audience.webp"
-              width={1200}
-              height={800}
-              alt="Участники мероприятия в зрительном зале"
-              sizes="(max-width:700px) 90vw,50vw"
-            />
-            <figcaption>Живое мероприятие. Фото из личного архива.</figcaption>
-          </figure>
+          <PhotoGallery />
         </div>
       </section>
       <section className={styles.section}>

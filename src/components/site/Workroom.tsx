@@ -27,6 +27,7 @@ const details = [
 export default function Workroom() {
   const router = useRouter();
   const [active, setActive] = useState(0);
+  const armed = useRef<number | null>(null);
   const panel = useRef<HTMLDivElement>(null);
   const previous = useRef(active);
   useEffect(() => {
@@ -89,8 +90,12 @@ export default function Workroom() {
             <WorkroomScene
               active={active}
               onSelect={(index) => {
-                if (index === active) router.push(offers[index].href);
-                else setActive(index);
+                if (index === active && armed.current === index)
+                  router.push(offers[index].href);
+                else {
+                  armed.current = index;
+                  setActive(index);
+                }
               }}
             />
             <div
@@ -103,7 +108,10 @@ export default function Workroom() {
                   type="button"
                   key={name}
                   aria-pressed={active === i}
-                  onClick={() => setActive(i)}
+                  onClick={() => {
+                    armed.current = i;
+                    setActive(i);
+                  }}
                 >
                   <span className={styles.indicator} />
                   {name}
