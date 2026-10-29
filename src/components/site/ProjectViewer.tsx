@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { track } from "@/lib/analytics";
 import { useEffect, useId, useRef, useState } from "react";
 import { showcaseFor, canEmbed } from "@/content/project-showcases";
 import Icon from "./Icon";
@@ -68,6 +69,7 @@ export default function ProjectViewer({
     trigger.current?.focus();
   }
   function launch() {
+    track("showcase_open", { id, source: "website", placement: "cases" });
     setSlow(false);
     setFailed(false);
     setLoading(true);

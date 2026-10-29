@@ -16,13 +16,15 @@ test("visible project screens launch real applications and restore keyboard focu
     })
     .first();
   await expect(preview.getByRole("img")).toBeVisible();
-  expect(
-    await preview
-      .locator("img")
-      .evaluate(
-        (image: HTMLImageElement) => image.complete && image.naturalWidth > 0,
-      ),
-  ).toBe(true);
+  await expect
+    .poll(() =>
+      preview
+        .locator("img")
+        .evaluate(
+          (image: HTMLImageElement) => image.complete && image.naturalWidth > 0,
+        ),
+    )
+    .toBe(true);
   await preview.press("Enter");
   const dialog = page.getByRole("dialog");
   await expect(dialog.getByRole("status")).toContainText("Можно нажимать");
@@ -31,16 +33,29 @@ test("visible project screens launch real applications and restore keyboard focu
   await expect(dialog).not.toBeVisible();
 });
 
-test("closing the fullscreen phone restores the desktop hero composition", async ({ page }) => {
+test("closing the fullscreen phone restores the desktop hero composition", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1264, height: 900 });
-  await page.goto('/');
-  await expect(page.locator('.scene-ready')).toBeVisible({ timeout: 20000 });
-  const before = await page.locator('.hero-author').boundingBox();
-  await page.getByRole('button', { name: 'Управлять меню', exact: true }).click();
-  await expect(page.frameLocator('.phone-stage iframe').getByRole('heading', { name: /^меню$/i })).toBeVisible({ timeout: 20000 });
-  await page.getByRole('button', { name: 'Закрыть меню', exact: true }).click();
-  await expect.poll(async () => {
-    const after = await page.locator('.hero-author').boundingBox();
-    return Math.abs(after!.x - before!.x) < 2 && after!.x + after!.width <= 1264;
-  }).toBe(true);
+  await page.goto("/");
+  await page.locator(".phone-scene").scrollIntoViewIfNeeded();
+  await expect(page.locator(".scene-ready")).toBeVisible({ timeout: 20000 });
+  const before = await page.locator("#about h1").boundingBox();
+  await page
+    .getByRole("button", { name: "Управлять меню", exact: true })
+    .click();
+  await expect(
+    page
+      .frameLocator(".phone-stage iframe")
+      .getByRole("heading", { name: /^меню$/i }),
+  ).toBeVisible({ timeout: 20000 });
+  await page.getByRole("button", { name: "Закрыть меню", exact: true }).click();
+  await expect
+    .poll(async () => {
+      const after = await page.locator("#about h1").boundingBox();
+      return (
+        Math.abs(after!.x - before!.x) < 2 && after!.x + after!.width <= 1264
+      );
+    })
+    .toBe(true);
 });

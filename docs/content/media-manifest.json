@@ -1,0 +1,108 @@
+{
+  "reviewedAt": "2026-10-29",
+  "authorization": "Owner requested implementation using supplied photos and recordings; preview only",
+  "sources": [
+    {
+      "path": "CRM/raw/CRM-04_lead_enrollment_D01_T03_2560x1440.webm",
+      "size": 1407531,
+      "sha256": "6D3DD8DC51FF2444621A636312585410A0FC44379E15022DBB87F4DE2F9CAEE9"
+    },
+    {
+      "path": "REH/raw/REH-03_booking_wizard_D01_T01_2560x1440.webm",
+      "size": 7224589,
+      "sha256": "9CC97497A7701B3820F138357043C4197BC97CBFF58AAC55E935947E51EFB12D"
+    },
+    {
+      "path": "ENG/approved/ENG-02_launch_D01_T01_2560x1440.webm",
+      "size": 667224,
+      "sha256": "C918E45B295CD5C9E1C1033631A49D25D0B6E0DA15B54016EEE3FC80B595706E"
+    },
+    {
+      "path": "ENG/approved/ENG-02_join_D01_T02_1440x900.webm",
+      "size": 1981197,
+      "sha256": "B2965E196C87838BB8FADAA6D60CE6DB7C522EAE0E575684868A7D0389EEC2E4"
+    },
+    {
+      "path": "ENG/approved/ENG-03_answers_reload_D01_T02_1440x900.webm",
+      "size": 2253070,
+      "sha256": "C978EF47FF88321930EEFD33D17CD1BCD49294C48C61BA3B7A6B2CB8659F937F"
+    },
+    {
+      "path": "GAS/raw/GAS-02_menu_categories_D01_T01_432x768.webm",
+      "size": 923787,
+      "sha256": "D503F296A09B61C6A26375DD42F0FB98CB0006F1660EE1A53C2063365F4F8095"
+    }
+  ],
+  "exports": [
+    {
+      "path": "public/media/projects/edcrm-result.webp",
+      "size": 44648,
+      "sha256": "1e36bacb44765830fba3d4fb31b73810f7faa384e61e637112c542e3518c505f"
+    },
+    {
+      "path": "public/media/projects/edcrm.mp4",
+      "size": 391709,
+      "sha256": "c6be8d6d72a0a787e31098e8250b55d7122ab9555065b86ce39014ef41c22663"
+    },
+    {
+      "path": "public/media/projects/edcrm.vtt",
+      "size": 225,
+      "sha256": "a8ed3e2b64369bc69fb4f8a066bbc18665b653b2527ea27faa5971281df3271e"
+    },
+    {
+      "path": "public/media/projects/english-lab-result.webp",
+      "size": 68136,
+      "sha256": "15adbbdb6d13d5e6979f111b47d2a864cb88f95d0f30af8849ae3766164b141a"
+    },
+    {
+      "path": "public/media/projects/english-lab.mp4",
+      "size": 562773,
+      "sha256": "4005c5c8bef826bdba7d421a85ce5f5f4b6cafd5a1fa08376c71df5a52859afe"
+    },
+    {
+      "path": "public/media/projects/english-lab.vtt",
+      "size": 234,
+      "sha256": "c56c91f028326a303c3d4748de0b0a5faf031f3e9c1d6432657461aece37830c"
+    },
+    {
+      "path": "public/media/projects/gastro.mp4",
+      "size": 781918,
+      "sha256": "285cd4ba26f3ffba53954fddeb58a64705e0d5661e879b01b155dc32e3f7a134"
+    },
+    {
+      "path": "public/media/projects/gastro.vtt",
+      "size": 140,
+      "sha256": "f6af9d2a48c81137c9e3701876547c26c13752defe8c7db8a335c8bfab3f8762"
+    },
+    {
+      "path": "public/media/projects/gastro.webp",
+      "size": 64932,
+      "sha256": "0cb5d3ccc343709c1159627d57067f5ec3baf7e0d4d14c192ccb212f8a95a5f4"
+    },
+    {
+      "path": "public/media/projects/rehab-result.webp",
+      "size": 14006,
+      "sha256": "a925a6eb54f75fed10b72194bee9b0feda302bbe4f60630a165bdbb04f74d369"
+    },
+    {
+      "path": "public/media/projects/rehab-summary.webp",
+      "size": 19704,
+      "sha256": "64742a2791abdf2b8c056e5a69d7aaecdfe92c9c5ace43f6a22961c7311df3c8"
+    },
+    {
+      "path": "public/media/projects/rehab.mp4",
+      "size": 253352,
+      "sha256": "701996128d31d22b30dd2fdc62a6e386b46a39435413925d2d5bf450a0ae0a7a"
+    },
+    {
+      "path": "public/media/projects/rehab.vtt",
+      "size": 187,
+      "sha256": "8ae5e185f0a3612105d56da73086e686c7a3084b635495df928db07fc0fcef95"
+    }
+  ],
+  "limitations": [
+    "Source clips reviewed as chronological frame sequences; not all archive clips approved",
+    "REH relocation with visible error excluded",
+    "No confirmed payment, delivery or production deployment claims"
+  ]
+}

@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import Icon from "./Icon";
 const links = [
   ["Проекты", "/cases"],
-  ["Курсы", "/training"],
+  ["Обучение", "/training"],
   ["Для бизнеса", "/solutions"],
+  ["Выступления", "/speaking"],
   ["Обо мне", "/#about"],
 ];
 export default function Header() {

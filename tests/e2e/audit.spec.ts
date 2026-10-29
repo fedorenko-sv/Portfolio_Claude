@@ -129,7 +129,8 @@ test("live menu works in geometric phone and preserves selection on resize", asy
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator(".phone-scene.scene-ready")).toBeVisible({
+  await page.locator(".phone-scene").scrollIntoViewIfNeeded();
+    await expect(page.locator(".phone-scene.scene-ready")).toBeVisible({
     timeout: 20000,
   });
   await page.getByRole("button", { name: "Управлять меню" }).click();

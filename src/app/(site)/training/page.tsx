@@ -1,82 +1,157 @@
 import Link from "next/link";
 import Image from "next/image";
+import { author } from "@/content/author";
+import { learningSteps } from "@/content/offers";
 import { ProgramCards } from "@/components/site/Content";
+import AuthorProof from "@/components/site/AuthorProof";
+import PracticeObject from "@/components/site/PracticeObject";
 import Icon from "@/components/site/Icon";
+import styles from "@/components/site/Growth.module.css";
 export const metadata = {
-  title: "Курсы и обучение",
+  title: "Обучение",
   alternates: { canonical: "/training" },
 };
-export default function Page() {
+export default function Training() {
   return (
     <>
-      <section className="page-hero training-hero theme-dark">
-        <div className="wrap page-hero-inner">
-          <div className="page-hero-copy">
-            <p className="eyebrow">Практика ИИ / для себя и команды</p>
+      <section className={styles.pageHero}>
+        <div className={`wrap ${styles.pageHeroGrid}`}>
+          <div>
+            <p className="eyebrow">Практика ИИ · для команды</p>
             <h1>
-              Учиться ИИ.
+              Научиться.
               <br />
-              Применять
-              <br />в своей работе.
+              <em>
+                Попробовать.
+                <br />
+                Применить.
+              </em>
             </h1>
-            <p className="lead">
+            <p>
               Практические занятия для специалистов, руководителей и команд.
+              Начинаем с рабочей задачи и доходим до результата, который можно
+              проверить.
             </p>
             <div className="actions">
-              <a href="#programs" className="button">
-                Подобрать программу
+              <Link href="/contact?type=training" className="button">
+                Подобрать обучение
                 <Icon />
-              </a>
+              </Link>
               <Link href="/practice/first-ai-task" className="text-link">
-                Начать с бесплатной практики
+                Попробовать практику
                 <Icon />
               </Link>
             </div>
-            <p className="hero-small">Очно и онлайн · формат по запросу</p>
           </div>
           <Image
-            src="/images/practice-folder-v2.png"
-            alt="Вишнёвая папка «Практика ИИ» и рабочий лист: задача, данные, результат, проверка"
-            width={1280}
-            height={1280}
-            className="training-object"
+            src={author.speaking.image}
+            alt="Сергей проводит мастер-класс по применению ИИ"
+            width={1600}
+            height={1067}
+            sizes="(max-width: 700px) 90vw, 50vw"
             priority
           />
         </div>
       </section>
-      <section id="programs" className="catalog-section wrap">
-        <div className="section-rule">
-          <p className="eyebrow">Программы</p>
-          <span />
+      <section className={`wrap ${styles.section}`}>
+        <p className="eyebrow">С чем уйдут участники</p>
+        <h2>
+          С конкретным результатом
+          <br />
+          для своей работы.
+        </h2>
+        <div className={styles.learningGrid}>
+          {[
+            [
+              "Рабочая задача",
+              "Понятное описание входных данных, результата и границ применения.",
+            ],
+            [
+              "Первое решение",
+              "Черновик документа, плана или сценария на учебном примере.",
+            ],
+            [
+              "Способ проверки",
+              "Критерии, по которым можно оценить ответ и увидеть ошибки.",
+            ],
+          ].map(([h, p]) => (
+            <article key={h}>
+              <h3>{h}</h3>
+              <p>{p}</p>
+            </article>
+          ))}
         </div>
-        <h2>Выберите свою задачу.</h2>
+      </section>
+      <section id="programs" className={`wrap ${styles.section}`}>
+        <p className="eyebrow">Обучение по запросу</p>
+        <h2>
+          Выберем формат
+          <br />
+          под задачи команды.
+        </h2>
+        <p>Тему, содержание и условия согласуем перед стартом.</p>
         <ProgramCards />
       </section>
-      <section className="training-team theme-cherry">
-        <div className="wrap training-team-inner">
-          <h2>
-            Разберём
-            <br />
-            задачи вашей команды.
-          </h2>
+      <section className={`wrap ${styles.section}`}>
+        <p className="eyebrow">Как проходит занятие</p>
+        <h2>От примера — к своей практике.</h2>
+        <div className={styles.steps}>
+          {learningSteps.map(([h, p]) => (
+            <article key={h}>
+              <h3>{h}</h3>
+              <p>{p}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <AuthorProof compact />
+      <section className={styles.organizer}>
+        <div className={`wrap ${styles.organizerGrid}`}>
           <div>
-            <p>
-              Выберем рабочие примеры, подходящий формат и способ проверки
-              результата.
-            </p>
-            <Link href="/contact?type=training" className="button">
-              Обсудить обучение
+            <p className="eyebrow">Для организатора</p>
+            <h2>
+              Подготовим занятие
+              <br />
+              вместе с вами.
+            </h2>
+            <Link href="/contact?type=training" className="text-link">
+              Обсудить аудиторию и задачи
               <Icon />
             </Link>
-            <div>
-              <Link href="/practice/first-ai-task" className="text-link">
-                Бесплатная практика
-                <Icon />
-              </Link>
-            </div>
+          </div>
+          <div>
+            <details open>
+              <summary>Очно или онлайн?</summary>
+              <p>
+                Оба формата возможны. Длительность и состав группы согласуем при
+                подготовке.
+              </p>
+            </details>
+            <details>
+              <summary>Что понадобится участникам?</summary>
+              <p>
+                Для практики — устройство и доступ к выбранным инструментам.
+                Оборудование и учебные данные уточним заранее.
+              </p>
+            </details>
+            <details>
+              <summary>Можно ли работать с задачами команды?</summary>
+              <p>
+                Да. Сначала согласуем примеры и подготовим обезличенные данные
+                для упражнения.
+              </p>
+            </details>
+            <details>
+              <summary>Как выбрать программу?</summary>
+              <p>
+                Расскажите об аудитории и желаемом результате. На этой основе
+                предложим содержание и формат.
+              </p>
+            </details>
           </div>
         </div>
       </section>
+      <PracticeObject />
     </>
   );
 }

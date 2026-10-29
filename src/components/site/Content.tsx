@@ -8,6 +8,8 @@ import {
 import ViewEvent from "@/components/shared/ViewEvent";
 import ProjectViewer from "./ProjectViewer";
 import Icon from "./Icon";
+import ProjectFilm from "./ProjectFilm";
+import growth from "./Growth.module.css";
 
 export function Intro({
   label,
@@ -156,6 +158,7 @@ export function CaseDetail({ item }: { item: Case }) {
       <Intro label={item.audience} title={item.title}>
         <p>{item.summary}</p>
       </Intro>
+      <section className={`wrap ${growth.caseFilm}`}><ProjectFilm id={item.id}/><p>В записи — отдельная локальная версия на учебных данных. Во встроенном просмотре доступны выбранные действия.</p></section>
       <section className="case-introduction wrap">
         <p className="eyebrow">Задача проекта</p>
         <h2>{item.problem}</h2>

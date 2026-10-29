@@ -1,135 +1,218 @@
 import Link from "next/link";
+import TrackedLink from "@/components/shared/TrackedLink";
 import Image from "next/image";
-import { catalogFor } from "@/content/catalog";
+import { author } from "@/content/author";
+import { offers } from "@/content/offers";
+import { projectFilms } from "@/content/media";
 import PhoneScene from "@/components/site/PhoneScene";
 import ProjectViewer from "@/components/site/ProjectViewer";
+import ProjectFilm from "@/components/site/ProjectFilm";
+import AuthorProof from "@/components/site/AuthorProof";
+import PracticeObject from "@/components/site/PracticeObject";
 import Icon from "@/components/site/Icon";
+import styles from "@/components/site/Growth.module.css";
 export const metadata = { alternates: { canonical: "/" } };
 export default function Home() {
   return (
     <>
-      <section className="home-hero theme-dark">
-        <div className="wrap">
-          <h1>
-            Создаю цифровые
-            <br className="desktop-break" /> инструменты.
-            <Icon size={64} />
-          </h1>
-          <div className="home-hero-bottom">
-            <div className="hero-device">
-              <PhoneScene interactive />
-              <div className="device-caption">
-                <p>Меню для ресторана</p>
-                <ProjectViewer
-                  id="gastro"
-                  title="Интерактивное меню для ресторана"
-                  className="text-link"
-                  label="Открыть меню"
-                />
-              </div>
+      <section className={styles.hero} id="about">
+        <div className={`wrap ${styles.heroGrid}`}>
+          <div className={styles.heroCopy}>
+            <p className="eyebrow">
+              Сергей Федоренко · разработчик и преподаватель
+            </p>
+            <h1>
+              Создаю цифровые
+              <br />
+              инструменты.
+              <br />
+              <em>
+                Обучаю
+                <br className={styles.mobileBreak} /> применять ИИ.
+              </em>
+            </h1>
+            <p>{author.intro}</p>
+            <div className="actions">
+              <Link className="button" href="/training">
+                Обсудить обучение
+                <Icon />
+              </Link>
+              <Link className="text-link" href="/cases">
+                Посмотреть проекты
+                <Icon />
+              </Link>
             </div>
-            <div className="hero-author" id="about">
-              <h2>
-                Я Сергей. Разработчик
-                <br className="desktop-break" /> и преподаватель.
-              </h2>
-              <p>
-                Обучаю команды применять ИИ
-                <br className="desktop-break" /> и создаю продукты под рабочую
-                задачу.
-              </p>
-              <div className="actions">
-                <Link href="/contact" className="button">
-                  Обсудить задачу
-                  <Icon />
-                </Link>
-                <Link href="/cases" className="text-link">
-                  Смотреть проекты
-                  <Icon />
-                </Link>
-              </div>
-            </div>
+            <Link href="/speaking" className={styles.heroFootnote}>
+              Пригласить выступить
+              <Icon size={18} />
+            </Link>
           </div>
+          <figure className={styles.portrait}>
+            <Image
+              src={author.portrait}
+              alt="Сергей Федоренко"
+              width={1000}
+              height={1250}
+              sizes="(max-width: 700px) 90vw, 40vw"
+              priority
+            />
+            <figcaption>
+              <span>
+                От идеи —<br />к работающему решению.
+              </span>
+              <Icon size={34} />
+            </figcaption>
+          </figure>
         </div>
       </section>
-      <section className="home-selection">
+      <section
+        className={`wrap ${styles.offers}`}
+        aria-label="Направления работы"
+      >
+        {offers.map((o) => (
+          <TrackedLink
+            href={o.href}
+            key={o.id}
+            className={styles.offer}
+            event="service_select"
+            topic={o.id}
+            placement="home"
+          >
+            <p className="eyebrow">{o.note}</p>
+            <h2>{o.title}</h2>
+            <p>{o.text}</p>
+            <span>
+              {o.action}
+              <Icon />
+            </span>
+          </TrackedLink>
+        ))}
+      </section>
+      <section className={styles.projects}>
         <div className="wrap">
-          <div className="section-rule">
+          <div className={styles.rule}>
             <p className="eyebrow">От задачи к решению</p>
             <span />
-            <Link href="/cases" className="subtle-link">
+            <Link href="/cases">
               Все проекты
               <Icon />
             </Link>
           </div>
-          <div className="selection-grid">
-            {catalogFor().cases.map((p) => (
+          <div className={styles.featureProject}>
+            <div>
+              <p className="eyebrow">Образование · управление центром</p>
+              <h2>
+                Из заявки —<br />
+                <em>в учебную группу.</em>
+              </h2>
+              <p>
+                Ученики, родители и работа администратора связаны одним
+                сценарием. Посмотрите, как устроен переход от заявки к
+                зачислению.
+              </p>
+              <div className={styles.journey}>
+                <span>Заявка</span>
+                <Icon name="right" />
+                <span>Ученик</span>
+                <Icon name="right" />
+                <span>Группа</span>
+              </div>
+              <div className="actions">
+                <ProjectViewer
+                  id="edcrm"
+                  title="CRM для образовательных центров"
+                  className="text-link"
+                />
+                <Link href="/cases/edcrm" className="subtle-link">
+                  О проекте
+                  <Icon />
+                </Link>
+              </div>
+            </div>
+            <ProjectFilm id="edcrm" placement="home" />
+          </div>
+        </div>
+      </section>
+      <AuthorProof />
+      <section className={`wrap ${styles.moreProjects}`}>
+        <div className={styles.rule}>
+          <p className="eyebrow">Другие рабочие сценарии</p>
+          <span />
+        </div>
+        <div className={styles.projectPair}>
+          {projectFilms
+            .filter((p) => ["rehab", "english-lab"].includes(p.id))
+            .map((p) => (
               <article key={p.id}>
-                <ProjectViewer id={p.id} title={p.title} preview />
-                <p className="eyebrow">{p.audience.split("·")[0]}</p>
-                <h2>
-                  <Link href={"/cases/" + p.slug}>{p.title}</Link>
-                </h2>
-                <div className="selection-journey">
-                  {p.journey.slice(0, 3).map((s, j) => (
-                    <span key={s}>
-                      {j > 0 && <Icon name="right" size={20} />} {s}
-                    </span>
-                  ))}
-                </div>
+                <ProjectFilm id={p.id} placement="home" />
+                <p className="eyebrow">
+                  {p.id === "rehab"
+                    ? "Размещение и расписание"
+                    : "Образование и материалы"}
+                </p>
+                <h2>{p.title}</h2>
+                <p>{p.line}</p>
                 <div className="actions">
                   <ProjectViewer
                     id={p.id}
-                    title={p.title}
+                    title={p.line}
                     className="text-link"
                   />
-                  <Link href={"/cases/" + p.slug} className="subtle-link">
+                  <Link href={`/cases/${p.id}`} className="subtle-link">
                     О проекте
                     <Icon />
                   </Link>
                 </div>
               </article>
             ))}
-          </div>
         </div>
       </section>
-      <section className="practice-feature theme-dark">
-        <div className="wrap practice-feature-inner">
+      <section className={styles.restaurant}>
+        <div className={`wrap ${styles.restaurantGrid}`}>
+          <div className="hero-device">
+            <PhoneScene interactive />
+          </div>
           <div>
+            <p className="eyebrow">Гостевой сервис · интерактивное меню</p>
             <h2>
-              Попробуем
+              Продукт, который
               <br />
-              на вашей задаче.
+              <em>можно потрогать.</em>
             </h2>
             <p>
-              Практическое упражнение: от исходных
-              <br className="desktop-break" /> данных до проверки результата.
+              Листайте разделы, знакомьтесь с блюдами и собирайте свой выбор.
+              Внутри телефона — работающее меню.
             </p>
-            <Link className="button" href="/practice/first-ai-task">
-              Пройти практику
-              <Icon />
-            </Link>
+            <div className="actions">
+              <ProjectViewer
+                id="gastro"
+                title="Интерактивное меню для ресторана"
+                label="Открыть меню"
+                className="button"
+              />
+              <Link href="/cases/gastro" className="text-link">
+                Видео и подробности
+                <Icon />
+              </Link>
+            </div>
+            <p className={styles.caption}>
+              Нажмите «Управлять меню», чтобы попробовать прямо в телефоне.
+            </p>
           </div>
-          <Image
-            src="/images/practice-folder-v2.png"
-            alt=""
-            width={1280}
-            height={1280}
-            className="practice-object"
-          />
         </div>
       </section>
-      <section className="home-closing theme-dark">
-        <div className="wrap">
-          <Link href="/contact">
-            Есть задача? Давайте обсудим.
-            <Icon size={62} />
-          </Link>
-          <Link href="/materials" className="subtle-link">
-            Материалы для первого шага
-            <Icon />
-          </Link>
-        </div>
+      <PracticeObject />
+      <section className={`wrap ${styles.closing}`}>
+        <p className="eyebrow">Разработка · обучение · выступления</p>
+        <Link href="/contact">
+          Что хотите изменить
+          <br />в своей работе?
+          <Icon size={56} />
+        </Link>
+        <p>
+          Расскажите о процессе, команде или мероприятии. Начнём с одного
+          понятного шага.
+        </p>
       </section>
     </>
   );
