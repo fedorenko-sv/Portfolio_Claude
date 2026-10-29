@@ -67,10 +67,21 @@
   display: inline-flex;
   gap: 28px;
   align-items: center;
-  border-bottom: 1px solid #a9ada7;
-  padding: 10px 0;
+  border: 1px solid #c96277;
+  background: #8d2034;
+  color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 5px 28px #8d20344a;
+  padding: 15px 22px;
   font-size: 16px;
-  min-height: 44px;
+  min-height: 54px;
+  transition:
+    box-shadow 200ms,
+    background 200ms;
+}
+.action:hover {
+  background: #a32941;
+  box-shadow: 0 5px 35px #b13f5866;
 }
 .objects {
   min-width: 0;
@@ -93,7 +104,7 @@
 }
 .fallback {
   position: absolute;
-  inset: 20px 0 42px;
+  inset: 0;
   transition: opacity var(--motion-state) var(--motion-out);
 }
 .fallback img {

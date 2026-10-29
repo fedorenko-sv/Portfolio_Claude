@@ -1,0 +1,214 @@
+.practice {
+  background: #202222;
+  color: #f4f5ee;
+  padding: 42px 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 50px;
+  align-items: center;
+}
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  margin-bottom: 25px;
+}
+.copy h2 {
+  font-size: clamp(38px, 4.8vw, 67px);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+  margin-bottom: 26px;
+}
+.copy h2 span {
+  color: #e9a5b2;
+}
+.copy > p:not(.eyebrow):not(.hint) {
+  max-width: 440px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #b8bbb5;
+  margin-bottom: 28px;
+}
+.copy .hint {
+  color: #b8bbb5;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 26px;
+  max-width: 340px;
+}
+.stage {
+  position: relative;
+  min-width: 0;
+  height: 530px;
+  perspective: 1200px;
+}
+.folder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: #f4f5ee;
+  transition: transform 500ms var(--motion-out);
+}
+.folder img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 25px #0004);
+}
+.folder > span {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  white-space: nowrap;
+  border: 1px solid #9d6b76;
+  background: #8d2034;
+  border-radius: 24px;
+  padding: 12px 18px;
+  font-size: 12px;
+}
+.stage[data-open="true"] .folder {
+  transform: translateX(-12%) rotateY(-20deg) rotate(-7deg);
+}
+.sheet {
+  position: absolute;
+  width: 70%;
+  right: 0;
+  top: 40px;
+  background: #f4f5ee;
+  color: #242525;
+  padding: 28px;
+  box-shadow: 0 15px 60px #0005;
+  animation: unfold 500ms var(--motion-out);
+}
+.sheet[hidden] {
+  display: none;
+}
+.sheetTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #595e59;
+  font-size: 11px;
+  margin-bottom: 22px;
+}
+.sheetTop button {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #babeb4;
+  background: transparent;
+  cursor: pointer;
+  color: #242525;
+  flex-shrink: 0;
+}
+.sheet h3 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  margin: 0 0 24px;
+}
+.sheet dl {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.sheet dt {
+  font-size: 10px;
+  color: #8d2034;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sheet dd {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.sheet > a {
+  color: #8d2034;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  min-height: 44px;
+}
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: translate(-30px, 45px) rotate(-6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .stage[data-open="false"] .folder:hover {
+    transform: translateY(-12px) rotate(-4deg);
+  }
+}
+@media (max-width: 1000px) {
+  .grid {
+    gap: 25px;
+  }
+  .stage {
+    height: 510px;
+  }
+  .sheet {
+    width: 85%;
+    padding: 22px;
+  }
+}
+@media (max-width: 700px) {
+  .practice {
+    padding: 40px 0;
+  }
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
+  .copy h2 {
+    font-size: 42px;
+  }
+  .copy .hint {
+    margin-top: 22px;
+  }
+  .stage {
+    height: 495px;
+  }
+  .sheet {
+    width: 88%;
+    right: 0;
+    top: 10px;
+    padding: 20px;
+  }
+  .folder {
+    inset: 0 -5%;
+    width: 110%;
+  }
+  .folder > span {
+    bottom: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .folder {
+    transition: none;
+  }
+  .sheet {
+    animation: none;
+  }
+}

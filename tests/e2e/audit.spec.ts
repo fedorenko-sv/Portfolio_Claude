@@ -130,10 +130,9 @@ test("live menu works in geometric phone and preserves selection on resize", asy
 }) => {
   await page.goto("/");
   await page.locator(".phone-scene").scrollIntoViewIfNeeded();
-    await expect(page.locator(".phone-scene.scene-ready")).toBeVisible({
+  await expect(page.locator(".phone-scene.scene-ready")).toBeVisible({
     timeout: 20000,
   });
-  await page.getByRole("button", { name: "Управлять меню" }).click();
   const menu = page.frameLocator(".phone-stage iframe");
   await expect(menu.getByRole("heading", { name: /^меню$/i })).toBeVisible({
     timeout: 20000,
@@ -145,6 +144,7 @@ test("live menu works in geometric phone and preserves selection on resize", asy
   await expect(
     menu.getByRole("button", { name: /мой выбор.*1/i }),
   ).toBeVisible();
+  await page.getByRole("button", { name: "Увеличить меню" }).click();
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(
     page.getByRole("button", { name: "Закрыть меню", exact: true }),
@@ -154,6 +154,9 @@ test("live menu works in geometric phone and preserves selection on resize", asy
   ).toBeVisible();
   await page.getByRole("button", { name: "Закрыть меню", exact: true }).click();
   await expect(page.locator(".phone-stage")).not.toHaveClass(/is-active/);
+  await expect(
+    menu.getByRole("button", { name: /мой выбор.*1/i }),
+  ).toBeVisible();
 });
 test("capture the menu at exact phone screen ratio", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 775 });

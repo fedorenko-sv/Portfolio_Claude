@@ -1,0 +1,21 @@
+/* Readable labels in the portfolio's small live surface. Product source is unchanged. */
+.text-primary {
+  color: #7c5a22;
+}
+[class~="text-text-main/40"],
+[class~="text-text-main/50"],
+[class~="text-text-main/55"],
+[class~="text-text-main/60"] {
+  color: #64645e;
+}
+.bg-anthracite .text-primary,
+[class~="bg-anthracite/90"] .text-primary {
+  color: #e0bd7b;
+}
+.bg-primary.text-white {
+  background-color: #7c5a22;
+}
+:focus-visible {
+  outline: 2px solid #7c5a22;
+  outline-offset: 3px;
+}

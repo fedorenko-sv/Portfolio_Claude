@@ -1,5 +1,6 @@
 import Link from "next/link";
-import PhoneScene from "@/components/site/PhoneScene";
+import LiveProduct from "@/components/site/LiveProduct";
+import styles from "@/components/site/Editorial.module.css";
 import ProjectViewer from "@/components/site/ProjectViewer";
 import Icon from "@/components/site/Icon";
 export const metadata = {
@@ -35,12 +36,13 @@ const directions = [
 export default function Business() {
   return (
     <>
-      <section className="business-editorial theme-dark">
+      <section
+        className={`business-editorial theme-dark ${styles.businessIntro}`}
+      >
         <div className="wrap">
           <h1>
             Свяжем рабочий процесс
-            <br />
-            в понятную систему.
+            <br />в понятную систему.
           </h1>
           <div className="business-intro-row">
             <div>
@@ -72,6 +74,7 @@ export default function Business() {
           </div>
         </div>
       </section>
+      <LiveProduct />
       <section className="business-grid-section wrap">
         <div className="section-rule">
           <p className="eyebrow">Что можно собрать</p>
@@ -90,36 +93,6 @@ export default function Business() {
               />
             </article>
           ))}
-        </div>
-      </section>
-      <section className="business-live theme-dark">
-        <div className="wrap business-live-inner">
-          <div className="hero-device">
-            <PhoneScene interactive />
-          </div>
-          <div>
-            <p className="eyebrow">Проект в действии</p>
-            <h2>
-              Меню
-              <br />
-              для ресторана.
-            </h2>
-            <p className="editorial-lead">
-              Можно попробовать
-              <br />
-              прямо здесь.
-            </p>
-            <p>
-              Откройте раздел, посмотрите блюдо,
-              <br className="desktop-break" /> соберите свой список.
-            </p>
-            <ProjectViewer
-              id="gastro"
-              title="Интерактивное меню для ресторана"
-              className="button secondary"
-              label="Открыть меню"
-            />
-          </div>
         </div>
       </section>
       <section className="business-method wrap">

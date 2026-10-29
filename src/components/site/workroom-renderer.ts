@@ -527,6 +527,12 @@ export function createWorkroom(
   host.addEventListener("pointercancel", pointerCancel);
   host.addEventListener("click", click);
   document.addEventListener("visibilitychange", visibility);
+  objects.forEach((object, index) => {
+    object.scale.setScalar(index === selected ? 1.12 : 0.9);
+    object.position.y = index === selected ? 0.16 : 0.01;
+    pools[index].material.opacity = index === selected ? 0.28 : 0;
+  });
+  hinge.rotation.z = selected === 1 ? 1.12 : 0.06;
   resize();
   animate();
   return {

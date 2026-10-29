@@ -42,7 +42,7 @@ test("closing the fullscreen phone restores the desktop hero composition", async
   await expect(page.locator(".scene-ready")).toBeVisible({ timeout: 20000 });
   const before = await page.locator("#about h1").boundingBox();
   await page
-    .getByRole("button", { name: "Управлять меню", exact: true })
+    .getByRole("button", { name: "Увеличить меню", exact: true })
     .click();
   await expect(
     page

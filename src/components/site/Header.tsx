@@ -8,7 +8,7 @@ const links = [
   ["Обучение", "/training"],
   ["Для бизнеса", "/solutions"],
   ["Выступления", "/speaking"],
-  ["Обо мне", "/#about"],
+  ["Обо мне", "/about"],
 ];
 export default function Header() {
   const pathname = usePathname();

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import TrackedLink from "@/components/shared/TrackedLink";
 import { offers } from "@/content/offers";
 import WorkroomScene from "./WorkroomScene";
@@ -24,6 +25,7 @@ const details = [
   },
 ];
 export default function Workroom() {
+  const router = useRouter();
   const [active, setActive] = useState(0);
   const panel = useRef<HTMLDivElement>(null);
   const previous = useRef(active);
@@ -84,7 +86,13 @@ export default function Workroom() {
             </div>
           </div>
           <div className={styles.objects}>
-            <WorkroomScene active={active} onSelect={setActive} />
+            <WorkroomScene
+              active={active}
+              onSelect={(index) => {
+                if (index === active) router.push(offers[index].href);
+                else setActive(index);
+              }}
+            />
             <div
               className={styles.tabs}
               role="group"
@@ -103,7 +111,7 @@ export default function Workroom() {
               ))}
             </div>
             <p className={styles.hint}>
-              Нажмите на предмет или выберите направление.
+              Выберите предмет. Ещё одно нажатие — открыть раздел.
             </p>
           </div>
         </div>
