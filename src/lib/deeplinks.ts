@@ -1,4 +1,9 @@
 const destinations: Record<string, string> = {
+  "check-answer": "/app/practice/check-answer",
+  "process-map": "/app/guides/process-map",
+  "task-brief": "/app/guides/task-brief",
+  "team-session": "/app/guides/team-session",
+  "agent-boundaries": "/app/guides/agent-boundaries",
   "first-ai-task": "/app/practice/first-ai-task",
   "first-automation": "/app/materials/first-automation",
   "verify-ai": "/app/materials/verify-ai",

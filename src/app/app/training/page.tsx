@@ -1,47 +1,121 @@
-import { Intro, ProgramCards } from "@/components/site/Content";
 import Image from "next/image";
 import Link from "next/link";
 import Icon from "@/components/site/Icon";
-import styles from "@/components/miniapp/Training.module.css";
+import s from "@/components/miniapp/Pocket.module.css";
+export const metadata = { title: "Практика и обучение" };
 export default function Page() {
   return (
-    <>
-      <Intro label="Обучение" title="Знания, которые становятся навыком.">
+    <div className={s.training}>
+      <div className={s.pageIntro}>
+        <p>От знакомства к своему результату</p>
+        <h1>
+          Не просто прочитать.
+          <br />
+          Попробовать.
+        </h1>
         <p>
-          Разбираем рабочую задачу. Пробуем инструменты. Проверяем результат.
+          Начните с короткого упражнения. Затем перенесите подход на свою
+          рабочую задачу.
         </p>
-      </Intro>
-      <figure className={styles.photo}>
+      </div>
+      <Link href="/app/practice/check-answer" className={s.lessonFeature}>
+        <span>Мини-тренажёр · три примера</span>
+        <h2>
+          Можно ли доверять
+          <br />
+          этому ответу?
+        </h2>
+        <div className={s.answerGraphic} aria-hidden>
+          <span>Звучит уверенно.</span>
+          <span>
+            А где источник? <b>?</b>
+          </span>
+        </div>
+        <strong>
+          Найти неподтверждённый факт
+          <Icon />
+        </strong>
+      </Link>
+      <div className={s.sectionHeading}>
+        <h2>Ваш маршрут практики</h2>
+      </div>
+      <div className={s.learningPath}>
+        {[
+          [
+            "/app/guides/task-brief",
+            "Сформулировать",
+            "Дать контекст, данные и критерии результата.",
+            "Шаблон запроса",
+          ],
+          [
+            "/app/practice/check-answer",
+            "Проверить",
+            "Отличить исходные факты от догадок в ответе.",
+            "Короткое упражнение",
+          ],
+          [
+            "/app/practice/first-ai-task",
+            "Применить",
+            "Собрать карточку своей задачи и следующий шаг.",
+            "Ваша рабочая задача",
+          ],
+        ].map(([href, title, text, tag]) => (
+          <Link key={href} href={href}>
+            <span className={s.pathDot} aria-hidden />
+            <div>
+              <small>{tag}</small>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+            <Icon />
+          </Link>
+        ))}
+      </div>
+      <section className={s.teamBlock}>
         <Image
           src="/images/author/speaking.webp"
-          alt="Сергей Федоренко проводит выступление о применении ИИ"
           width={1600}
           height={1067}
-          sizes="(max-width:640px) 95vw,592px"
-          priority
+          alt="Сергей Федоренко выступает перед аудиторией"
+          sizes="(max-width:640px) 90vw,590px"
         />
-        <figcaption>Показываю. Пробуем вместе.</figcaption>
-      </figure>
-      <Link className={styles.practice} href="/app/practice/first-ai-task">
-        <span className={styles.symbol} aria-hidden>
-          ✳
-        </span>
-        <span>
-          <strong>Начните со своей задачи</strong>
-          <small>Бесплатная практика в приложении</small>
-        </span>
-        <Icon />
-      </Link>
-      <div className={styles.outcomes}>
-        <h2>Что останется с вами</h2>
-        <ul>
-          <li>Понятная постановка задачи для ИИ.</li>
-          <li>Результат, который вы сделали сами.</li>
-          <li>Критерии проверки и следующий шаг.</li>
-        </ul>
-      </div>
-      <h2 className={styles.title}>Поработаем с вашей командой.</h2>
-      <ProgramCards base="/app/training" />
-    </>
+        <div>
+          <p className={s.smallLabel}>Для вашей команды</p>
+          <h2>
+            Одна общая задача.
+            <br />
+            Своя попытка у каждого.
+          </h2>
+          <p>
+            На занятии разбираем пример, пробуем инструменты и проверяем
+            результат. Подберём содержание под опыт участников и условия работы.
+          </p>
+          <details>
+            <summary>С чего начать подготовку</summary>
+            <p>
+              Расскажите, кто будет участвовать, какие задачи повторяются в
+              работе и что люди должны научиться делать. Подготовим обезличенный
+              пример.
+            </p>
+          </details>
+          <details>
+            <summary>Что понадобится для практики</summary>
+            <p>
+              Устройства, интернет и доступ к выбранным инструментам. Всё
+              проверим заранее; если доступа нет, обсудим формат общей
+              демонстрации.
+            </p>
+          </details>
+          <Link href="/app/guides/team-session" className={s.inlineLink}>
+            Памятка организатору
+            <Icon />
+          </Link>
+          <Link href="/app/contact?type=training" className={s.primary}>
+            Обсудить обучение
+            <Icon />
+          </Link>
+        </div>
+      </section>
+    </div>
   );
 }

@@ -17,7 +17,7 @@
   background: transparent;
   color: var(--ink);
   font: inherit;
-  font-size: 15px;
+  font-size: 16px;
   outline-offset: 6px;
 }
 .search input::placeholder {
@@ -53,28 +53,39 @@
 }
 .results {
   display: grid;
-  gap: 18px;
+  gap: 12px;
+}
+.count {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 0 0 14px;
 }
 .card {
   position: relative;
   border: 1px solid var(--app-edge);
-  border-radius: 4px 15px 15px 4px;
+  border-radius: 12px;
   overflow: hidden;
   background: var(--app-sheet);
-  box-shadow:
-    0 4px 0 -2px var(--paper),
-    0 5px 0 -2px var(--app-edge);
+  border-left: 4px solid var(--line);
+}
+.card[data-kind="practice"] {
+  border-left-color: var(--accent);
+}
+.card:has(.poster) {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  align-items: start;
 }
 .cardBody {
-  padding: 22px;
+  padding: 19px;
 }
 .card h2 {
   margin: 10px 0 !important;
-  font-size: 23px !important;
+  font-size: 20px !important;
   line-height: 1.2;
   letter-spacing: -0.03em;
-  font-family: var(--font-editorial);
-  font-weight: 450;
+  font-family: var(--font-sans);
+  font-weight: 650;
 }
 .card h2 a {
   display: flex;
@@ -85,21 +96,23 @@
   flex-shrink: 0;
 }
 .card p {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.65;
   color: var(--muted);
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 .poster {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16/8;
+  width: 92px;
+  height: 120px;
+  margin-top: 20px;
   object-fit: cover;
-  object-position: top;
-  border-bottom: 1px solid var(--line);
+  object-position: left top;
+  border: 1px solid var(--line);
+  border-left: 0;
+  border-radius: 0 7px 7px 0;
 }
 .kind {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--accent);
 }
 .save {
@@ -113,7 +126,7 @@
   padding: 10px 13px;
   min-height: 44px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 11px;
 }
 .save[aria-pressed="true"] {
   color: var(--accent);

@@ -93,9 +93,14 @@ export default function Library({ entries }: { entries: LibraryEntry[] }) {
           ? "Сохранение на устройстве недоступно. Избранное работает до закрытия страницы."
           : "Избранное хранится только на этом устройстве, до 30 дней."}
       </p>
+      <p className={styles.count}>Найдено: {results.length}</p>
       <div className={styles.results} aria-live="polite" aria-atomic="false">
         {results.map((entry) => (
-          <article key={entry.id} className={styles.card}>
+          <article
+            key={entry.id}
+            className={styles.card}
+            data-kind={entry.kind}
+          >
             {entry.image && (
               <Image
                 src={entry.image}

@@ -2,135 +2,250 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  ArrowUpRight,
-  BookmarkSimple,
-  BookOpen,
-  Monitor,
-  Microphone,
-  PencilSimpleLine,
-} from "@phosphor-icons/react";
 import { readProgress, STORAGE_KEY } from "@/lib/practice";
 import { readSaved, SAVED_KEY } from "@/lib/library";
+import { pocketGuides } from "@/content/pocket-guides";
 import LaunchNotice from "./LaunchNotice";
-import styles from "./AppHome.module.css";
+import Icon from "@/components/site/Icon";
+import s from "./Pocket.module.css";
+const features = [
+  {
+    tab: "Попробовать ИИ",
+    title: (
+      <>
+        ИИ ошибся.
+        <br />
+        Заметите?
+      </>
+    ),
+    text: "Три коротких примера. Найдите догадку среди фактов.",
+    href: "/app/practice/check-answer",
+    action: "Проверить ответ",
+    kind: "quiz",
+    tag: "Практика без регистрации",
+  },
+  {
+    tab: "Найти решение",
+    title: (
+      <>
+        Процесс
+        <br />
+        на экране.
+      </>
+    ),
+    text: "Заявки, гости, уроки и меню. Посмотрите, как это работает.",
+    href: "/app/solutions",
+    action: "Выбрать сценарий",
+    kind: "product",
+    tag: "Четыре рабочих приложения",
+  },
+  {
+    tab: "Для аудитории",
+    title: (
+      <>
+        Начнём
+        <br />с аудитории.
+      </>
+    ),
+    text: "Выберите тему и формат. Соберите запрос на выступление.",
+    href: "/app/speaking#brief",
+    action: "Собрать запрос",
+    kind: "talk",
+    tag: "Выступления и мастер-классы",
+  },
+];
 export default function AppHome({ ids }: { ids: string[] }) {
-  const [continuing, setContinuing] = useState(false);
-  const [count, setCount] = useState(0);
+  const [active, setActive] = useState(0),
+    [progress, setProgress] = useState<number | null>(null),
+    [count, setCount] = useState(0);
   useEffect(() => {
     try {
-      // Device state is optional and restored only after hydration.
+      // Optional device state is restored after hydration.
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setContinuing(Boolean(readProgress(localStorage.getItem(STORAGE_KEY))));
+      setProgress(
+        readProgress(localStorage.getItem(STORAGE_KEY))?.step ?? null,
+      );
       setCount(readSaved(localStorage.getItem(SAVED_KEY), ids).length);
     } catch {
-      /* Reading and practice remain available without device storage. */
+      /* The app remains usable without storage. */
     }
   }, [ids]);
+  const feature = features[active];
   return (
-    <div className={styles.home}>
+    <div className={s.home}>
       <LaunchNotice />
-      <div className={styles.intro}>
-        <div className={styles.welcome}>
-          <span>Место для ваших идей</span>
-          <span className={styles.authorMark}>СФ</span>
-        </div>
+      <div className={s.homeIntro}>
+        <p>Ваша карманная мастерская</p>
         <h1>
-          От интереса —<br />
-          <em>к своей задаче.</em>
+          Что разберём
+          <br />
+          сегодня?
         </h1>
-        <p>
-          ИИ, который пригодится в работе. Практика, заметки и проекты Сергея
-          Федоренко.
-        </p>
       </div>
-      <Link href="/app/practice/first-ai-task" className={styles.practice}>
-        <div className={styles.practiceText}>
-          <span>
-            <PencilSimpleLine size={18} aria-hidden /> Рабочий блокнот
-          </span>
-          <h2>
-            Ваша задача.
-            <br />
-            Первый шаг.
-          </h2>
-          <p>От вопроса к понятному плану действий.</p>
+      <div className={s.featureTabs} role="group" aria-label="С чего начать">
+        {features.map((f, i) => (
+          <button
+            key={f.kind}
+            aria-pressed={active === i}
+            onClick={() => setActive(i)}
+          >
+            {f.tab}
+          </button>
+        ))}
+      </div>
+      <section
+        className={s.feature}
+        data-kind={feature.kind}
+        aria-label="Быстрый старт"
+      >
+        <div key={feature.kind} className={s.featureInner}>
+          <p className={s.featureTag}>{feature.tag}</p>
+          <h2>{feature.title}</h2>
+          <p className={s.featureText}>{feature.text}</p>
+          <div className={s.featureObject} aria-hidden>
+            {active === 0 ? (
+              <div className={s.paperObject}>
+                <span>Ответ ИИ</span>
+                <b>Факт?</b>
+                <i />
+                <i />
+                <strong>Проверим.</strong>
+              </div>
+            ) : active === 1 ? (
+              <div className={s.screenObject}>
+                <Image
+                  src="/media/projects/edcrm-result.webp"
+                  width={640}
+                  height={360}
+                  alt=""
+                  sizes="180px"
+                />
+                <span />
+              </div>
+            ) : (
+              <div className={s.micObject}>
+                <i />
+                <span />
+                <b />
+              </div>
+            )}
+          </div>
         </div>
-        <div className={styles.paper} aria-hidden>
-          <span>Моя задача</span>
-          <i>Что изменить?</i>
-          <i>Что получить?</i>
-          <i>Как проверить?</i>
-          <span>Начните с одного вопроса.</span>
-        </div>
-        <div className={styles.practiceFooter}>
-          <small>Бесплатно · в своём темпе</small>
-          <strong>
-            {continuing ? "Продолжить практику" : "Начать практику"}
-            <ArrowUpRight size={24} aria-hidden />
-          </strong>
-        </div>
-      </Link>
-      <div className={styles.libraryLink}>
-        <Link href="/app/library">
-          <span className={styles.bookSpines} aria-hidden>
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>
-            <strong>Ваша библиотека</strong>
-            <small>Памятки, практика и рабочие примеры</small>
-          </span>
-          <ArrowUpRight size={22} aria-hidden />
+        <Link className={s.featureAction} href={feature.href}>
+          {feature.action}
+          <Icon />
         </Link>
-        <span className={styles.saved}>
-          <BookmarkSimple size={16} aria-hidden />
-          {count ? `Сохранено: ${count}` : "Полезное можно оставить на потом"}
+      </section>
+      <Link className={s.continueCard} href="/app/practice/first-ai-task">
+        <span className={s.noteIcon} aria-hidden>
+          ↗
         </span>
-      </div>
-      <h2 className={styles.sectionTitle}>Пора к настоящей работе.</h2>
-      <div className={styles.directions}>
-        <Link href="/app/solutions">
-          <Monitor size={25} aria-hidden />
-          <span>
-            <strong>Разработать инструмент</strong>
-            <small>CRM, платформы и сервисы под процесс</small>
-          </span>
-          <ArrowUpRight size={20} aria-hidden />
-        </Link>
-        <Link href="/app/training">
-          <BookOpen size={25} aria-hidden />
-          <span>
-            <strong>Обучить команду</strong>
-            <small>Разобрать задачи и попробовать самим</small>
-          </span>
-          <ArrowUpRight size={20} aria-hidden />
-        </Link>
-        <Link href="/app/speaking">
-          <Microphone size={25} aria-hidden />
-          <span>
-            <strong>Пригласить выступить</strong>
-            <small>Демонстрации и практика для аудитории</small>
-          </span>
-          <ArrowUpRight size={20} aria-hidden />
+        <span>
+          <strong>
+            {progress === 3
+              ? "Ваша карточка задачи"
+              : progress !== null
+                ? "Продолжить практику"
+                : "Соберите свою задачу для ИИ"}
+          </strong>
+          <small>
+            {progress === 3
+              ? "Вернуться к результату"
+              : progress !== null
+                ? `Вы остановились на шаге ${progress + 1} из 3`
+                : "Данные, результат и способ проверки"}
+          </small>
+        </span>
+        <Icon name="right" size={19} />
+      </Link>
+      <div className={s.sectionHeading}>
+        <h2>Взять с собой</h2>
+        <Link href="/app/library">
+          Вся библиотека <span aria-hidden>↗</span>
         </Link>
       </div>
-      <Link href="/app/contact" className={styles.author}>
+      <div className={s.guideShelf}>
+        {pocketGuides.slice(0, 3).map((g, i) => (
+          <Link
+            key={g.slug}
+            href={`/app/guides/${g.slug}`}
+            className={s.guideTile}
+            data-tone={i}
+          >
+            <span>{g.category}</span>
+            <h3>{g.title}</h3>
+            <div className={s.miniLines} aria-hidden>
+              <i />
+              <i />
+              <i />
+            </div>
+            <small>
+              {g.time}
+              <Icon size={17} />
+            </small>
+          </Link>
+        ))}
+      </div>
+      <Link className={s.savedLink} href="/app/library">
+        <span>
+          {count ? `В избранном: ${count}` : "Сохраните полезное на потом"}
+        </span>
+        <span>Открыть библиотеку ↗</span>
+      </Link>
+      <div className={s.sectionHeading}>
+        <h2>Поработаем вместе</h2>
+      </div>
+      <div className={s.serviceLinks}>
+        {[
+          [
+            "/app/solutions",
+            "Разработать инструмент",
+            "От заявки до понятного процесса",
+            "↗",
+          ],
+          [
+            "/app/training",
+            "Обучить команду",
+            "Попробовать, разобрать, применить",
+            "✳",
+          ],
+          [
+            "/app/speaking",
+            "Пригласить выступить",
+            "Живой разбор для вашей аудитории",
+            "◉",
+          ],
+        ].map(([href, title, text, mark]) => (
+          <Link key={href} href={href}>
+            <span className={s.serviceMark} aria-hidden>
+              {mark}
+            </span>
+            <span>
+              <strong>{title}</strong>
+              <small>{text}</small>
+            </span>
+            <Icon size={19} />
+          </Link>
+        ))}
+      </div>
+      <Link className={s.authorCard} href="/app/contact">
         <Image
           src="/images/author/portrait.webp"
+          width={100}
+          height={125}
           alt=""
-          width={64}
-          height={80}
         />
         <span>
-          <strong>Сергей Федоренко</strong>
-          <small>Есть задача? Давайте обсудим.</small>
+          <strong>На связи — Сергей.</strong>
+          <small>
+            Опишите задачу своими словами. Начать можно с одного вопроса.
+          </small>
         </span>
-        <ArrowUpRight size={22} aria-hidden />
+        <Icon />
       </Link>
-      <p className={styles.note}>
-        Без регистрации. Прогресс и избранное остаются на этом устройстве.
+      <p className={s.footnote}>
+        Без регистрации. Избранное и прогресс хранятся на этом устройстве до 30
+        дней, если браузер разрешает сохранение.
       </p>
     </div>
   );

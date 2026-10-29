@@ -9,7 +9,7 @@ export default function LaunchNotice() {
     );
     // Query is only used as an allowlisted content identifier, never as identity.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setUnknown(Boolean(id && id !== 'home' && resolveStart(id) === "/app"));
+    setUnknown(Boolean(id && id !== "home" && resolveStart(id) === "/app"));
   }, []);
   return unknown ? (
     <p className="note-panel" role="status">

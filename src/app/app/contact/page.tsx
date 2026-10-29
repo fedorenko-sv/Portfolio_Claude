@@ -1,15 +1,17 @@
 import Contact from "@/components/Contact";
-import { Intro } from "@/components/site/Content";
+import s from "@/components/miniapp/Pocket.module.css";
 export const metadata = { title: "Обсудить задачу" };
 export default function Page() {
   return (
     <>
-      <Intro label="Лично Сергею" title="Начнём с вашей задачи.">
+      <header className={s.pageIntro}>
+        <p>Лично Сергею</p>
+        <h1>С чего начнём?</h1>
         <p>
-          Подготовьте сообщение и перейдите в Telegram. Отправку подтверждаете
-          вы.
+          Расскажите о задаче. Шаблон поможет собрать главное — его можно
+          изменить своими словами.
         </p>
-      </Intro>
+      </header>
       <Contact />
     </>
   );
