@@ -3,6 +3,7 @@ import "./globals.css";
 import "@/styles/site.css";
 import "@/styles/audit.css";
 import "@/styles/visual-refinement.css";
+import "@/styles/contact.css";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {

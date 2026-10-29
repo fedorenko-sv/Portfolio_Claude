@@ -9,10 +9,12 @@ for (const width of [320, 390, 768, 1024, 1440]) {
       ["/solutions", "business"],
     ]) {
       await page.goto(route);
-      if (route !== "/training")
+      if (route !== "/training") {
+        await page.locator(".phone-scene").scrollIntoViewIfNeeded();
         await expect(page.locator(".phone-scene.scene-ready")).toBeVisible({
           timeout: 20000,
         });
+      }
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,

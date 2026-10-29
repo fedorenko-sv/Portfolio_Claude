@@ -38,9 +38,9 @@ export default function Business() {
       <section className="business-editorial theme-dark">
         <div className="wrap">
           <h1>
-            Технологии под
+            Свяжем рабочий процесс
             <br />
-            вашу рабочую задачу.
+            в понятную систему.
           </h1>
           <div className="business-intro-row">
             <div>
@@ -60,7 +60,7 @@ export default function Business() {
                 сценарий.
               </p>
               <div className="actions">
-                <Link href="/contact" className="button">
+                <Link href="/contact?type=development" className="button">
                   Разобрать задачу
                   <Icon />
                 </Link>

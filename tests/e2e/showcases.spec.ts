@@ -44,6 +44,7 @@ test("home model renders and shared palette reaches the Mini App", async ({
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/");
+    await page.locator(".phone-scene").scrollIntoViewIfNeeded();
     await expect(page.locator(".phone-scene.scene-ready")).toBeVisible({timeout:20000});
     await expect(page.locator(".phone-scene canvas")).toBeVisible();
     if (process.env.DESIGN_CAPTURE_DIR) {

@@ -1,0 +1,119 @@
+/* Direct contact: a readable draft, no server submission. */
+.contact-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.7fr);
+  gap: 75px;
+  padding-block: 30px 80px;
+}
+.contact-workspace h2 {
+  font-size: 36px;
+  letter-spacing: -0.04em;
+}
+.contact-workspace textarea {
+  width: 100%;
+  display: block;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--graphite);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.7;
+  border-radius: 0;
+  resize: vertical;
+  margin: 12px 0 24px;
+  min-height: 260px;
+}
+.draft-label {
+  font-size: 13px;
+  color: var(--muted-light);
+}
+.contact-workspace .actions {
+  gap: 22px;
+  align-items: center;
+}
+.contact-status {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted-light);
+  margin-top: 18px;
+}
+.contact-aside {
+  padding-top: 24px;
+}
+.editorial-quote {
+  font-family: var(--font-editorial);
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+.contact-aside > p:not(:first-child) {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--muted-light);
+}
+.contact-aside a {
+  text-decoration: underline;
+}
+.desktop-nav {
+  gap: 24px;
+}
+.desktop-nav a {
+  font-size: 14px;
+}
+@media (max-width: 1050px) {
+  .desktop-nav {
+    gap: 16px;
+  }
+  .desktop-nav a {
+    font-size: 12px;
+  }
+  .contact-workspace {
+    gap: 35px;
+  }
+}
+@media (max-width: 700px) {
+  .contact-workspace {
+    grid-template-columns: 1fr;
+    padding-block: 0 45px;
+    gap: 20px;
+  }
+  .contact-workspace textarea {
+    padding: 16px;
+    font-size: 14px;
+  }
+  .contact-workspace .actions {
+    align-items: start;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .contact-workspace .button {
+    font-size: 14px;
+  }
+  .contact-aside {
+    padding-top: 0;
+  }
+  .editorial-quote {
+    font-size: 30px;
+  }
+}
+.phone-motion {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  z-index: 3;
+  border: 0;
+  border-bottom: 1px solid #ffffff66;
+  background: var(--graphite);
+  color: var(--chalk);
+  font: inherit;
+  font-size: 11px;
+  padding: 10px 12px;
+  cursor: pointer;
+  min-height: 44px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .phone-motion {
+    display: none;
+  }
+}

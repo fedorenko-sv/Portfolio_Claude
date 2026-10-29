@@ -6,7 +6,11 @@ export default function TrackedLink({
   className,
   id = "contact",
   event = "contact_click",
+  topic,
+  placement,
 }: {
+  topic?: string;
+  placement?: string;
   href: string;
   children: React.ReactNode;
   className?: string;
@@ -17,7 +21,7 @@ export default function TrackedLink({
     <a
       href={href}
       className={className}
-      onClick={() => track(event, { id, source: "website" })}
+      onClick={() => track(event, { id, source: "website", topic, placement })}
     >
       {children}
     </a>

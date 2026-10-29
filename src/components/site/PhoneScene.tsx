@@ -12,6 +12,9 @@ export default function PhoneScene({
   interactive?: boolean;
 }) {
   const active = useRef(false);
+  const paused = useRef(false);
+  const resumeMotion = useRef<() => void>(() => {});
+  const [motionPaused, setMotionPaused] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [liveReady, setLiveReady] = useState(false);
   const activate = useRef<(on: boolean) => void>(() => {});
@@ -281,6 +284,9 @@ export default function PhoneScene({
       const observer = new ResizeObserver(resize);
       observer.observe(element);
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const saveData = (
+        navigator as Navigator & { connection?: { saveData?: boolean } }
+      ).connection?.saveData;
       let targetX = 0.04,
         targetY = -0.17;
       let hovering = false,
@@ -288,7 +294,15 @@ export default function PhoneScene({
         animation = 0;
       function animate(time: number) {
         animation = 0;
-        if (cancelled || !visible || reduced.matches) return;
+        if (
+          cancelled ||
+          !visible ||
+          reduced.matches ||
+          saveData ||
+          document.hidden ||
+          paused.current
+        )
+          return;
         if (!active.current) {
           const idle = hovering ? 0 : Math.sin(time * 0.00065) * 0.22;
           phone.rotation.y += (targetY + idle - phone.rotation.y) * 0.075;
@@ -299,9 +313,16 @@ export default function PhoneScene({
         animation = requestAnimationFrame(animate);
       }
       function start() {
-        if (!animation && visible && !reduced.matches)
+        if (
+          !animation &&
+          visible &&
+          !reduced.matches &&
+          !saveData &&
+          !paused.current
+        )
           animation = requestAnimationFrame(animate);
       }
+      resumeMotion.current = start;
       const visibility = new IntersectionObserver(([entry]) => {
         visible = entry.isIntersecting;
         if (visible) start();
@@ -335,6 +356,13 @@ export default function PhoneScene({
           render();
         } else start();
       }
+      const tabVisibility = () => {
+        if (document.hidden) {
+          cancelAnimationFrame(animation);
+          animation = 0;
+        } else start();
+      };
+      document.addEventListener("visibilitychange", tabVisibility);
       reduced.addEventListener("change", motionChanged);
       element.addEventListener("pointermove", move);
       element.addEventListener("pointerleave", reset);
@@ -345,6 +373,7 @@ export default function PhoneScene({
         visibility.disconnect();
         cancelAnimationFrame(animation);
         reduced.removeEventListener("change", motionChanged);
+        document.removeEventListener("visibilitychange", tabVisibility);
         if (active.current) document.body.style.overflow = previousOverflow;
         htmlRenderer.domElement.remove();
         window.removeEventListener("message", receive);
@@ -365,8 +394,18 @@ export default function PhoneScene({
         renderer.domElement.remove();
       };
     }
-    void setup();
+    const lazy = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          lazy.disconnect();
+          void setup();
+        }
+      },
+      { rootMargin: "700px" },
+    );
+    lazy.observe(element);
     return () => {
+      lazy.disconnect();
       cancelled = true;
       dispose();
     };
@@ -417,6 +456,20 @@ export default function PhoneScene({
           }}
         >
           {expanded ? "Закрыть меню" : "Управлять меню"}
+        </button>
+      )}
+      {!expanded && ready && (
+        <button
+          type="button"
+          className="phone-motion"
+          aria-pressed={motionPaused}
+          onClick={() => {
+            paused.current = !paused.current;
+            setMotionPaused(paused.current);
+            if (!paused.current) resumeMotion.current();
+          }}
+        >
+          {motionPaused ? "Продолжить движение" : "Приостановить движение"}
         </button>
       )}
       {expanded && !liveReady && (

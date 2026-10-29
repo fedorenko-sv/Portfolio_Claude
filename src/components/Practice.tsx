@@ -316,8 +316,8 @@ export default function Practice({ app = false }: { app?: boolean }) {
               >
                 Посмотреть форматы обучения ↗
               </Link>
-              <Link className="text-link" href="/contact">
-                Обсудить задачу ↗
+              <Link className="text-link" href="/contact?type=training">
+                Разобрать такие задачи с командой ↗
               </Link>
             </div>
           </>
