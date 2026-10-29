@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { author } from "@/content/author";
 import Icon from "@/components/site/Icon";
+import WorkingNotes from "@/components/site/WorkingNotes";
 import styles from "@/components/site/Editorial.module.css";
 export const metadata = {
   title: "Обо мне",
@@ -38,6 +39,7 @@ export default function About() {
           </figure>
         </div>
       </section>
+      <WorkingNotes />
       <section className={styles.section}>
         <div className="wrap">
           <div className={styles.aboutBody}>

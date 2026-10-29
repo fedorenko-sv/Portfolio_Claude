@@ -58,7 +58,7 @@ export default function PracticeObject() {
               alt="Вишнёвая папка «Практика ИИ»"
             />
             <span>
-              {open ? "Убрать лист" : "Открыть папку"}
+              {open ? "Убрать рабочий лист" : "Открыть рабочий лист"}
               <Icon name={open ? "down" : "arrow"} size={18} />
             </span>
           </button>

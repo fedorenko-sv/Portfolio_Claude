@@ -13,7 +13,7 @@ export default function SiteLayout({
       </a>
       <Header />
       <NavigationMotion />
-      <main id="main" className="site-main">
+      <main id="main" className="site-main" aria-label="Содержание страницы Сергея Федоренко">
         {children}
       </main>
       <div className="footer-surface theme-dark">

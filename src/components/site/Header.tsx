@@ -22,7 +22,7 @@ export default function Header() {
   }
   return (
     <div className="header-surface theme-dark">
-      <header className="site-header wrap">
+      <header className="site-header wrap" aria-label="Сайт Сергея Федоренко">
         <Link
           href="/"
           className="wordmark"

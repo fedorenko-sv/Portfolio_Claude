@@ -31,7 +31,7 @@ test("desk objects remain selectable by touch with reduced motion", async ({
   );
   await expect(room.locator("[data-hovered]")).toHaveAttribute(
     "data-hovered",
-    "-1",
+    "1",
   );
   await context.close();
 });

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { author } from "@/content/author";
 import { ProgramCards } from "@/components/site/Content";
 import PracticeObject from "@/components/site/PracticeObject";
+import LessonLab from "@/components/site/LessonLab";
 import Icon from "@/components/site/Icon";
 import styles from "@/components/site/Editorial.module.css";
 export const metadata = {
@@ -85,6 +86,7 @@ export default function Training() {
           </div>
         </div>
       </section>
+      <LessonLab />
       <section id="programs" className={styles.section}>
         <div className="wrap">
           <p className={styles.smallLabel}>Обучение по запросу</p>

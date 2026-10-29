@@ -80,7 +80,7 @@ export default function WorkroomScene({
     };
   }, []);
   return (
-    <div className={styles.scene}>
+    <div className={styles.scene} data-ready={ready}>
       <div className={`${styles.fallback} ${ready ? styles.hidden : ""}`}>
         <Image
           src="/images/workroom-still.png"
@@ -96,6 +96,32 @@ export default function WorkroomScene({
         ref={host}
         aria-hidden="true"
       />
+      <div
+        className={styles.hotspots}
+        role="group"
+        aria-label="Предметы на столе"
+      >
+        {objectNames.map((name, index) => (
+          <button
+            key={name}
+            type="button"
+            className={styles.hotspot}
+            data-object={index}
+            aria-label={name}
+            aria-pressed={hovered === index}
+            onClick={() => {
+              controller.current?.engage(index);
+              setHovered(index);
+              onSelect(index);
+            }}
+          >
+            <span>
+              {["Разработка", "Обучение", "Выступления"][index]}
+              <b aria-hidden="true">↗</b>
+            </span>
+          </button>
+        ))}
+      </div>
       <span
         className={styles.stageCaption}
         data-hovered={hovered}

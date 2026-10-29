@@ -1,38 +1,12 @@
 import Link from "next/link";
 import LiveProduct from "@/components/site/LiveProduct";
 import styles from "@/components/site/Editorial.module.css";
-import ProjectViewer from "@/components/site/ProjectViewer";
+import ProcessWorkbench from "@/components/site/ProcessWorkbench";
 import Icon from "@/components/site/Icon";
 export const metadata = {
   title: "Для бизнеса",
   alternates: { canonical: "/solutions" },
 };
-const directions = [
-  [
-    "Заявки и клиенты",
-    "CRM, ответственные и следующий шаг по каждой заявке.",
-    "edcrm",
-    "CRM для образовательных центров",
-  ],
-  [
-    "Размещение и расписание",
-    "Бронирование, ресурсы и согласованные изменения.",
-    "rehab",
-    "Система размещения и сопровождения гостей",
-  ],
-  [
-    "Меню и гостевой сервис",
-    "Выбор блюда, просмотр меню и понятный путь гостя.",
-    "gastro",
-    "Интерактивное меню для ресторана",
-  ],
-  [
-    "Уроки и учебные материалы",
-    "Материалы, учебные группы и результаты участников.",
-    "english-lab",
-    "Платформа интерактивных уроков и лекций",
-  ],
-];
 export default function Business() {
   return (
     <>
@@ -75,26 +49,7 @@ export default function Business() {
         </div>
       </section>
       <LiveProduct />
-      <section className="business-grid-section wrap">
-        <div className="section-rule">
-          <p className="eyebrow">Что можно собрать</p>
-          <span />
-        </div>
-        <div className="business-grid">
-          {directions.map(([title, text, id, project]) => (
-            <article key={id}>
-              <h2>{title}</h2>
-              <p>{text}</p>
-              <ProjectViewer
-                id={id}
-                title={project}
-                className="text-link"
-                label="Открыть приложение"
-              />
-            </article>
-          ))}
-        </div>
-      </section>
+      <ProcessWorkbench />
       <section className="business-method wrap">
         <div className="section-rule">
           <p className="eyebrow">Как мы работаем</p>
@@ -103,9 +58,18 @@ export default function Business() {
         <h2>Начнём с понятного шага.</h2>
         <div>
           {[
-            ["Разберём задачу", "Процесс, роли, ограничения."],
-            ["Проверим сценарий", "Прототип и критерии результата."],
-            ["Спланируем пилот", "Объём работы и следующий шаг."],
+            [
+              "Разберём задачу",
+              "Покажите, где сейчас живёт процесс: в таблице, переписке или нескольких системах. Зафиксируем роли и точку, в которой теряется контекст.",
+            ],
+            [
+              "Проверим сценарий",
+              "Соберём путь на одном примере: от входящего запроса до результата. До разработки договоримся, по каким признакам поймём, что он работает.",
+            ],
+            [
+              "Спланируем пилот",
+              "Выберем небольшой участок для запуска, подготовим данные и список ограничений. Определим, кто проверяет результат и что делаем дальше.",
+            ],
           ].map(([h, p]) => (
             <article key={h}>
               <div>

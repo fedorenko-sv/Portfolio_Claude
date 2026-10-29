@@ -3,6 +3,7 @@ import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeom
 
 export type WorkroomController = {
   select: (index: number) => void;
+  engage: (index: number) => void;
   visible: (value: boolean) => void;
   motion: (value: boolean) => void;
   dispose: () => void;
@@ -481,7 +482,8 @@ export function createWorkroom(
       0.045;
     animate();
   }
-  function leave() {
+  function leave(e: PointerEvent) {
+    if (e.pointerType === "touch" || !fine.matches) return;
     tilt = 0;
     tiltX = 0;
     hover(-1);
@@ -508,6 +510,7 @@ export function createWorkroom(
     }
     down = null;
     selected = index;
+    if (!fine.matches) hover(index);
     if (!reduced) {
       burstAt = performance.now();
       burstIndex = index;
@@ -550,6 +553,16 @@ export function createWorkroom(
         burstIndex = index;
       }
       selected = index;
+      if (!fine.matches) hover(index);
+      animate();
+    },
+    engage(index) {
+      selected = index;
+      hover(index);
+      if (!reduced) {
+        burstAt = performance.now();
+        burstIndex = index;
+      }
       animate();
     },
     visible(value) {
