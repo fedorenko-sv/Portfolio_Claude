@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TrackedLink from "@/components/shared/TrackedLink";
 import { offers } from "@/content/offers";
 import WorkroomScene from "./WorkroomScene";
@@ -25,6 +25,21 @@ const details = [
 ];
 export default function Workroom() {
   const [active, setActive] = useState(0);
+  const panel = useRef<HTMLDivElement>(null);
+  const previous = useRef(active);
+  useEffect(() => {
+    if (previous.current === active) return;
+    previous.current = active;
+    if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+    const animation = panel.current?.animate(
+      [
+        { opacity: 0.4, transform: "translateY(6px)" },
+        { opacity: 1, transform: "translateY(0)" },
+      ],
+      { duration: 200, easing: "cubic-bezier(0.23,1,0.32,1)" },
+    );
+    return () => animation?.cancel();
+  }, [active]);
   const offer = offers[active],
     detail = details[active];
   return (
@@ -43,6 +58,7 @@ export default function Workroom() {
             </h2>
             <div
               className={styles.detail}
+              ref={panel}
               aria-live="polite"
               aria-atomic="true"
             >
@@ -68,7 +84,7 @@ export default function Workroom() {
             </div>
           </div>
           <div className={styles.objects}>
-            <WorkroomScene active={active} />
+            <WorkroomScene active={active} onSelect={setActive} />
             <div
               className={styles.tabs}
               role="group"
@@ -87,7 +103,7 @@ export default function Workroom() {
               ))}
             </div>
             <p className={styles.hint}>
-              Выберите направление — начнём с вашей ситуации.
+              Нажмите на предмет или выберите направление.
             </p>
           </div>
         </div>

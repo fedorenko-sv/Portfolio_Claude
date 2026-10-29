@@ -5,6 +5,7 @@ import { filmFor } from "@/content/media";
 import { track } from "@/lib/analytics";
 import Icon from "./Icon";
 import styles from "./Growth.module.css";
+import SurfaceLight from "./SurfaceLight";
 export default function ProjectFilm({
   id,
   placement = "cases",
@@ -77,6 +78,7 @@ export default function ProjectFilm({
           </span>
           <Icon />
         </span>
+        <SurfaceLight />
       </button>
       <dialog
         ref={dialog}

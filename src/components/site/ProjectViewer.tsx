@@ -84,7 +84,6 @@ export default function ProjectViewer({
         className={preview ? `project-preview preview-${id}` : className}
         onClick={launch}
         aria-haspopup="dialog"
-        aria-label={preview ? `Открыть приложение: ${title}` : undefined}
       >
         {preview ? (
           <>
@@ -97,12 +96,13 @@ export default function ProjectViewer({
               </span>
               <Image
                 src={`/images/projects/${id === "gastro" ? "gastro-mobile" : id}.webp`}
-                alt={`Интерфейс: ${title}`}
+                alt=""
                 width={id === "gastro" ? 390 : 1280}
                 height={id === "gastro" ? 775 : 820}
                 sizes="(max-width: 700px) 90vw, 50vw"
               />
-            </span>
+            </span>{" "}
+            {id === "gastro" && <span className="sr-only">{title} </span>}
             <span className="preview-action">
               Открыть приложение <Icon />
             </span>

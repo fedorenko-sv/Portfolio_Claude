@@ -11,11 +11,11 @@ test("visible project screens launch real applications and restore keyboard focu
   ).toBe(true);
   const preview = page
     .getByRole("button", {
-      name: "Открыть приложение: CRM для образовательных центров",
+      name: "CRM для образовательных центров Открыть приложение",
       exact: true,
     })
     .first();
-  await expect(preview.getByRole("img")).toBeVisible();
+  await expect(preview.locator("img")).toBeVisible();
   await expect
     .poll(() =>
       preview

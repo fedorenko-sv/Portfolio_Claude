@@ -358,14 +358,14 @@ p {
   grid-template-columns: 1fr 1fr;
   gap: 64px;
 }
-.project-row h3 {
+.project-row .project-title {
   font-size: var(--text-project);
   margin: 0;
   max-width: 560px;
   line-height: 1.12;
   letter-spacing: -0.035em;
 }
-.project-row h3 a:hover {
+.project-row .project-title a:hover {
   color: var(--cherry);
 }
 .project-description > p {
@@ -1052,30 +1052,11 @@ p {
 .miniapp {
   font-family: var(--font-sans);
 }
-.miniapp h1 {
-  font-family: var(--font-sans);
-  font-weight: 750;
-  font-size: 40px;
-  line-height: 1.08;
-}
-.miniapp h2 {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 30px;
-}
-.miniapp .program-row {
-  grid-template-columns: 24px 1fr;
-  gap: 16px;
-}
-.miniapp .program-result {
-  grid-column: 2;
-  padding: 0;
-}
 .miniapp .project-row-body {
   grid-template-columns: 1fr;
   gap: 20px;
 }
-.miniapp .project-row h3 {
+.miniapp .project-row .project-title {
   font-size: 28px;
 }
 .miniapp .contact-band {
@@ -1352,7 +1333,7 @@ p {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  .project-row h3 {
+  .project-row .project-title {
     font-size: 29px;
     max-width: 550px;
   }
@@ -1719,7 +1700,7 @@ p {
     height: 400px;
     margin-inline: -16px;
   }
-  .project-row h3 {
+  .project-row .project-title {
     font-size: 26px;
   }
   .page-hero h1,

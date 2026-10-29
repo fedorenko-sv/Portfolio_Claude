@@ -1,97 +1,367 @@
+/* The application has its own page scale; website grids must not size its sheets. */
+:where(.miniapp) h1,
+:where(.miniapp) h2 {
+  font-family: var(--font-editorial);
+  font-weight: 450;
+}
 .miniapp {
-  max-width: 760px;
+  --app-sheet: #fffef9;
+  --app-edge: #dedfd8;
+  --radius: 14px;
+  max-width: 640px;
   color: var(--ink);
-  --radius: 12px;
+  box-shadow: 0 0 0 1px var(--app-edge);
+  padding-bottom: calc(112px + var(--tg-safe-bottom));
+}
+.miniapp[data-theme="dark"] {
+  --paper: #242525;
+  --ink: #f4f5ee;
+  --muted: #b8bbb5;
+  --surface: #303232;
+  --line: #555957;
+  --accent: #e9a5b2;
+  --app-sheet: #2e3030;
+  --app-edge: #454747;
 }
 .miniapp .app-header {
-  padding: 20px 24px;
+  padding: 18px 24px;
   background: var(--paper);
+  border-bottom: 1px solid var(--app-edge);
+  gap: 12px;
+}
+.miniapp .app-header > a:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.miniapp .app-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 39px;
+  padding-bottom: 4px;
+  background: #8d2034;
+  color: #f4f5ee;
+  border-radius: 3px 9px 9px 3px;
+  font: 500 29px var(--font-editorial);
+}
+.miniapp .app-header .app-brand {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+.miniapp .app-header .app-brand > span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 450;
+  margin-top: 5px;
+  letter-spacing: 0;
+}
+.miniapp .app-header > a:last-child {
+  font-size: 11px;
+  gap: 6px;
+  color: var(--muted);
 }
 .miniapp .app-nav {
-  width: min(760px, 100%);
-  background: var(--paper);
-  padding-top: 8px;
-  box-shadow: 0 -6px 24px #00000006;
+  width: min(592px, calc(100% - 24px));
+  bottom: max(10px, var(--tg-safe-bottom), env(safe-area-inset-bottom));
+  padding: 8px 6px;
+  border: 1px solid #ffffff26;
+  border-radius: 23px;
+  background: #242525f5;
+  color: #c9ccc6;
+  box-shadow: 0 10px 30px #0003;
+  backdrop-filter: blur(12px);
+  gap: 0;
 }
 .miniapp .app-nav a {
   flex: 1;
   min-width: 0;
+  display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 8px 2px;
-  font-size: 10px;
-  border-radius: 10px;
+  gap: 3px;
+  padding: 4px 0 3px;
+  min-height: 56px;
+  font-size: 9px;
+  border-radius: 14px;
+  transition: color var(--motion-state) ease;
+  line-height: 1.5;
+}
+.miniapp .app-nav .app-nav-icon {
+  width: 38px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  transition:
+    background var(--motion-state) ease,
+    transform var(--motion-feedback) var(--motion-out);
 }
 .miniapp .app-nav [aria-current="page"] {
-  background: var(--surface);
+  color: #fff;
+  background: transparent;
+}
+.miniapp .app-nav [aria-current="page"] .app-nav-icon {
+  color: #f4f5ee;
+  background: #8d2034;
+}
+.miniapp .app-nav a:active .app-nav-icon {
+  transform: scale(0.92);
+}
+.miniapp .app-nav a:focus-visible {
+  outline-color: #e9a5b2;
+  outline-offset: 0;
 }
 .miniapp .app-content {
   padding: 0 24px;
+  min-width: 0;
+}
+.miniapp .page-intro {
+  width: 100%;
+  margin: 0;
+  padding: 32px 0 24px;
+  background: none;
+  color: var(--ink);
+}
+.miniapp .page-intro .eyebrow {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--accent);
+  font-size: 12px;
+  margin-bottom: 14px;
 }
 .miniapp .app-content .page-intro h1 {
-  font-size: clamp(34px, 7vw, 48px);
+  font: 500 clamp(31px, 7.8vw, 43px)/1.15 var(--font-editorial);
+  letter-spacing: -0.05em;
+  margin-bottom: 16px;
+}
+.miniapp .page-intro .intro-text {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.miniapp .page-intro .intro-text p:last-child {
+  margin-bottom: 0;
+}
+.miniapp .wrap {
+  width: 100%;
+  margin-inline: 0;
+}
+.miniapp .reading {
+  width: 100%;
+  padding-bottom: 24px;
+}
+.miniapp .reading h2 {
+  font-size: 27px;
+}
+.miniapp .reading p,
+.miniapp .reading li {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.miniapp .button {
+  font-size: 13px;
+  min-height: 48px;
+  padding: 13px 18px;
+  gap: 14px;
+  border-radius: 10px;
+  max-width: 100%;
+}
+.miniapp .text-link,
+.miniapp .subtle-link {
+  font-size: 13px;
+  gap: 14px;
+  max-width: 100%;
+}
+.miniapp .button svg,
+.miniapp .text-link svg {
+  flex-shrink: 0;
+}
+.miniapp[data-theme="dark"] .button:not(.secondary) {
+  background: #e9a5b2;
+  color: #242525;
+  border-color: #e9a5b2;
+}
+.miniapp .note-panel {
+  padding: 24px;
+  margin: 18px 0;
+  background: var(--app-sheet);
+  border: 1px solid var(--app-edge);
+  border-radius: 14px;
+}
+.miniapp .note-panel h3,
+.miniapp .note-panel h2 {
+  font-size: 26px;
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+.miniapp .note-panel p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.miniapp .project-row {
+  display: block;
+  padding: 24px 0;
+}
+.miniapp .project-index {
+  margin: 0 0 14px;
+}
+.miniapp .project-index .eyebrow {
+  font-size: 10px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.miniapp .project-row > .project-preview {
+  width: 100%;
+  margin: 0 0 20px;
+}
+.miniapp .project-row-body {
+  display: block;
+}
+.miniapp .project-row .project-title {
+  font-size: 28px;
+  margin-bottom: 14px;
+  max-width: 100%;
+}
+.miniapp .project-description p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.miniapp .project-description .actions {
+  gap: 12px;
+}
+.miniapp .project-journey {
+  font-size: 11px;
+  gap: 12px;
+  margin-top: 18px;
+}
+.miniapp .case-introduction {
+  padding-block: 24px;
+}
+.miniapp .case-introduction h2 {
+  font-size: 28px;
+}
+.miniapp .case-workspace {
+  padding: 22px 18px;
+  border-radius: 14px;
+}
+.miniapp .case-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+}
+.miniapp .case-flow li {
+  font-size: 13px;
+}
+.miniapp .case-launch {
+  display: block;
+}
+.miniapp .case-launch h2 {
+  font-size: 25px;
+}
+.miniapp .case-details {
+  padding-block: 28px;
+}
+.miniapp .case-details h2 {
+  font-size: 26px;
+}
+.miniapp .case-insight {
+  font-size: 21px;
+}
+.miniapp .contact-band {
+  padding: 24px;
+  border-radius: 14px;
+}
+.miniapp .contact-band-inner {
+  display: block;
+}
+.miniapp .contact-band h2 {
+  font-size: 28px;
+}
+.miniapp .contact-band p {
+  font-size: 14px;
 }
 .miniapp .contact-workspace.wrap {
-  width: 100%;
   display: block;
-  padding: 0 0 32px;
-  margin: 0;
+  padding: 0 0 24px;
 }
 .miniapp .contact-workspace h2 {
   font-size: 26px;
 }
 .miniapp .contact-workspace > div + div {
-  margin-top: 32px;
+  margin-top: 28px;
 }
 .miniapp .contact-workspace textarea {
   width: 100%;
   box-sizing: border-box;
-  font-size: 15px;
+  font-size: 16px;
+  background: var(--app-sheet);
 }
 .miniapp .contact-workspace .actions {
   gap: 12px;
 }
-.miniapp .contact-workspace .button {
-  font-size: 14px;
+.miniapp .topic-options {
+  gap: 8px;
+}
+.miniapp .topic-options label {
+  font-size: 13px;
+  border-radius: 8px;
 }
 .miniapp .mini-speaking {
-  padding: 28px 0 40px;
+  padding: 28px 0 24px;
 }
 .miniapp .mini-speaking h2 {
-  font-size: 26px;
+  font-size: 28px;
   line-height: 1.2;
   margin-bottom: 20px;
 }
 .miniapp .mini-speaking li {
+  font-size: 14px;
   margin: 15px 0;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 .miniapp .mini-speaking p {
+  font-size: 14px;
   margin: 25px 0;
   color: var(--muted);
 }
-.miniapp .intro-text {
-  line-height: 1.65;
+.miniapp .practice-shell {
+  margin-top: 8px;
 }
-.miniapp button:focus-visible,
-.miniapp a:focus-visible {
+.miniapp .practice-panel {
+  padding: 22px;
+  border-radius: 14px;
+  background: var(--app-sheet);
+}
+.miniapp .practice-panel h2 {
+  font-size: 27px;
+}
+.miniapp .practice-form textarea {
+  font-size: 16px;
+}
+.miniapp :is(button, a):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
-}
-.miniapp .program-empty {
-  padding-inline: 0;
 }
 @media (max-width: 390px) {
   .miniapp .app-content {
     padding-inline: 18px;
   }
   .miniapp .app-header {
-    padding-inline: 18px;
+    padding: 15px 18px;
   }
-  .miniapp .topic-options {
-    gap: 8px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .miniapp .app-nav a:hover .app-nav-icon {
+    transform: translateY(-2px);
   }
-  .miniapp .topic-options label {
-    font-size: 13px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .miniapp .app-nav a:hover .app-nav-icon,
+  .miniapp .app-nav a:active .app-nav-icon {
+    transform: none;
   }
 }

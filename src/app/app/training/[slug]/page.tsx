@@ -13,5 +13,5 @@ export default async function Page({
   const { slug } = await params;
   const item = catalogFor().programs.find((x) => x.slug === slug);
   if (!item) notFound();
-  return <ProgramDetail item={item} />;
+  return <ProgramDetail item={item} app />;
 }
