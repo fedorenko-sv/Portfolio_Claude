@@ -4,6 +4,14 @@ import * as practice from "../src/lib/practice.ts";
 import * as content from "../src/content/catalog.ts";
 import * as links from "../src/lib/deeplinks.ts";
 
+test("Mini App links stay local until a valid bot is configured and allowlist launch targets", () => {
+  assert.equal(typeof links.miniAppLink, "function");
+  assert.equal(links.miniAppLink(undefined, "verify-ai"), "/app/materials/verify-ai");
+  assert.equal(links.miniAppLink("https://evil.test", "verify-ai"), "/app/materials/verify-ai");
+  assert.equal(links.miniAppLink("@FedorenkoPracticeBot", "verify-ai"), "https://t.me/FedorenkoPracticeBot?startapp=verify-ai");
+  assert.equal(links.miniAppLink("FedorenkoPracticeBot", "https://evil.test"), "https://t.me/FedorenkoPracticeBot?startapp=home");
+});
+
 test("high-risk task always requires specialist review", () => {
   assert.equal(typeof practice.recommend, "function");
   assert.match(practice.recommend({ risk: "high" }), /специалист/);

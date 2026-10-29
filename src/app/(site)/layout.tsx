@@ -26,6 +26,7 @@ export default function SiteLayout({
           </div>
           <nav aria-label="Ссылки в подвале">
             <Link href="/materials">Материалы</Link>
+            <Link href="/app">Практика Сергея</Link>
             <Link href="/speaking">Выступления</Link>
             <Link href="/contact">Контакт</Link>
             <Link href="/privacy">Конфиденциальность</Link>

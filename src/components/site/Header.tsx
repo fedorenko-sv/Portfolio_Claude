@@ -58,7 +58,7 @@ export default function Header() {
         <button
           ref={trigger}
           className="menu-trigger"
-          aria-label="Открыть навигацию"
+          aria-label="Открыть навигацию — меню"
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => {

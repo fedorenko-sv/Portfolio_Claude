@@ -1,0 +1,97 @@
+.miniapp {
+  max-width: 760px;
+  color: var(--ink);
+  --radius: 12px;
+}
+.miniapp .app-header {
+  padding: 20px 24px;
+  background: var(--paper);
+}
+.miniapp .app-nav {
+  width: min(760px, 100%);
+  background: var(--paper);
+  padding-top: 8px;
+  box-shadow: 0 -6px 24px #00000006;
+}
+.miniapp .app-nav a {
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 2px;
+  font-size: 10px;
+  border-radius: 10px;
+}
+.miniapp .app-nav [aria-current="page"] {
+  background: var(--surface);
+}
+.miniapp .app-content {
+  padding: 0 24px;
+}
+.miniapp .app-content .page-intro h1 {
+  font-size: clamp(34px, 7vw, 48px);
+}
+.miniapp .contact-workspace.wrap {
+  width: 100%;
+  display: block;
+  padding: 0 0 32px;
+  margin: 0;
+}
+.miniapp .contact-workspace h2 {
+  font-size: 26px;
+}
+.miniapp .contact-workspace > div + div {
+  margin-top: 32px;
+}
+.miniapp .contact-workspace textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+.miniapp .contact-workspace .actions {
+  gap: 12px;
+}
+.miniapp .contact-workspace .button {
+  font-size: 14px;
+}
+.miniapp .mini-speaking {
+  padding: 28px 0 40px;
+}
+.miniapp .mini-speaking h2 {
+  font-size: 26px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.miniapp .mini-speaking li {
+  margin: 15px 0;
+  line-height: 1.65;
+}
+.miniapp .mini-speaking p {
+  margin: 25px 0;
+  color: var(--muted);
+}
+.miniapp .intro-text {
+  line-height: 1.65;
+}
+.miniapp button:focus-visible,
+.miniapp a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.miniapp .program-empty {
+  padding-inline: 0;
+}
+@media (max-width: 390px) {
+  .miniapp .app-content {
+    padding-inline: 18px;
+  }
+  .miniapp .app-header {
+    padding-inline: 18px;
+  }
+  .miniapp .topic-options {
+    gap: 8px;
+  }
+  .miniapp .topic-options label {
+    font-size: 13px;
+  }
+}

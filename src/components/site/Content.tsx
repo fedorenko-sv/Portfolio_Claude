@@ -143,7 +143,10 @@ export function ProgramCards({ base = "/training" }: { base?: string }) {
         Обсудим аудиторию, учебные задачи, инструменты и способ проверки
         результата.
       </p>
-      <Link className="text-link" href="/contact?type=training">
+      <Link
+        className="text-link"
+        href={`${base.startsWith("/app/") ? "/app" : ""}/contact?type=training`}
+      >
         Обсудить обучение
         <Icon />
       </Link>
@@ -158,7 +161,13 @@ export function CaseDetail({ item }: { item: Case }) {
       <Intro label={item.audience} title={item.title}>
         <p>{item.summary}</p>
       </Intro>
-      <section className={`wrap ${growth.caseFilm}`}><ProjectFilm id={item.id}/><p>В записи — отдельная локальная версия на учебных данных. Во встроенном просмотре доступны выбранные действия.</p></section>
+      <section className={`wrap ${growth.caseFilm}`}>
+        <ProjectFilm id={item.id} />
+        <p>
+          В записи — отдельная локальная версия на учебных данных. Во встроенном
+          просмотре доступны выбранные действия.
+        </p>
+      </section>
       <section className="case-introduction wrap">
         <p className="eyebrow">Задача проекта</p>
         <h2>{item.problem}</h2>

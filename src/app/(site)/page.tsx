@@ -1,8 +1,6 @@
 import Link from "next/link";
-import TrackedLink from "@/components/shared/TrackedLink";
 import Image from "next/image";
 import { author } from "@/content/author";
-import { offers } from "@/content/offers";
 import { projectFilms } from "@/content/media";
 import PhoneScene from "@/components/site/PhoneScene";
 import ProjectViewer from "@/components/site/ProjectViewer";
@@ -10,6 +8,9 @@ import ProjectFilm from "@/components/site/ProjectFilm";
 import AuthorProof from "@/components/site/AuthorProof";
 import PracticeObject from "@/components/site/PracticeObject";
 import Icon from "@/components/site/Icon";
+import Workroom from '@/components/site/Workroom';
+import MiniAppFeature from '@/components/site/MiniAppFeature';
+import { miniAppLink } from '@/lib/deeplinks';
 import styles from "@/components/site/Growth.module.css";
 export const metadata = { alternates: { canonical: "/" } };
 export default function Home() {
@@ -65,29 +66,7 @@ export default function Home() {
           </figure>
         </div>
       </section>
-      <section
-        className={`wrap ${styles.offers}`}
-        aria-label="Направления работы"
-      >
-        {offers.map((o) => (
-          <TrackedLink
-            href={o.href}
-            key={o.id}
-            className={styles.offer}
-            event="service_select"
-            topic={o.id}
-            placement="home"
-          >
-            <p className="eyebrow">{o.note}</p>
-            <h2>{o.title}</h2>
-            <p>{o.text}</p>
-            <span>
-              {o.action}
-              <Icon />
-            </span>
-          </TrackedLink>
-        ))}
-      </section>
+      <Workroom />
       <section className={styles.projects}>
         <div className="wrap">
           <div className={styles.rule}>
@@ -202,6 +181,7 @@ export default function Home() {
         </div>
       </section>
       <PracticeObject />
+      <MiniAppFeature launchUrl={miniAppLink(process.env.TELEGRAM_BOT_USERNAME)} />
       <section className={`wrap ${styles.closing}`}>
         <p className="eyebrow">Разработка · обучение · выступления</p>
         <Link href="/contact">
