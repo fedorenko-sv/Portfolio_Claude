@@ -57,7 +57,7 @@ export default function ProjectFilm({
         ref={trigger}
         type="button"
         className={`${styles.film} ${film.portrait ? styles.portraitFilm : ""}`}
-        aria-label={`Смотреть видео: ${film.title}`}
+        aria-label={`Смотреть видео: ${film.title}. Смотреть в работе ${film.duration}`}
         aria-haspopup="dialog"
         onClick={launch}
       >

@@ -1,0 +1,247 @@
+.room {
+  background: #1c1d1d;
+  color: var(--chalk);
+  padding: 46px 0 64px;
+  isolation: isolate;
+}
+.topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  color: #b8bbb5;
+  font-size: 13px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #454747;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 0.85fr 1.3fr;
+  gap: 40px;
+  align-items: center;
+}
+.copy {
+  padding-top: 38px;
+}
+.copy h2 {
+  font-size: clamp(36px, 4.4vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+  font-weight: 650;
+}
+.copy h2 em {
+  font: 430 0.95em/1.15 var(--font-editorial);
+  font-style: normal;
+}
+.detail {
+  padding-top: 34px;
+  min-height: 280px;
+}
+.detail h3 {
+  font-size: 22px;
+  line-height: 1.35;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+.detail p {
+  max-width: 430px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #b8bbb5;
+}
+.steps {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  color: #e9a5b2;
+  font-size: 12px;
+  margin: 24px 0;
+}
+.steps span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.action {
+  display: inline-flex;
+  gap: 28px;
+  align-items: center;
+  border-bottom: 1px solid #a9ada7;
+  padding: 10px 0;
+  font-size: 16px;
+  min-height: 44px;
+}
+.objects {
+  min-width: 0;
+}
+.scene {
+  position: relative;
+  height: 420px;
+  isolation: isolate;
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.canvas canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.fallback {
+  position: absolute;
+  inset: 20px 0 42px;
+  transition: opacity var(--motion-state) var(--motion-out);
+}
+.fallback img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+.hidden {
+  opacity: 0;
+}
+.stageCaption {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 11px;
+  color: #b8bbb5;
+}
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.tabs button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #b8bbb5;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 13px 15px;
+  border: 1px solid #626861;
+  border-radius: 28px;
+  background: transparent;
+  min-height: 46px;
+  cursor: pointer;
+  transition:
+    background var(--motion-state) var(--motion-out),
+    color var(--motion-state) var(--motion-out);
+}
+.tabs button[aria-pressed="true"] {
+  background: #f4f5ee;
+  color: #242525;
+  border-color: #f4f5ee;
+}
+.indicator {
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+.tabs button[aria-pressed="true"] .indicator {
+  background: #8d2034;
+  opacity: 1;
+}
+.hint {
+  font-size: 12px;
+  text-align: center;
+  color: #b8bbb5;
+  margin-top: 20px;
+}
+.room a:focus-visible,
+.room button:focus-visible {
+  outline: 2px solid #e9a5b2;
+  outline-offset: 5px;
+}
+@media (max-width: 1000px) {
+  .layout {
+    gap: 20px;
+    grid-template-columns: 1fr 1.2fr;
+  }
+  .scene {
+    height: 360px;
+  }
+  .tabs {
+    gap: 5px;
+  }
+  .tabs button {
+    padding: 11px 10px;
+    font-size: 12px;
+  }
+  .copy h2 {
+    font-size: 41px;
+  }
+}
+@media (max-width: 760px) {
+  .room {
+    padding: 30px 0 38px;
+  }
+  .topline {
+    font-size: 11px;
+    padding-bottom: 22px;
+  }
+  .layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .copy {
+    padding-top: 28px;
+    display: contents;
+  }
+  .copy h2 {
+    font-size: 42px;
+    order: 0;
+    margin-top: 28px;
+  }
+  .objects {
+    order: 1;
+    margin-top: -12px;
+  }
+  .detail {
+    order: 2;
+    min-height: 0;
+    padding-top: 26px;
+  }
+  .detail p {
+    max-width: none;
+  }
+  .scene {
+    height: 290px;
+  }
+  .tabs {
+    gap: 7px;
+  }
+  .tabs button {
+    flex: 1;
+    padding: 12px 8px;
+    font-size: 12px;
+    gap: 7px;
+  }
+  .hint {
+    font-size: 11px;
+    margin-top: 14px;
+  }
+  .steps {
+    margin: 20px 0 14px;
+  }
+  .detail h3 {
+    font-size: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fallback,
+  .tabs button {
+    transition: none;
+  }
+}

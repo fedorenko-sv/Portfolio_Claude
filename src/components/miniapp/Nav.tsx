@@ -1,16 +1,25 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  House,
+  Books,
+  Monitor,
+  GraduationCap,
+  ChatCircle,
+} from "@phosphor-icons/react";
+const links = [
+  { label: "Главная", href: "/app", icon: House },
+  { label: "Библиотека", href: "/app/library", icon: Books },
+  { label: "Проекты", href: "/app/solutions", icon: Monitor },
+  { label: "Обучение", href: "/app/training", icon: GraduationCap },
+  { label: "Связь", href: "/app/contact", icon: ChatCircle },
+];
 export default function Nav() {
   const path = usePathname();
   return (
     <nav className="app-nav" aria-label="Разделы приложения">
-      {[
-        ["Практика", "/app"],
-        ["Материалы", "/app/materials"],
-        ["Обучение", "/app/training"],
-        ["Решения", "/app/solutions"],
-      ].map(([label, href]) => (
+      {links.map(({ label, href, icon: Symbol }) => (
         <Link
           key={href}
           href={href}
@@ -18,12 +27,17 @@ export default function Nav() {
             (
               href === "/app"
                 ? path === "/app" || path.startsWith("/app/practice")
-                : path.startsWith(href)
+                : href === "/app/library"
+                  ? path.startsWith(href) || path.startsWith("/app/materials")
+                  : href === "/app/contact"
+                    ? path.startsWith(href) || path.startsWith("/app/speaking")
+                    : path.startsWith(href)
             )
               ? "page"
               : undefined
           }
         >
+          <Symbol size={22} aria-hidden />
           {label}
         </Link>
       ))}

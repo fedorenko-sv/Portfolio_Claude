@@ -2,7 +2,7 @@ import Link from "next/link";
 import TelegramAdapter from "@/components/miniapp/TelegramAdapter";
 import Nav from "@/components/miniapp/Nav";
 export const metadata = {
-  title: "Практика и материалы",
+  title: "Практика Сергея",
   robots: { index: false, follow: false },
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <TelegramAdapter />
       <header className="app-header">
         <Link href="/app">
-          Сергей Федоренко<span>Практика ИИ</span>
+          Сергей Федоренко<span>Практика · материалы · проекты</span>
         </Link>
         <Link href="/">На сайт ↗</Link>
       </header>

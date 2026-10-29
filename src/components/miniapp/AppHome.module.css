@@ -1,0 +1,172 @@
+.home {
+  padding-top: 32px;
+}
+.intro > span {
+  font-size: 13px;
+  color: var(--accent);
+}
+.intro h1 {
+  font-size: clamp(35px, 7vw, 55px) !important;
+  letter-spacing: -0.055em;
+  margin: 16px 0 20px;
+  line-height: 1.08;
+}
+.intro h1 em {
+  font-family: var(--font-editorial);
+  font-weight: 430;
+  font-style: normal;
+}
+.intro > p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 440px;
+}
+.practice {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 330px;
+  margin: 30px 0 22px;
+  background: #8d2034;
+  color: #f4f5ee;
+  border-radius: 16px;
+}
+.practiceText {
+  position: relative;
+  z-index: 2;
+  padding: 28px;
+  width: 70%;
+}
+.practiceText > span {
+  font-size: 12px;
+}
+.practiceText h2 {
+  font-size: 34px !important;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin: 18px 0 14px;
+}
+.practiceText p {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 230px;
+}
+.practiceText strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  font-weight: 650;
+  margin-top: 26px;
+  font-size: 14px;
+}
+.paper {
+  position: absolute;
+  right: -60px;
+  top: 63px;
+  width: 210px;
+  height: 280px;
+  background: #f4f5ee;
+  color: #242525;
+  padding: 25px;
+  transform: rotate(-15deg);
+  box-shadow: -12px 14px 32px #36081255;
+  transition: transform var(--motion-scene) var(--motion-out);
+  z-index: -1;
+}
+.paper span:first-child {
+  font-family: var(--font-editorial);
+  font-size: 28px;
+}
+.paper span:last-child {
+  font-size: 10px;
+}
+.paper i {
+  display: block;
+  border-bottom: 1px solid #b4b8ad;
+  margin: 32px 0;
+}
+.libraryLink {
+  padding: 22px;
+  background: var(--surface);
+  border-radius: 14px;
+}
+.libraryLink > a,
+.directions > a,
+.author {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.libraryLink > a > span,
+.directions > a > span,
+.author > span {
+  flex: 1;
+  min-width: 0;
+}
+.libraryLink strong,
+.directions strong,
+.author strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 650;
+}
+.libraryLink small,
+.directions small,
+.author small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 5px;
+}
+.saved {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  margin: 20px 0 0 41px;
+}
+.sectionTitle {
+  font-size: 23px !important;
+  letter-spacing: -0.025em;
+  margin: 32px 0 12px;
+}
+.directions > a {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+}
+.directions > a > svg:first-child {
+  color: var(--accent);
+}
+.author {
+  margin-top: 36px;
+  padding: 20px 0;
+}
+.author img {
+  width: 52px;
+  height: 62px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.note {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  padding: 12px 0 24px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .practice:hover .paper {
+    transform: rotate(-8deg) translateY(-8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .paper {
+    transition: none;
+  }
+  .practice:hover .paper {
+    transform: rotate(-15deg);
+  }
+}

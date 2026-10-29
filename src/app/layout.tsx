@@ -4,6 +4,8 @@ import "@/styles/site.css";
 import "@/styles/audit.css";
 import "@/styles/visual-refinement.css";
 import "@/styles/contact.css";
+import "@/styles/miniapp.css";
+import "@/styles/motion.css";
 import { SITE_URL } from "@/lib/config";
 
 export const metadata: Metadata = {
