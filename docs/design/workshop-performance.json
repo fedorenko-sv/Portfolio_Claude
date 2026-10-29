@@ -1,0 +1,28 @@
+{
+  "profile": "Chromium,390x844,CPU4x,1.6Mbps down/0.75Mbps up,150ms latency,cold cache,localhost production build",
+  "runs": [
+    {
+      "lcp": 1948,
+      "cls": 0,
+      "videoRequests": 0,
+      "webglCanvases": 0,
+      "appFrames": 0
+    },
+    {
+      "lcp": 2524,
+      "cls": 0,
+      "videoRequests": 0,
+      "webglCanvases": 0,
+      "appFrames": 0
+    },
+    {
+      "lcp": 2604,
+      "cls": 0,
+      "videoRequests": 0,
+      "webglCanvases": 0,
+      "appFrames": 0
+    }
+  ],
+  "medianLcpMs": 2524,
+  "medianCls": 0
+}
