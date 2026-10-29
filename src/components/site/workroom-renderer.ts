@@ -13,6 +13,10 @@ export function createWorkroom(
   host: HTMLElement,
   initial: number,
   reduced: boolean,
+  events: {
+    onSelect: (index: number) => void;
+    onHover: (index: number) => void;
+  },
 ): WorkroomController {
   const renderer = new THREE.WebGLRenderer({
     alpha: true,
@@ -163,6 +167,10 @@ export function createWorkroom(
     frame = 0,
     end = 0,
     tilt = 0,
+    tiltX = 0,
+    hovered = -1,
+    burstAt = -2000,
+    burstIndex = initial,
     lastTime = performance.now();
   new THREE.TextureLoader().load(
     "/media/projects/edcrm-result.webp",
@@ -281,6 +289,102 @@ export function createWorkroom(
   );
   stage.add(cord);
   const objects = [laptop, folder, mic];
+  // Each object owns its emissive response; shared metal must not light all three.
+  const originalMaterials = new Set<THREE.Material>();
+  const objectMaterials = objects.map((object, index) => {
+    object.userData.workroomIndex = index;
+    const copies = new Map<THREE.Material, THREE.MeshStandardMaterial>();
+    object.traverse((child) => {
+      if (
+        child instanceof THREE.Mesh &&
+        child.material instanceof THREE.MeshStandardMaterial
+      ) {
+        const original = child.material;
+        originalMaterials.add(original);
+        let copy = copies.get(original);
+        if (!copy) {
+          copy = original.clone();
+          copy.emissive.set(0xe9a5b2);
+          copies.set(original, copy);
+        }
+        child.material = copy;
+      }
+    });
+    return [...copies.values()];
+  });
+  const raycaster = new THREE.Raycaster();
+  const pointerPosition = new THREE.Vector2();
+  // A soft pool of light belongs to the desk, not to a full-screen postprocessing pass.
+  const glowCanvas = document.createElement("canvas");
+  glowCanvas.width = glowCanvas.height = 128;
+  const gc = glowCanvas.getContext("2d")!;
+  const gradient = gc.createRadialGradient(64, 64, 4, 64, 64, 64);
+  gradient.addColorStop(0, "rgba(233,165,178,.85)");
+  gradient.addColorStop(0.4, "rgba(141,32,52,.3)");
+  gradient.addColorStop(1, "rgba(141,32,52,0)");
+  gc.fillStyle = gradient;
+  gc.fillRect(0, 0, 128, 128);
+  const glowTexture = new THREE.CanvasTexture(glowCanvas);
+  textures.push(glowTexture);
+  const pools = objects.map((object) => {
+    const pool = new THREE.Mesh(
+      new THREE.PlaneGeometry(3.1, 2.7),
+      new THREE.MeshBasicMaterial({
+        map: glowTexture,
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+        toneMapped: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    );
+    pool.rotation.x = -Math.PI / 2;
+    pool.position.set(object.position.x, -0.035, object.position.z);
+    stage.add(pool);
+    return pool;
+  });
+  const accentLight = new THREE.PointLight(0xffb6c4, 0, 5, 2);
+  stage.add(accentLight);
+  // One small, finite particle response on selection. No idle particle field.
+  const count = 32;
+  const particlePositions = new Float32Array(count * 3);
+  const particleGeometry = new THREE.BufferGeometry();
+  particleGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(particlePositions, 3),
+  );
+  const particleMaterial = new THREE.PointsMaterial({
+    color: 0xf2c3cd,
+    size: 0.038,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    toneMapped: false,
+  });
+  const particles = new THREE.Points(particleGeometry, particleMaterial);
+  particles.frustumCulled = false;
+  stage.add(particles);
+  function pick(event: PointerEvent | MouseEvent) {
+    const bounds = host.getBoundingClientRect();
+    pointerPosition.set(
+      ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+      (-(event.clientY - bounds.top) / bounds.height) * 2 + 1,
+    );
+    scene.updateMatrixWorld(true);
+    raycaster.setFromCamera(pointerPosition, camera);
+    const hit = raycaster.intersectObjects(objects, true)[0];
+    let object: THREE.Object3D | undefined = hit?.object;
+    while (object && object.userData.workroomIndex === undefined)
+      object = object.parent ?? undefined;
+    return object?.userData.workroomIndex ?? -1;
+  }
+  function hover(index: number) {
+    if (hovered === index) return;
+    hovered = index;
+    host.style.cursor = index < 0 ? "default" : "pointer";
+    events.onHover(index);
+    animate();
+  }
   function draw() {
     if (!disposed && visible && !document.hidden)
       renderer.render(scene, camera);
@@ -292,14 +396,54 @@ export function createWorkroom(
     lastTime = time;
     const amount = reduced || time >= end ? 1 : 1 - Math.exp(-delta / 80);
     objects.forEach((object, i) => {
-      const scale = i === selected ? 1.12 : 0.9;
-      object.scale.lerp(new THREE.Vector3(scale, scale, scale), amount);
+      const hot = i === hovered;
+      const scale =
+        (i === selected ? 1.12 : 0.9) + (hot && !reduced ? 0.055 : 0);
+      object.scale.setScalar(
+        object.scale.x + (scale - object.scale.x) * amount,
+      );
       object.position.y +=
-        ((i === selected ? 0.16 : 0.01) - object.position.y) * amount;
+        ((i === selected ? 0.16 : 0.01) +
+          (hot && !reduced ? 0.16 : 0) -
+          object.position.y) *
+        amount;
+      objectMaterials[i].forEach((mat) => {
+        mat.emissiveIntensity +=
+          ((hot ? 0.2 : 0) - mat.emissiveIntensity) * amount;
+      });
+      pools[i].material.opacity +=
+        ((hot ? 0.9 : i === selected ? 0.28 : 0) - pools[i].material.opacity) *
+        amount;
     });
     hinge.rotation.z +=
-      ((selected === 1 ? 1.12 : 0.06) - hinge.rotation.z) * amount;
+      ((selected === 1 ? 1.12 : hovered === 1 && !reduced ? 0.55 : 0.06) -
+        hinge.rotation.z) *
+      amount;
+    lid.rotation.x +=
+      ((hovered === 0 && !reduced ? -0.32 : -0.17) - lid.rotation.x) * amount;
+    head.rotation.z +=
+      ((hovered === 2 && !reduced ? -0.42 : -0.23) - head.rotation.z) * amount;
     stage.rotation.y += (tilt - stage.rotation.y) * amount;
+    stage.rotation.x += (tiltX - stage.rotation.x) * amount;
+    accentLight.intensity +=
+      ((hovered >= 0 ? 3.5 : 0) - accentLight.intensity) * amount;
+    if (hovered >= 0)
+      accentLight.position.set(objects[hovered].position.x, 1.8, 1.3);
+    const age = (time - burstAt) / 850;
+    particleMaterial.opacity =
+      !reduced && age >= 0 && age < 1 ? (1 - age) * 0.8 : 0;
+    if (particleMaterial.opacity > 0) {
+      const origin = objects[burstIndex].position;
+      for (let i = 0; i < count; i++) {
+        const angle = i * 2.399963;
+        const spread = 0.25 + age * (0.6 + (i % 5) * 0.1);
+        particlePositions[i * 3] = origin.x + Math.cos(angle) * spread;
+        particlePositions[i * 3 + 1] = 0.15 + age * (0.6 + (i % 7) * 0.15);
+        particlePositions[i * 3 + 2] =
+          origin.z + Math.sin(angle) * spread * 0.75;
+      }
+      particleGeometry.attributes.position.needsUpdate = true;
+    }
     draw();
     if (!reduced && time < end) frame = requestAnimationFrame(tick);
   }
@@ -324,15 +468,51 @@ export function createWorkroom(
   ro.observe(host);
   const fine = matchMedia("(hover:hover) and (pointer:fine)");
   function pointer(e: PointerEvent) {
-    if (!fine.matches || reduced) return;
+    if (!fine.matches || e.pointerType === "touch") return;
+    hover(pick(e));
+    if (reduced) return;
     tilt =
       ((e.clientX - host.getBoundingClientRect().left) / host.clientWidth -
         0.5) *
-      0.16;
+      0.22;
+    tiltX =
+      ((e.clientY - host.getBoundingClientRect().top) / host.clientHeight -
+        0.5) *
+      0.045;
     animate();
   }
   function leave() {
     tilt = 0;
+    tiltX = 0;
+    hover(-1);
+    animate();
+  }
+  let down: { x: number; y: number; index: number } | null = null;
+  function pointerDown(e: PointerEvent) {
+    if (e.button !== 0) return;
+    down = { x: e.clientX, y: e.clientY, index: pick(e) };
+  }
+  function pointerCancel() {
+    down = null;
+  }
+  function click(e: MouseEvent) {
+    const index = pick(e);
+    if (
+      !down ||
+      Math.hypot(e.clientX - down.x, e.clientY - down.y) > 8 ||
+      index < 0 ||
+      index !== down.index
+    ) {
+      down = null;
+      return;
+    }
+    down = null;
+    selected = index;
+    if (!reduced) {
+      burstAt = performance.now();
+      burstIndex = index;
+    }
+    events.onSelect(index);
     animate();
   }
   function visibility() {
@@ -343,15 +523,26 @@ export function createWorkroom(
   }
   host.addEventListener("pointermove", pointer);
   host.addEventListener("pointerleave", leave);
+  host.addEventListener("pointerdown", pointerDown);
+  host.addEventListener("pointercancel", pointerCancel);
+  host.addEventListener("click", click);
   document.addEventListener("visibilitychange", visibility);
   resize();
   animate();
   return {
     motion(value) {
       reduced = value;
+      if (value) {
+        tilt = 0;
+        tiltX = 0;
+      }
       animate();
     },
     select(index) {
+      if (index !== selected && !reduced) {
+        burstAt = performance.now();
+        burstIndex = index;
+      }
       selected = index;
       animate();
     },
@@ -372,6 +563,12 @@ export function createWorkroom(
       document.removeEventListener("visibilitychange", visibility);
       host.removeEventListener("pointermove", pointer);
       host.removeEventListener("pointerleave", leave);
+      host.removeEventListener("pointerdown", pointerDown);
+      host.removeEventListener("pointercancel", pointerCancel);
+      host.removeEventListener("click", click);
+      host.style.cursor = "";
+      particleGeometry.dispose();
+      particleMaterial.dispose();
       const materials = new Set<THREE.Material>();
       scene.traverse((object) => {
         if (object instanceof THREE.Mesh) {
@@ -383,6 +580,9 @@ export function createWorkroom(
         }
       });
       materials.forEach((m) => m.dispose());
+      originalMaterials.forEach((m) => {
+        if (!materials.has(m)) m.dispose();
+      });
       textures.forEach((t) => t.dispose());
       key.shadow.map?.dispose();
       renderer.dispose();

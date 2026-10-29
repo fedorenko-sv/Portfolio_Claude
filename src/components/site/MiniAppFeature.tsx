@@ -85,10 +85,10 @@ export default function MiniAppFeature({ launchUrl }: { launchUrl: string }) {
               ) : (
                 <div className={styles.preview} aria-hidden="true">
                   <div className={styles.previewHeader}>
-                    Сергей Федоренко<span>Практика · материалы · проекты</span>
+                    Практика<span>Сергей Федоренко</span>
                   </div>
                   <div className={styles.previewBody}>
-                    <small>Практика Сергея</small>
+                    <small>Место для ваших идей</small>
                     <h3>
                       От интереса —<br />
                       <em>к своей задаче.</em>
@@ -99,11 +99,11 @@ export default function MiniAppFeature({ launchUrl }: { launchUrl: string }) {
                       Начните с одного примера.
                     </p>
                     <div className={styles.practice}>
-                      <span>Бесплатное упражнение</span>
+                      <span>Рабочий блокнот</span>
                       <strong>
-                        С чего начать
+                        Ваша задача.
                         <br />
-                        именно вам?
+                        Первый шаг.
                       </strong>
                       <span>Начать практику ↗</span>
                       <i />
@@ -120,6 +120,7 @@ export default function MiniAppFeature({ launchUrl }: { launchUrl: string }) {
                     <span>Главная</span>
                     <span>Библиотека</span>
                     <span>Проекты</span>
+                    <span>Обучение</span>
                     <span>Связь</span>
                   </div>
                 </div>

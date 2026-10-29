@@ -1,0 +1,67 @@
+.list {
+  container-type: inline-size;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--line);
+}
+.name,
+.result {
+  min-width: 0;
+}
+.name h3 {
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.12;
+  margin: 0 0 18px;
+  letter-spacing: -0.045em;
+}
+.name :global(.eyebrow) {
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin: 0;
+}
+.result > p {
+  font-size: 17px;
+  line-height: 1.65;
+}
+.result :global(.small) {
+  font-size: 13px;
+}
+.result :global(.check-list) {
+  font-size: 14px;
+}
+.note {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 22px 0;
+}
+.compact .row {
+  display: block;
+  padding: 26px 0;
+}
+.compact .name h3 {
+  font-size: 27px;
+}
+.compact .result {
+  padding-top: 16px;
+}
+.compact .result p {
+  font-size: 15px;
+}
+@container (max-width:650px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+}
+@media (max-width: 700px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+}

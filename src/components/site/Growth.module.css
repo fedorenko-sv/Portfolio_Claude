@@ -234,6 +234,7 @@
   align-items: center;
   gap: 12px;
   font-size: 13px;
+  z-index: 2;
 }
 .filmLabel > svg {
   margin-left: auto;
@@ -254,6 +255,31 @@
   color: #fff;
   font-size: 11px;
   padding-left: 2px;
+  transition:
+    transform var(--motion-state) var(--motion-out),
+    box-shadow var(--motion-state) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .film:hover .playIcon {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 7px #8d20341a;
+  }
+  .film:hover .filmLabel > svg {
+    transform: translate(3px, -3px);
+  }
+  .closing > a:hover > svg {
+    transform: translate(8px, -8px);
+  }
+  .learningGrid article:hover h3 {
+    color: var(--cherry);
+  }
+}
+.filmLabel > svg,
+.closing > a > svg {
+  transition: transform var(--motion-scene) var(--motion-out);
+}
+.learningGrid article h3 {
+  transition: color var(--motion-state) ease;
 }
 .portraitFilm {
   background: #bda78c;
@@ -997,6 +1023,11 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .film:hover .playIcon,
+  .film:hover .filmLabel > svg,
+  .closing > a:hover > svg {
+    transform: none;
+  }
   .heroCopy,
   .portrait,
   .offer,

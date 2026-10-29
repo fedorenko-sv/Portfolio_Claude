@@ -37,8 +37,10 @@ export default function Nav() {
               : undefined
           }
         >
-          <Symbol size={22} aria-hidden />
-          {label}
+          <span className="app-nav-icon">
+            <Symbol size={21} aria-hidden />
+          </span>
+          <span>{label}</span>
         </Link>
       ))}
     </nav>

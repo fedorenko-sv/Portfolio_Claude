@@ -8,6 +8,7 @@ import {
   BookOpen,
   Monitor,
   Microphone,
+  PencilSimpleLine,
 } from "@phosphor-icons/react";
 import { readProgress, STORAGE_KEY } from "@/lib/practice";
 import { readSaved, SAVED_KEY } from "@/lib/library";
@@ -30,32 +31,40 @@ export default function AppHome({ ids }: { ids: string[] }) {
     <div className={styles.home}>
       <LaunchNotice />
       <div className={styles.intro}>
-        <span>Практика Сергея</span>
+        <div className={styles.welcome}>
+          <span>Место для ваших идей</span>
+          <span className={styles.authorMark}>СФ</span>
+        </div>
         <h1>
           От интереса —<br />
           <em>к своей задаче.</em>
         </h1>
         <p>
-          Попробуйте ИИ в работе, заберите памятку или посмотрите, как устроен
-          готовый продукт.
+          ИИ, который пригодится в работе. Практика, заметки и проекты Сергея
+          Федоренко.
         </p>
       </div>
       <Link href="/app/practice/first-ai-task" className={styles.practice}>
+        <div className={styles.practiceText}>
+          <span>
+            <PencilSimpleLine size={18} aria-hidden /> Рабочий блокнот
+          </span>
+          <h2>
+            Ваша задача.
+            <br />
+            Первый шаг.
+          </h2>
+          <p>От вопроса к понятному плану действий.</p>
+        </div>
         <div className={styles.paper} aria-hidden>
           <span>Моя задача</span>
-          <i />
-          <i />
-          <i />
-          <span>Данные → результат → проверка</span>
+          <i>Что изменить?</i>
+          <i>Что получить?</i>
+          <i>Как проверить?</i>
+          <span>Начните с одного вопроса.</span>
         </div>
-        <div className={styles.practiceText}>
-          <span>Бесплатное упражнение</span>
-          <h2>
-            С чего начать
-            <br />
-            именно вам?
-          </h2>
-          <p>В конце — карточка вашей рабочей задачи.</p>
+        <div className={styles.practiceFooter}>
+          <small>Бесплатно · в своём темпе</small>
           <strong>
             {continuing ? "Продолжить практику" : "Начать практику"}
             <ArrowUpRight size={24} aria-hidden />
@@ -64,7 +73,11 @@ export default function AppHome({ ids }: { ids: string[] }) {
       </Link>
       <div className={styles.libraryLink}>
         <Link href="/app/library">
-          <BookOpen size={25} aria-hidden />
+          <span className={styles.bookSpines} aria-hidden>
+            <i />
+            <i />
+            <i />
+          </span>
           <span>
             <strong>Ваша библиотека</strong>
             <small>Памятки, практика и рабочие примеры</small>
@@ -76,7 +89,7 @@ export default function AppHome({ ids }: { ids: string[] }) {
           {count ? `Сохранено: ${count}` : "Полезное можно оставить на потом"}
         </span>
       </div>
-      <h2 className={styles.sectionTitle}>Когда нужно больше</h2>
+      <h2 className={styles.sectionTitle}>Пора к настоящей работе.</h2>
       <div className={styles.directions}>
         <Link href="/app/solutions">
           <Monitor size={25} aria-hidden />

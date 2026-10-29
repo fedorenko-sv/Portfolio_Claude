@@ -10,6 +10,7 @@ import ProjectViewer from "./ProjectViewer";
 import Icon from "./Icon";
 import ProjectFilm from "./ProjectFilm";
 import growth from "./Growth.module.css";
+import programsStyle from "./Programs.module.css";
 
 export function Intro({
   label,
@@ -47,9 +48,9 @@ export function CaseCards({
             </div>
             <ProjectViewer id={item.id} title={item.title} preview />
             <div className="project-row-body">
-              <h3>
+              <h2 className="project-title">
                 <Link href={`${base}/${item.slug}`}>{item.title}</Link>
-              </h3>
+              </h2>
               <div className="project-description">
                 <p>{item.summary}</p>
                 <div className="actions">
@@ -103,16 +104,18 @@ export function MaterialCards({ base = "/materials" }: { base?: string }) {
 export function ProgramCards({ base = "/training" }: { base?: string }) {
   const { programs } = catalogFor();
   return programs.length ? (
-    <div className="program-list">
+    <div
+      className={`${programsStyle.list} ${base.startsWith("/app/") ? programsStyle.compact : ""}`}
+    >
       {programs.map((p, i) => (
-        <article className="program-row" key={p.id}>
-          <div className="program-name">
+        <article className={programsStyle.row} data-program key={p.id}>
+          <div className={programsStyle.name}>
             <h3>
               <Link href={`${base}/${p.slug}`}>{p.title}</Link>
             </h3>
             <p className="eyebrow">{p.audience.join(" · ")}</p>
           </div>
-          <div className="program-result">
+          <div className={programsStyle.result}>
             <p>{p.summary}</p>
             {i === 0 && (
               <ul className="check-list">
@@ -132,7 +135,7 @@ export function ProgramCards({ base = "/training" }: { base?: string }) {
           </div>
         </article>
       ))}
-      <p className="catalog-note">
+      <p className={programsStyle.note}>
         Содержание, даты и формат согласуем перед стартом.
       </p>
     </div>
@@ -275,7 +278,13 @@ export function MaterialDetail({
   );
 }
 
-export function ProgramDetail({ item }: { item: Program }) {
+export function ProgramDetail({
+  item,
+  app = false,
+}: {
+  item: Program;
+  app?: boolean;
+}) {
   return (
     <>
       <ViewEvent event="program_view" id={item.id} />
@@ -309,7 +318,10 @@ export function ProgramDetail({ item }: { item: Program }) {
         <p>{item.prerequisites}</p>
         <p>{item.equipment}</p>
         <p>{item.duration || "Длительность согласуем при подготовке."}</p>
-        <Link className="button" href="/contact?type=training">
+        <Link
+          className="button"
+          href={`${app ? "/app" : ""}/contact?type=training`}
+        >
           Запросить программу
           <Icon />
         </Link>

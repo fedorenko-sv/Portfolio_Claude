@@ -5,8 +5,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--app-sheet);
+  border: 1px solid var(--app-edge);
   border-radius: 14px;
   padding: 15px;
 }
@@ -26,7 +26,7 @@
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin: 20px 0 12px;
 }
 .filters button,
@@ -36,7 +36,7 @@
   color: var(--ink);
   padding: 10px 15px;
   min-height: 44px;
-  border-radius: 24px;
+  border-radius: 8px;
   font-size: 13px;
   cursor: pointer;
 }
@@ -56,9 +56,14 @@
   gap: 18px;
 }
 .card {
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  position: relative;
+  border: 1px solid var(--app-edge);
+  border-radius: 4px 15px 15px 4px;
   overflow: hidden;
+  background: var(--app-sheet);
+  box-shadow:
+    0 4px 0 -2px var(--paper),
+    0 5px 0 -2px var(--app-edge);
 }
 .cardBody {
   padding: 22px;
@@ -68,6 +73,8 @@
   font-size: 23px !important;
   line-height: 1.2;
   letter-spacing: -0.03em;
+  font-family: var(--font-editorial);
+  font-weight: 450;
 }
 .card h2 a {
   display: flex;
@@ -111,8 +118,35 @@
 .save[aria-pressed="true"] {
   color: var(--accent);
 }
+.save svg {
+  transition: transform var(--motion-feedback) var(--motion-out);
+}
+.save:active svg {
+  transform: scale(0.8);
+}
+.card h2 svg {
+  transition: transform var(--motion-state) var(--motion-out);
+}
+.card:has(.poster) .poster {
+  transition: transform var(--motion-scene) var(--motion-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .card h2 a:hover svg {
+    transform: translate(3px, -3px);
+  }
+  .card:has(.poster):hover .poster {
+    transform: scale(1.015);
+  }
+}
 .empty {
   padding: 24px 0 48px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .card h2 a:hover svg,
+  .card:has(.poster):hover .poster,
+  .save:active svg {
+    transform: none;
+  }
 }
 .empty h2 {
   font-size: 25px !important;

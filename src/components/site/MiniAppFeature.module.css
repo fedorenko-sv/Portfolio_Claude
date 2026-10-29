@@ -153,6 +153,7 @@
   font-size: 9px;
 }
 .previewBody h3 {
+  font-family: var(--font-editorial);
   font-size: 28px;
   line-height: 1.1;
   letter-spacing: -0.045em;
@@ -184,6 +185,7 @@
   font-size: 9px;
 }
 .practice > strong {
+  font-family: var(--font-editorial);
   position: relative;
   z-index: 1;
   display: block;
@@ -198,9 +200,9 @@
   height: 150px;
   right: -26px;
   top: 42px;
-  background: #d7c6be;
-  transform: rotate(-18deg);
-  opacity: 0.45;
+  background: #fffef9;
+  transform: rotate(10deg);
+  opacity: 1;
   box-shadow: -8px 5px 20px #0003;
 }
 .library {
@@ -225,7 +227,10 @@
   padding: 13px 0;
   border-top: 1px solid #c8cbc0;
   font-size: 8px;
-  background: #f4f5ee;
+  background: #242525;
+  color: #f4f5ee;
+  border-radius: 17px;
+  margin: 0 8px;
 }
 .caption {
   position: absolute;

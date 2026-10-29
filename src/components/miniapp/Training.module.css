@@ -1,0 +1,93 @@
+.photo {
+  position: relative;
+  margin: 0 0 24px;
+  border-radius: 4px 18px 18px 4px;
+  overflow: hidden;
+  background: #242525;
+}
+.photo img {
+  width: 100%;
+  aspect-ratio: 1.35;
+  object-fit: cover;
+  object-position: 55% 55%;
+  display: block;
+}
+.photo figcaption {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+  padding: 32px 18px 15px;
+  background: linear-gradient(transparent, #141515e8);
+  color: #fff;
+  font-size: 12px;
+}
+.practice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 0;
+  border-block: 1px solid var(--line);
+}
+.practice > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.practice strong {
+  display: block;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.practice small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.symbol {
+  font-size: 34px;
+  color: var(--accent);
+  line-height: 1;
+}
+.practice > svg {
+  flex: none;
+  transition: transform var(--motion-state) var(--motion-out);
+}
+.outcomes {
+  padding: 30px 0 20px;
+}
+.outcomes h2,
+.title {
+  font: 450 29px/1.2 var(--font-editorial);
+  letter-spacing: -0.04em;
+}
+.outcomes ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+.outcomes li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.outcomes li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 8px;
+}
+.title {
+  margin: 16px 0 24px;
+  max-width: 330px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .practice:hover > svg {
+    transform: translate(3px, -3px);
+  }
+}

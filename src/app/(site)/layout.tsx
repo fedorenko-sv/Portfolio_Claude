@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Header from "@/components/site/Header";
+import NavigationMotion from "@/components/shared/NavigationMotion";
 export default function SiteLayout({
   children,
 }: {
@@ -11,6 +12,7 @@ export default function SiteLayout({
         Перейти к содержанию
       </a>
       <Header />
+      <NavigationMotion />
       <main id="main" className="site-main">
         {children}
       </main>

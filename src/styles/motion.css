@@ -5,3 +5,97 @@
   --motion-state: 200ms;
   --motion-scene: 500ms;
 }
+
+/* Shared tactile responses. Navigation remains the native Next router. */
+.button {
+  transition:
+    background var(--motion-state) ease,
+    border-color var(--motion-state) ease,
+    transform var(--motion-feedback) var(--motion-out),
+    box-shadow var(--motion-state) ease;
+}
+.button:active {
+  transform: scale(0.97);
+}
+:is(.button, .text-link, .subtle-link, .header-contact) > svg {
+  transition: transform var(--motion-state) var(--motion-out);
+}
+.desktop-nav a {
+  position: relative;
+}
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  inset-inline: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--motion-state) var(--motion-out);
+}
+.desktop-nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+.surface-light {
+  position: absolute;
+  width: 85%;
+  height: 85%;
+  left: 7.5%;
+  top: 7.5%;
+  pointer-events: none;
+  background: radial-gradient(ellipse, #fff8, transparent 65%);
+  opacity: 0;
+  mix-blend-mode: soft-light;
+  transition: opacity var(--motion-state) ease;
+  z-index: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    box-shadow: 0 7px 18px -12px #0009;
+  }
+  :is(.button, .text-link, .subtle-link, .header-contact):hover > svg {
+    transform: translate(3px, -3px);
+  }
+  .desktop-nav a:hover::after {
+    transform: scaleX(1);
+  }
+  button:hover > .surface-light {
+    opacity: 0.85;
+  }
+}
+dialog[open] {
+  animation: dialog-arrive 200ms var(--motion-out) both;
+}
+dialog[open]::backdrop {
+  animation: backdrop-arrive 200ms var(--motion-out) both;
+}
+@keyframes dialog-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes backdrop-arrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .surface-light {
+    display: none;
+  }
+  .button:active {
+    transform: none;
+  }
+  :is(.button, .text-link, .subtle-link, .header-contact):hover > svg {
+    transform: none;
+  }
+}

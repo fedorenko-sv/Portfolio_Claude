@@ -8,11 +8,27 @@ const fallback = [
   "/images/practice-folder-v2.png",
   "/images/author/speaking.webp",
 ];
-export default function WorkroomScene({ active }: { active: number }) {
+const objectNames = [
+  "Ноутбук · разработка",
+  "Папка · обучение",
+  "Микрофон · выступления",
+];
+export default function WorkroomScene({
+  active,
+  onSelect,
+}: {
+  active: number;
+  onSelect: (index: number) => void;
+}) {
   const host = useRef<HTMLDivElement>(null),
     controller = useRef<WorkroomController | null>(null);
   const selection = useRef(active);
   const [ready, setReady] = useState(false);
+  const [hovered, setHovered] = useState(-1);
+  const select = useRef(onSelect);
+  useEffect(() => {
+    select.current = onSelect;
+  }, [onSelect]);
   useEffect(() => {
     selection.current = active;
     controller.current?.select(active);
@@ -48,6 +64,7 @@ export default function WorkroomScene({ active }: { active: number }) {
             node,
             selection.current,
             reduced.matches,
+            { onSelect: (index) => select.current(index), onHover: setHovered },
           );
           controller.current.visible(inView);
           setReady(true);
@@ -84,7 +101,16 @@ export default function WorkroomScene({ active }: { active: number }) {
         ref={host}
         aria-hidden="true"
       />
-      <span className={styles.stageCaption}>Экран. Папка. Микрофон.</span>
+      <span
+        className={styles.stageCaption}
+        data-hovered={hovered}
+        aria-hidden="true"
+      >
+        <span className={styles.captionDot} />
+        {hovered < 0
+          ? "На столе — три способа работать вместе"
+          : `${objectNames[hovered]} — выбрать`}
+      </span>
     </div>
   );
 }
