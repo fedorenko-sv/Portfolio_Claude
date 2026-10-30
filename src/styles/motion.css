@@ -88,6 +88,23 @@ dialog[open]::backdrop {
     opacity: 1;
   }
 }
+.phone-flat-frame {
+  display: block;
+  width: min(330px, 90%);
+  height: 85%;
+  position: absolute;
+  left: 50%;
+  top: 4%;
+  transform: translateX(-50%);
+  border: 9px solid #1c1d1d;
+  border-radius: 36px;
+  background: #fff;
+}
+.phone-flat.is-active .phone-flat-frame {
+  width: min(440px, 100%);
+  height: calc(100dvh - 80px);
+  top: 70px;
+}
 @media (prefers-reduced-motion: reduce) {
   .surface-light {
     display: none;

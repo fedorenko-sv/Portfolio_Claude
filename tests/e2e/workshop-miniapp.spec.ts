@@ -108,18 +108,12 @@ test("workroom keeps all three offers usable and launches the real Mini App on i
     page.locator('iframe[title="Практика Сергея — приложение"]'),
   ).toHaveCount(0);
   await page
-    .getByRole("button", { name: "Попробовать приложение здесь" })
+    .getByRole("link", { name: /Хотите сначала попробовать сами/ })
     .click();
-  const app = page.frameLocator('iframe[title="Практика Сергея — приложение"]');
+  await expect(page).toHaveURL(/\/app$/);
   await expect(
-    app.getByRole("heading", { name: "От интереса — к своей задаче." }),
+    page.getByRole("heading", { name: "От интереса — к своей задаче." }),
   ).toBeVisible();
-  await page
-    .getByRole("button", { name: "Закрыть просмотр приложения" })
-    .click();
-  await expect(
-    page.locator('iframe[title="Практика Сергея — приложение"]'),
-  ).toHaveCount(0);
 });
 
 test("library searches, saves only locally and restores saved materials after reload", async ({

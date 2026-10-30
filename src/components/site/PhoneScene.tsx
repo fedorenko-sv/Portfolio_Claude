@@ -4,8 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { acceptsShowcaseMessage } from "@/lib/showcase-protocol";
 
-// A geometric model, rendered on demand. The image is the actual menu capture;
-// interaction launches the independently controlled live application viewer.
+// The same live document stays on the CSS3D screen in both inline and expanded views.
 export default function PhoneScene({
   interactive = false,
 }: {
@@ -21,14 +20,20 @@ export default function PhoneScene({
   const button = useRef<HTMLButtonElement>(null);
   const host = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
+  const [flat, setFlat] = useState(false);
   useEffect(() => {
     if (!expanded) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     function keepFocus(event: FocusEvent) {
       if (!host.current?.parentElement?.contains(event.target as Node))
         button.current?.focus();
     }
     document.addEventListener("focusin", keepFocus);
-    return () => document.removeEventListener("focusin", keepFocus);
+    return () => {
+      document.removeEventListener("focusin", keepFocus);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [expanded]);
   useEffect(() => {
     const element = host.current;
@@ -48,6 +53,8 @@ export default function PhoneScene({
           powerPreference: "low-power",
         });
       } catch {
+        setFlat(true);
+        setReady(true);
         return;
       }
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -232,22 +239,46 @@ export default function PhoneScene({
       window.addEventListener("message", receive);
       iframe.title = "Интерактивное меню для ресторана";
       iframe.setAttribute("allow", "fullscreen");
+      const escapeFromMenu = (event: KeyboardEvent) => {
+        if (event.key === "Escape" && active.current) {
+          setExpanded(false);
+          activate.current(false);
+          button.current?.focus();
+        }
+      };
+      const frameLoaded = () =>
+        iframe.contentWindow?.addEventListener("keydown", escapeFromMenu);
+      iframe.addEventListener("load", frameLoaded);
       const screenObject = new CSS3DObject(surface);
       const htmlPhone = new THREE.Group();
       htmlPhone.add(screenObject);
       htmlScene.add(htmlPhone);
       screenObject.position.z = 0.27;
       screenObject.scale.setScalar(2.48 / 390);
-      screenObject.visible = false;
-      let previousOverflow = "";
+      screenObject.visible = interactive;
+      screen.visible = !interactive;
+      if (interactive) {
+        iframe.src = "/showcase/menu/index.html";
+        surface.appendChild(iframe);
+      }
+      let interacting = false;
+      const hold = () => {
+        interacting = true;
+      };
+      const release = () => {
+        interacting = false;
+        start();
+      };
+      surface.addEventListener("pointerenter", hold);
+      surface.addEventListener("pointerleave", release);
+      iframe.addEventListener("focus", hold);
+      iframe.addEventListener("blur", release);
       activate.current = (on) => {
         active.current = on;
         plinths.forEach((step) => {
           step.visible = !on;
         });
         if (on) {
-          previousOverflow = document.body.style.overflow;
-          document.body.style.overflow = "hidden";
           if (!iframe.src) {
             iframe.src = "/showcase/menu/index.html";
             surface.appendChild(iframe);
@@ -255,14 +286,15 @@ export default function PhoneScene({
           phone.rotation.set(0, 0, 0);
           phone.position.set(0, 0.55, 0.7);
         } else {
-          document.body.style.overflow = previousOverflow;
           phone.rotation.set(0.04, -0.17, 0.14);
           phone.position.set(0.35, 0.55, 0.7);
         }
-        screen.visible = !on;
-        screenObject.visible = on;
-        htmlRenderer.domElement.style.visibility = on ? "visible" : "hidden";
+        screen.visible = !interactive && !on;
+        screenObject.visible = interactive || on;
+        htmlRenderer.domElement.style.visibility =
+          interactive || on ? "visible" : "hidden";
         resize();
+        if (!on) start();
       };
       function render() {
         renderer.render(scene, camera);
@@ -300,7 +332,9 @@ export default function PhoneScene({
           reduced.matches ||
           saveData ||
           document.hidden ||
-          paused.current
+          paused.current ||
+          interacting ||
+          active.current
         )
           return;
         if (!active.current) {
@@ -333,7 +367,12 @@ export default function PhoneScene({
       });
       visibility.observe(element);
       function move(event: PointerEvent) {
-        if (active.current || reduced.matches || event.pointerType === "touch")
+        if (
+          active.current ||
+          interacting ||
+          reduced.matches ||
+          event.pointerType === "touch"
+        )
           return;
         hovering = true;
         const rect = element!.getBoundingClientRect();
@@ -374,9 +413,14 @@ export default function PhoneScene({
         cancelAnimationFrame(animation);
         reduced.removeEventListener("change", motionChanged);
         document.removeEventListener("visibilitychange", tabVisibility);
-        if (active.current) document.body.style.overflow = previousOverflow;
         htmlRenderer.domElement.remove();
         window.removeEventListener("message", receive);
+        iframe.contentWindow?.removeEventListener("keydown", escapeFromMenu);
+        iframe.removeEventListener("load", frameLoaded);
+        surface.removeEventListener("pointerenter", hold);
+        surface.removeEventListener("pointerleave", release);
+        iframe.removeEventListener("focus", hold);
+        iframe.removeEventListener("blur", release);
         element.removeEventListener("pointermove", move);
         element.removeEventListener("pointerleave", reset);
         scene.traverse((object) => {
@@ -401,7 +445,7 @@ export default function PhoneScene({
           void setup();
         }
       },
-      { rootMargin: "700px" },
+      { rootMargin: "200px" },
     );
     lazy.observe(element);
     return () => {
@@ -409,10 +453,10 @@ export default function PhoneScene({
       cancelled = true;
       dispose();
     };
-  }, []);
+  }, [interactive]);
   return (
     <div
-      className={`phone-stage ${expanded ? "is-active" : ""}`}
+      className={`phone-stage ${expanded ? "is-active" : ""} ${flat ? "phone-flat" : ""}`}
       role={expanded ? "dialog" : undefined}
       aria-modal={expanded || undefined}
       aria-label={expanded ? "Ресторанное меню" : undefined}
@@ -427,9 +471,17 @@ export default function PhoneScene({
       <div
         ref={host}
         className={`phone-scene ${ready ? "scene-ready" : ""}`}
-        role={expanded ? "group" : "img"}
+        role={interactive || expanded ? "group" : "img"}
         aria-label="Объёмный телефон с ресторанным меню"
       >
+        {flat && interactive && (
+          <iframe
+            className="phone-flat-frame"
+            src="/showcase/menu/index.html"
+            title="Интерактивное меню для ресторана"
+            onLoad={() => setLiveReady(true)}
+          />
+        )}
         {!ready && (
           <Image
             className="phone-fallback"
@@ -455,10 +507,10 @@ export default function PhoneScene({
             if (!on) button.current?.focus();
           }}
         >
-          {expanded ? "Закрыть меню" : "Управлять меню"}
+          {expanded ? "Закрыть меню" : "Увеличить меню"}
         </button>
       )}
-      {!expanded && ready && (
+      {!expanded && ready && !flat && (
         <button
           type="button"
           className="phone-motion"

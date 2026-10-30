@@ -3,11 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { WorkroomController } from "./workroom-renderer";
 import styles from "./Workroom.module.css";
-const fallback = [
-  "/media/projects/edcrm-result.webp",
-  "/images/practice-folder-v2.png",
-  "/images/author/speaking.webp",
-];
 const objectNames = [
   "Ноутбук · разработка",
   "Папка · обучение",
@@ -88,9 +83,9 @@ export default function WorkroomScene({
     <div className={styles.scene}>
       <div className={`${styles.fallback} ${ready ? styles.hidden : ""}`}>
         <Image
-          src={fallback[active]}
-          width={1000}
-          height={700}
+          src="/images/workroom-still.png"
+          width={1087}
+          height={630}
           alt=""
           sizes="(max-width:760px) 95vw,60vw"
         />
@@ -109,7 +104,7 @@ export default function WorkroomScene({
         <span className={styles.captionDot} />
         {hovered < 0
           ? "На столе — три способа работать вместе"
-          : `${objectNames[hovered]} — выбрать`}
+          : `${objectNames[hovered]} — ${hovered === active ? "открыть раздел" : "выбрать"}`}
       </span>
     </div>
   );
